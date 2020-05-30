@@ -1,7 +1,7 @@
 <template>
 	<div class="weather-details">
 
-		<h2>Weather for {{ this.$route.params.address.locality }}, {{ this.$route.params.address.country}}</h2>
+		<h2>Weather for {{ $route.params.address.locality }}, {{ $route.params.address.country}}</h2>
 
 		<ul v-if="!loading">
 			<li v-for="item in weatherData.daily">
@@ -9,6 +9,10 @@
 				<WeatherIcon v-bind:weather="item.weather[0]" />
 			</li>
 		</ul>
+
+		<button v-on:click="toggleFavorite()">
+			Favorifier
+		</button>
 
 	</div>
 </template>
@@ -34,6 +38,9 @@ export default {
 	methods: {
 		timestampToDate(timestamp) {
 			return moment.unix(timestamp).format("MM/DD/YYYY");
+		},
+		toggleFavorite() {
+			this.$store.dispatch('toggleFavorite', this.$route.params.address);
 		}
 	},
 	mounted() {

@@ -3,6 +3,8 @@
 
 		<h1>meteoVue</h1>
 
+		{{ favoriteLocation }}
+
 		<form @submit="checkForm">
 			<vue-google-autocomplete
 				id="map"
@@ -28,6 +30,7 @@
 
 <script>
 
+import { mapState } from 'vuex'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 
 export default {
@@ -42,6 +45,9 @@ export default {
 			locality: '',
 			address: {}
 		}
+	},
+	computed: {
+		...mapState(['favoriteLocation'])
 	},
 	props: {
 		msg: String
