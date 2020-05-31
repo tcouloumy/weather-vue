@@ -1,39 +1,39 @@
 <template>
 	
 	<div class="search-location siimple-form">
-
 		<div class="siimple-jumbotron">
-
 			<div class="siimple-jumbotron-title">meteoVue</div>
-			<div class="siimple-jumbotron-subtitle">Search a location and get a detailled weather forecast</div>
-			<div class="siimple-jumbotron-detail siimple--mb-3">And manage favorites</div>
+			<div class="siimple-jumbotron-subtitle">search a location and get a detailled weather forecast</div>
+			<div class="siimple-jumbotron-detail siimple--mb-3">and manage favorites</div>
 
 			<form @submit="checkForm">
 				<vue-google-autocomplete
 					id="map"
 					classname="form-control siimple-input siimple--mr-2 siimple--width-25"
-					placeholder="Start typing"
+					placeholder="I want the weather for ..."
 					types="(cities)"
 					v-on:placechanged="mapAddressData">
 				</vue-google-autocomplete>
 				<input class="siimple-btn siimple-btn--success" type="submit" value="Go !">
 			</form>
 
-			<!-- <div class="siimple-jumbotron-subtitle">This is the subtitle</div> -->
-
+			<p v-if="formErrors.length">
+				<ul>
+					<li v-for="error in formErrors">{{ error }}</li>
+				</ul>
+			</p>
 		</div>
 
-		<p v-if="formErrors.length">
-			<ul>
-				<li v-for="error in formErrors">{{ error }}</li>
-			</ul>
-		</p>
+		<div class="favorites">
+			<h2 class="siimple--my-0">My favorites</h2>
+			<p class="siimple-small siimple--mt-0">Upated at xxx</p>
 
-		<ul>
-			<li v-for="location in favoriteLocation">
-				<FavoriteTab v-bind:location="location" />
-			</li>
-		</ul>
+			<ul>
+				<li v-for="location in favoriteLocation">
+					<FavoriteTab v-bind:location="location" />
+				</li>
+			</ul>
+		</div>
 
 	</div>
 </template>
@@ -103,20 +103,20 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 h3 {
 	margin: 40px 0 0;
 }
+
 ul {
 	list-style-type: none;
 	padding: 0;
+	margin: 0;
 }
+
 li {
 	display: inline-block;
-	margin: 0 10px;
 }
-a {
-	color: #42b983;
-}
+
 </style>

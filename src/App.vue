@@ -30,4 +30,19 @@ export default {
 	outline: none;
 }
 
+body {
+	background: linear-gradient(#e9eff5, 10%, #dde5ee);;
+}
+
+body .siimple--bg-light {
+	background-color: transparent !important;
+}
+
+/* Little footer adjustments */
+.siimple-footer {
+	padding: 25px;
+	text-align: right;
+	opacity: .5;
+}
+
 </style>

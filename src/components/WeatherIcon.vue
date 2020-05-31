@@ -1,8 +1,6 @@
 <template>
 	<div class="weather-icon">
-
 		<i class="wi" :class="getIconClass(weather.id)" />
-
 	</div>
 </template>
 
@@ -25,4 +23,11 @@ export default {
 </script>
 
 <style scoped>
+
+i.wi {
+	margin-top: 10px;
+	font-size: 60px;
+	line-height: 60px;
+}
+
 </style>
