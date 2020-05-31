@@ -145,6 +145,10 @@ export default {
 
 		console.log(this.$route.params);
 
+		if (this.$route.params.completeLocation) {
+			
+		}
+
 		let lat = this.location.latitude, long = this.location.longitude;
 
 		axios

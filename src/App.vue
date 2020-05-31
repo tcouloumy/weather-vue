@@ -30,6 +30,10 @@ export default {
 	outline: none;
 }
 
+html {
+	min-height: 100%;
+}
+
 body {
 	background: linear-gradient(#e9eff5, 10%, #dde5ee);;
 }
