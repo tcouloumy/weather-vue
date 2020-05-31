@@ -1,7 +1,11 @@
 <template>
 	<div class="weather-details">
 
-		<h2>Weather for {{ $route.params.address.locality }}, {{ $route.params.address.country}}</h2>
+		<h2>Weather for {{ $route.params.location.locality }}, {{ $route.params.location.country}}</h2>
+		
+		<button v-on:click="toggleFavorite()">
+			Favorifier
+		</button>
 
 		<ul v-if="!loading">
 			<li v-for="item in weatherData.daily">
@@ -9,10 +13,6 @@
 				<WeatherIcon v-bind:weather="item.weather[0]" />
 			</li>
 		</ul>
-
-		<button v-on:click="toggleFavorite()">
-			Favorifier
-		</button>
 
 	</div>
 </template>
@@ -40,13 +40,13 @@ export default {
 			return moment.unix(timestamp).format("MM/DD/YYYY");
 		},
 		toggleFavorite() {
-			this.$store.dispatch('toggleFavorite', this.$route.params.address);
+			this.$store.dispatch('toggleFavorite', this.$route.params.location);
 		}
 	},
 	mounted() {
-		
-		let lat = this.$route.params.address.latitude,
-			long = this.$route.params.address.longitude;
+
+		let lat = this.$route.params.location.latitude,
+			long = this.$route.params.location.longitude;
 
 		axios
 			.get('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+long+'&appid=81f4fb1b0102cc0a3480190588206d6e&units=metrics')
