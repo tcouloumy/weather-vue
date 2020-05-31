@@ -1,6 +1,6 @@
 <template>
 
-	<router-link class="siimple-link" :to="{ name: 'Forecast', params: { location: locationToString(location), completeLocation: location } }">
+	<router-link class="siimple-link" :to="{ name: 'Forecast', params: { locationString: locationToString(location), completeLocation: location } }">
 		<div class="favorite-tab">
 			<div v-if="!loading">
 				<div class="siimple-close"></div>

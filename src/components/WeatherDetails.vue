@@ -1,10 +1,10 @@
 <template>
-	<div class="weather-details">
+	<div class="weather-details" v-if="!loading">
 
 		<!-- Title and favorite indicator + button -->
 		<div class="title siimple--display-flex">
 			
-			<h1>Weather for {{ $route.params.location.locality }}, {{ $route.params.location.country}}</h1>
+			<h1>Weather for {{ location.locality }}, {{ location.country}}</h1>
 			
 			<div class="favorite-link siimple-small siimple--display-flex" v-if="!isFavorite()">
 				<p class="siimple--mr-2">Marked as favorite</p>
@@ -18,73 +18,69 @@
 		</div>
 		<p class="subtitle siimple-small">As of {{ currentFormatedDate() }}</p>
 
-		<div v-if="!loading"> 
-
-			<!-- Main today infos -->
-			<div class="today">
-				<h2>Today</h2>
-				<div class="siimple--display-flex">
-					<div>
-						<p class="temperature">{{ weatherData.current.temp }}°</p>
-						<p class="description">{{ weatherData.current.weather[0].description }}</p>
-					</div>
-					<WeatherIcon v-bind:weather="weatherData.current.weather[0]" />
+		<!-- Main today infos -->
+		<div class="today">
+			<h2>Today</h2>
+			<div class="siimple--display-flex">
+				<div>
+					<p class="temperature">{{ weatherData.current.temp }}°</p>
+					<p class="description">{{ weatherData.current.weather[0].description }}</p>
 				</div>
-
-				{{ weatherData.current }}
+				<WeatherIcon v-bind:weather="weatherData.current.weather[0]" />
 			</div>
 
-			<!-- Today details -->
-			<div class="today-details">
+			{{ weatherData.current }}
+		</div>
 
-				<h2>Details</h2>
+		<!-- Today details -->
+		<div class="today-details">
 
-				<div class="siimple--display-flex">
-					
-					<div class="siimple-table siimple--mr-2">
-						<div class="siimple-table-body">
-							<div class="siimple-table-row">
-								<div class="siimple-table-cell"><i class="wi wi-strong-wind" /></div>
-								<div class="siimple-table-cell">{{ weatherData.current.wind_speed }} km/h</div>
-							</div>
-							<div class="siimple-table-row">
-								<div class="siimple-table-cell">test</div>
-								<div class="siimple-table-cell">test</div>
-							</div>
-						</div>
-					</div>
+			<h2>Details</h2>
 
-					<div class="siimple-table siimple--ml-2">
-						<div class="siimple-table-body">
-							<div class="siimple-table-row">
-								<div class="siimple-table-cell">test</div>
-								<div class="siimple-table-cell">test</div>
-							</div>
-							<div class="siimple-table-row">
-								<div class="siimple-table-cell">test</div>
-								<div class="siimple-table-cell">test</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Next days table -->
-			<div class="next-days">
-				<h2>Next days</h2>
-
-				<div class="siimple-table">
-
+			<div class="siimple--display-flex">
+				
+				<div class="siimple-table siimple--mr-2">
 					<div class="siimple-table-body">
-						<div class="siimple-table-row" v-for="item in weatherData.daily">
-							<div class="siimple-table-cell">{{ timestampToDate(item.dt) }}</div>
-							<div class="siimple-table-cell"><WeatherIcon v-bind:weather="item.weather[0]" /></div>
-							<div class="siimple-table-cell">Cell 3</div>
+						<div class="siimple-table-row">
+							<div class="siimple-table-cell"><i class="wi wi-strong-wind" /></div>
+							<div class="siimple-table-cell">{{ weatherData.current.wind_speed }} km/h</div>
+						</div>
+						<div class="siimple-table-row">
+							<div class="siimple-table-cell">test</div>
+							<div class="siimple-table-cell">test</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="siimple-table siimple--ml-2">
+					<div class="siimple-table-body">
+						<div class="siimple-table-row">
+							<div class="siimple-table-cell">test</div>
+							<div class="siimple-table-cell">test</div>
+						</div>
+						<div class="siimple-table-row">
+							<div class="siimple-table-cell">test</div>
+							<div class="siimple-table-cell">test</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 
+		<!-- Next days table -->
+		<div class="next-days">
+			<h2>Next days</h2>
+
+			<div class="siimple-table">
+
+				<div class="siimple-table-body">
+					<div class="siimple-table-row" v-for="item in weatherData.daily">
+						<div class="siimple-table-cell">{{ timestampToDate(item.dt) }}</div>
+						<div class="siimple-table-cell"><WeatherIcon v-bind:weather="item.weather[0]" /></div>
+						<div class="siimple-table-cell">Cell 3</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 	</div>
@@ -107,7 +103,7 @@ export default {
 	data: function() {
 		return {
 			loading: true,
-			location: this.$route.params.location,
+			location: {},
 			weatherData: {}
 		}
 	},
@@ -143,13 +139,18 @@ export default {
 	},
 	mounted() {
 
-		console.log(this.$route.params);
+		let lat, long;
+
+		console.log(this.$route.params.completeLocation);
 
 		if (this.$route.params.completeLocation) {
-			
+			this.location = this.$route.params.completeLocation;
+			lat = this.location.latitude;
+			long = this.location.longitude;
 		}
+		else {
 
-		let lat = this.location.latitude, long = this.location.longitude;
+		}
 
 		axios
 			.get('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+long+'&appid=81f4fb1b0102cc0a3480190588206d6e&units=metric')

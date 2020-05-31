@@ -12,7 +12,7 @@ Vue.use(VueRouter)
 		component: Search
 	},
 	{
-		path: '/forecast/:location',
+		path: '/forecast/:locationString',
 		name: 'Forecast',
 		component: Forecast
 	}

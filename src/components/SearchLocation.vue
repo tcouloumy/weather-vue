@@ -43,6 +43,7 @@
 import { mapState } from 'vuex';
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import FavoriteTab from './FavoriteTab.vue';
+import { locationToString } from './../helpers/location';
 
 export default {
 	
@@ -65,16 +66,20 @@ export default {
 		msg: String
 	},
 	methods: {
-		
+		locationToString,
 		/**
 		* Validate the form before submitting
+		* If valid, send to the forecast page with location infos
 		* @param {Event} e Submitting form event
 		*/
 		checkForm(e) {
 			
 			if (this.address.locality) {
-				var address = this.address;
-				this.$router.push({ name: 'Forecast', params: { location: address } });
+				const address = this.address;
+				this.$router.push({ name: 'Forecast', params: { 
+					locationString: this.locationToString(address),
+					completeLocation: address 
+				}});
 				return true;
 			}
 			else {
