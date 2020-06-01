@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import _ from 'lodash';
+import { areEquals } from '@/helpers/location';
 
 Vue.use(Vuex)
 
@@ -17,7 +18,6 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-
 		/**
 		* Initialise store with local storage data if it exists
 		* @param {Object} context Current store context
@@ -34,7 +34,7 @@ export default new Vuex.Store({
 		* @param {Object} location Location object payload
 		*/
 		toggleFavorite(context, location) {
-			if (context.state.favoriteLocation.findIndex(item => _.isEqual(item, location)) !== -1) {
+			if (context.state.favoriteLocation.findIndex(item => areEquals(item, location)) !== -1) {
 				context.commit('REMOVE_FAVORITE', location);
 			}
 			else {

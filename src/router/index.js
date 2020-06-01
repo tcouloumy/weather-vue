@@ -1,27 +1,15 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Search from '../views/Search.vue'
-import Forecast from '../views/Forecast.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Search from '../views/Search.vue';
+import Forecast from '../views/Forecast.vue';
+import routes from './routes';
 
-Vue.use(VueRouter)
-
-	const routes = [
-	{
-		path: '/',
-		name: 'Search',
-		component: Search
-	},
-	{
-		path: '/forecast/:locationString',
-		name: 'Forecast',
-		component: Forecast
-	}
-]
+Vue.use(VueRouter);
 
 const router = new VueRouter({
+	routes,
 	mode: 'history',
-	base: process.env.BASE_URL,
-	routes
+	base: process.env.BASE_URL
 })
 
-export default router
+export default router;

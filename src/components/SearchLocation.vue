@@ -1,56 +1,37 @@
 <template>
-	
-	<div class="search-location siimple-form">
-		<div class="siimple-jumbotron">
-			<div class="siimple-jumbotron-title">meteoVue</div>
-			<div class="siimple-jumbotron-subtitle">search a location and get a detailled weather forecast</div>
-			<div class="siimple-jumbotron-detail siimple--mb-3">and manage favorites</div>
 
-			<form @submit="checkForm">
-				<vue-google-autocomplete
-					id="map"
-					classname="form-control siimple-input siimple--mr-2 siimple--width-25"
-					placeholder="I want the weather for ..."
-					types="(cities)"
-					v-on:placechanged="mapAddressData">
-				</vue-google-autocomplete>
-				<input class="siimple-btn siimple-btn--success" type="submit" value="Go !">
-			</form>
+	<div class="search-location">
+		<form @submit="checkForm">
+			<vue-google-autocomplete
+				id="map"
+				classname="form-control siimple-input siimple--mr-2 siimple--width-25"
+				v-bind:placeholder="$t('search_location_placeholder')"
+				types="(cities)"
+				v-on:placechanged="mapAddressData">
+			</vue-google-autocomplete>
+			<input class="siimple-btn siimple-btn--success" type="submit" v-bind:value="$t('search_location_submit')">
+		</form>
 
-			<p v-if="formErrors.length">
-				<ul>
-					<li v-for="error in formErrors">{{ error }}</li>
-				</ul>
-			</p>
-		</div>
-
-		<div class="favorites">
-			<h2 class="siimple--my-0">My favorites</h2>
-			<p class="siimple-small siimple--mt-0">Upated at xxx</p>
-
+		<p v-if="formErrors.length">
 			<ul>
-				<li v-for="location in favoriteLocation">
-					<FavoriteTab v-bind:location="location" />
-				</li>
+				<li v-for="error in formErrors">{{ error }}</li>
 			</ul>
-		</div>
-
+		</p>
 	</div>
+
 </template>
 
 <script>
 
 import { mapState } from 'vuex';
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
-import FavoriteTab from './FavoriteTab.vue';
 import { locationToString } from './../helpers/location';
 
 export default {
 	
 	name: 'SearchLocation',
 	components: {
-		VueGoogleAutocomplete,
-		FavoriteTab
+		VueGoogleAutocomplete
 	},
 	data: function() {
 		return {
@@ -58,12 +39,6 @@ export default {
 			locality: '',
 			address: {}
 		}
-	},
-	computed: {
-		...mapState(['favoriteLocation'])
-	},
-	props: {
-		msg: String
 	},
 	methods: {
 		locationToString,

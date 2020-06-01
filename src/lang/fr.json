@@ -1,0 +1,15 @@
+{
+	"search_location_placeholder": "Je veux la météo de ...",
+	"search_location_submit": "Go !",
+	"favorites": {
+		"title": "Mes favoris",
+		"updated_at": "Mis à jour le"
+	},
+	"pages": {
+		"search": {
+			"title": "meteoVue",
+			"subtitle": "Cherchez une ville pour obtenir ses prévisions météo",
+			"detail": "et enregistrez vos favoris pour un accès rapide !"
+		}
+	}
+}

@@ -16,7 +16,7 @@
 			</div>
 
 		</div>
-		<p class="subtitle siimple-small">As of {{ currentFormatedDate() }}</p>
+		<p class="subtitle siimple-small">As of {{ currentFormatedTime() }}</p>
 
 		<!-- Main today infos -->
 		<div class="today">
@@ -93,6 +93,8 @@ import axios from 'axios';
 import moment from 'moment';
 import WeatherIcon from './WeatherIcon.vue';
 import _ from 'lodash';
+import { parseReverseGeocodeResult, stringToLocation, areEquals } from '@/helpers/location';
+import { currentFormatedTime, timestampToDate } from '@/helpers/time'
 
 export default {
 	
@@ -111,24 +113,13 @@ export default {
 		...mapState(['favoriteLocation'])
 	},
 	methods: {
+		currentFormatedTime,
+		timestampToDate,
 		/**
 		* Check if the current location exists in the store favorites
 		*/
 		isFavorite() {
-			return (this.favoriteLocation.findIndex(item => _.isEqual(item, this.location)) !== -1);
-		},
-		/**
-		* Return a string of the current date formatted for display
-		*/
-		currentFormatedDate() {
-			return moment().format("HH:mm");
-		},
-		/**
-		* Return a formated date string from a timestamp
-		* @param {String} timestamp Timestamp to format
-		*/
-		timestampToDate(timestamp) {
-			return moment.unix(timestamp).format("MM/DD/YYYY");
+			return this.favoriteLocation.findIndex(item => areEquals(item, this.location) !== -1);
 		},
 		/**
 		* Map the address object to the component when found
@@ -139,25 +130,31 @@ export default {
 	},
 	mounted() {
 
-		let lat, long;
+		let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
 
-		console.log(this.$route.params.completeLocation);
-
+		// If we happen to have been sent a complete location object where the route have been called,
+		// no need to geocode it via google api
 		if (this.$route.params.completeLocation) {
 			this.location = this.$route.params.completeLocation;
-			lat = this.location.latitude;
-			long = this.location.longitude;
+			latitude = this.location.latitude;
+			longitude  = this.location.longitude;
 		}
 		else {
-
+			axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude +'&key=AIzaSyDzoGNKEZHZsx7KaeGhZKGIll-3U7qT8U4&result_type=locality&language='+this.$i18n.locale)
+				.then(response => {
+					this.location = parseReverseGeocodeResult(response);
+				}
+			)
 		}
-
-		axios
-			.get('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+long+'&appid=81f4fb1b0102cc0a3480190588206d6e&units=metric')
+		
+		// Getting the weather infos
+		axios.get('https://api.openweathermap.org/data/2.5/onecall?lat='+latitude+'&lon='+longitude +'&appid=81f4fb1b0102cc0a3480190588206d6e&units=metric&lang='+this.$i18n.locale)
 			.then(response => {
 				this.loading = false;
 				this.weatherData = response.data;
-			})
+			}
+		)
+		
 	}
 }
 

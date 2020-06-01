@@ -1,17 +1,23 @@
 <template>
-	<div id="app" class="siimple-content siimple-content--large siimple--bg-light">
-		<!-- <div id="nav">
-			<router-link to="/">Home</router-link> |
-			<router-link to="/about">Forecast</router-link>
-		</div> -->
-		<router-view/>
+	<div id="app" >
+		<div class="siimple-navbar">
+			<LanguageSwitcher />
+		</div>
+		<div class="siimple-content siimple-content--large siimple--bg-light">
+			<router-view/>
+		</div>
 	</div>
 </template>
 
 <script>
 
+import LanguageSwitcher from './components/LanguageSwitcher.vue';
+
 export default {
 	name: 'App',
+	components: {
+		LanguageSwitcher
+	},
 	beforeCreate() {
 		// Initialising the store
 		this.$store.dispatch('initialiseStore');

@@ -1,0 +1,15 @@
+{
+	"search_location_placeholder": "I want the weather for ...",
+	"search_location_submit": "Go !",
+	"favorites": {
+		"title": "My favorites",
+		"updated_at": "Updated at"
+	},
+	"pages": {
+		"search": {
+			"title": "meteoVue",
+			"subtitle": "Search a location and get a detailled weather forecast",
+			"detail": "and manage favorites for a quick view !"
+		}
+	}
+}

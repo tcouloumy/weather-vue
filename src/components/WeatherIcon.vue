@@ -6,7 +6,7 @@
 
 <script>
 
-import weatherIconTable from '../assets/weatherIconTable.json';
+import weatherIconTable from '@/helpers/weatherIconTable.json';
 
 export default {
 	name: 'WeatherIcon',
