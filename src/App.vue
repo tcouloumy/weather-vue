@@ -48,11 +48,4 @@ body .siimple--bg-light {
 	background-color: transparent !important;
 }
 
-/* Little footer adjustments */
-.siimple-footer {
-	padding: 25px;
-	text-align: right;
-	opacity: .5;
-}
-
 </style>

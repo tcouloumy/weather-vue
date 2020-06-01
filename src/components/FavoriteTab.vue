@@ -1,7 +1,7 @@
 <template>
-
 	<router-link class="siimple-link" :to="{ name: 'Forecast', params: { locationString: locationToString(location), completeLocation: location } }">
 		<div class="favorite-tab">
+			<!-- Data display -->
 			<div v-if="!loading">
 				<div class="siimple-close"></div>
 
@@ -12,30 +12,34 @@
 				<div class="siimple--display-flex">
 					<div class="siimple--mr-3">
 						<WeatherIcon v-if="weatherData" v-bind:weather="weatherData.weather[0]" />
-						
 					</div>
 
 					<div class="infos">
-						<p class="temperature">{{ weatherData.main.temp }}°C</p>
+						<p class="temperature"><strong>{{ getFormattedTemperature(weatherData.main.temp) }}</strong></p>
 						<p class="description siimple-small">{{ weatherData.weather[0].description }}</p>
-						<p class="wind siimple-small"><i class="wi wi-strong-wind  siimple--mr-1" />{{ weatherData.wind.speed }} km/h</p>
-						<p class="siimple-small">Test</p>
+						<p class="wind siimple-small"><i class="wi wi-strong-wind siimple--mr-1" />{{ weatherData.wind.speed }} {{ $t('units.speed') }}</p>
+						<p class="siimple-small">{{ $t('weather.feels_like') }} {{ getFormattedTemperature(weatherData.main.feels_like) }}</p>
 					</div>
 				</div>
 			</div>
+			<!-- Loader -->
+			<div class="loading" v-if="loading">
+				<div class="siimple-spinner siimple-spinner--primary"></div>
+			</div>
 		</div>
 	</router-link>
-
 </template>
 
 <script>
 
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
-import { locationToString } from './../helpers/location';
+import { i18n } from '@/plugins/i18n';
+import { locationToString } from '@/helpers/location';
+import { getCurrentWeather } from '@/helpers/weather';
+import { getFormattedTemperature } from '@/helpers/number';
 
 export default {
-	
 	name: 'FavoriteTab',
 	components: {
 		WeatherIcon,
@@ -51,24 +55,15 @@ export default {
 		}
 	},
 	methods: {
-		locationToString
-		// goToDetails() {
-		// 	// this.$router.push({ name: 'Forecast', params: { address } });
-		// 	const test = "test";
-		// 	this.$router.push({ name: 'Forecast', params: { test } });
-		// }
+		locationToString,
+		getFormattedTemperature
 	},
 	mounted() {
-
-		let lat = this.location.latitude,
-			long = this.location.longitude;
-
-		axios
-			.get('https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+long+'&appid=81f4fb1b0102cc0a3480190588206d6e&units=metric')
-			.then(response => {
-				this.loading = false;
-				this.weatherData = response.data;
-			})
+		// Get the current weather data and stop displaying loading when received
+		getCurrentWeather(this.location.latitude, this.location.longitude).then(response => {
+			this.loading = false;
+			this.weatherData = response.data;
+		})
 	}
 }
 
@@ -128,6 +123,10 @@ export default {
 
 .favorite-tab .description:first-letter {
     text-transform: uppercase;
+}
+
+.loading > div.siimple-spinner {
+	margin-top: 25%;
 }
 
 </style>

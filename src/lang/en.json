@@ -1,6 +1,12 @@
 {
 	"search_location_placeholder": "I want the weather for ...",
 	"search_location_submit": "Go !",
+	"units": {
+		"speed": "mph"
+	},
+	"weather": {
+		"feels_like": "Feels like"
+	},
 	"favorites": {
 		"title": "My favorites",
 		"updated_at": "Updated at"

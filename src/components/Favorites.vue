@@ -18,18 +18,15 @@ import FavoriteTab from './FavoriteTab.vue';
 import { locationToString } from './../helpers/location';
 
 export default {
-	
 	name: 'Favorites',
 	components: {
 		FavoriteTab
 	},
 	computed: {
 		...mapState(['favoriteLocation'])
-	},
-	mounted() {
-		console.log(this.$i18n.locale);
 	}
 }
+
 </script>
 
 <style scoped>

@@ -1,5 +1,6 @@
 import Search from '@/views/Search.vue';
 import Forecast from '@/views/Forecast.vue';
+import { SUPPORTED_LANGUAGES } from '@/constants/language'
 import { i18n } from '@/plugins/i18n';
 
 export default [{
@@ -12,7 +13,7 @@ export default [{
 		const lang = to.params.lang;
 
 		// TODO : do not hardcode possible languages
-		if (!['en', 'fr'].includes(lang)) return next('en');
+		if (!SUPPORTED_LANGUAGES.includes(lang)) return next('en');
 		if (i18n.locale === lang) return next();
 
 		// Async load of translation file

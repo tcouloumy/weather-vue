@@ -20,16 +20,26 @@
 
 		<!-- Main today infos -->
 		<div class="today">
-			<h2>Today</h2>
 			<div class="siimple--display-flex">
 				<div>
-					<p class="temperature">{{ weatherData.current.temp }}°</p>
-					<p class="description">{{ weatherData.current.weather[0].description }}</p>
+					<h2 class="temperature">{{ getFormattedTemperature(weatherData.current.temp) }}</h2>
+					<h3 class="description">{{ weatherData.current.weather[0].description }}</h3>
+					<p>{{ $t('weather.feels_like') }} {{ getFormattedTemperature(weatherData.current.feels_like) }}</p>
 				</div>
-				<WeatherIcon v-bind:weather="weatherData.current.weather[0]" />
-			</div>
+				<div>
+					<WeatherIcon v-bind:weather="weatherData.current.weather[0]" />
+					
+					<div class="siimple--display-flex">
+						<p><i class="wi wi-sunrise" /></p>
+						<p>{{ weatherData.current.sunrise }}</p>
+					</div>
 
-			{{ weatherData.current }}
+					<div class="siimple--display-flex">
+						<p><i class="wi wi-sunset" /></p>
+						<p>{{ weatherData.current.sunset }}</p>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- Today details -->
@@ -41,27 +51,63 @@
 				
 				<div class="siimple-table siimple--mr-2">
 					<div class="siimple-table-body">
+						
+						
 						<div class="siimple-table-row">
-							<div class="siimple-table-cell"><i class="wi wi-strong-wind" /></div>
-							<div class="siimple-table-cell">{{ weatherData.current.wind_speed }} km/h</div>
+							<div class="siimple-table-cell">
+								<i class="wi wi-strong-wind" />
+								Wind speed
+							</div>
+							<div class="siimple-table-cell">{{ weatherData.current.wind_speed }} {{$t('units.speed')}}</div>
 						</div>
+
+
 						<div class="siimple-table-row">
-							<div class="siimple-table-cell">test</div>
-							<div class="siimple-table-cell">test</div>
+							<div class="siimple-table-cell">
+								<i class="wi wi-wind" />
+								Wind orientation
+							</div>
+							<div class="siimple-table-cell">{{ weatherData.current.wind_deg }} deg</div>
 						</div>
+
+						<div class="siimple-table-row">
+							<div class="siimple-table-cell">
+								<i class="wi wi-cloud" />
+								Cloudiness
+							</div>
+							<div class="siimple-table-cell">{{ weatherData.current.clouds }} %</div>
+						</div>
+
 					</div>
 				</div>
 
 				<div class="siimple-table siimple--ml-2">
 					<div class="siimple-table-body">
+
 						<div class="siimple-table-row">
-							<div class="siimple-table-cell">test</div>
-							<div class="siimple-table-cell">test</div>
+							<div class="siimple-table-cell">
+								<i class="wi wi-humidity" />
+								Humidity
+							</div>
+							<div class="siimple-table-cell">{{ weatherData.current.humidity }} %</div>
 						</div>
+
 						<div class="siimple-table-row">
-							<div class="siimple-table-cell">test</div>
-							<div class="siimple-table-cell">test</div>
+							<div class="siimple-table-cell">
+								<i class="wi wi-day-sunny" />
+								UV Index
+							</div>
+							<div class="siimple-table-cell">{{ weatherData.current.uvi }} / 10</div>
 						</div>
+
+						<div class="siimple-table-row">
+							<div class="siimple-table-cell">
+								<i class="wi wi-barometer" />
+								Pressure
+							</div>
+							<div class="siimple-table-cell">{{ weatherData.current.pressure }} hPa</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
@@ -69,7 +115,7 @@
 
 		<!-- Next days table -->
 		<div class="next-days">
-			<h2>Next days</h2>
+			<h2>Next few days</h2>
 
 			<div class="siimple-table">
 
@@ -94,7 +140,8 @@ import moment from 'moment';
 import WeatherIcon from './WeatherIcon.vue';
 import _ from 'lodash';
 import { parseReverseGeocodeResult, stringToLocation, areEquals } from '@/helpers/location';
-import { currentFormatedTime, timestampToDate } from '@/helpers/time'
+import { currentFormatedTime, timestampToDate } from '@/helpers/time';
+import { getFormattedTemperature } from '@/helpers/number';
 
 export default {
 	
@@ -115,6 +162,7 @@ export default {
 	methods: {
 		currentFormatedTime,
 		timestampToDate,
+		getFormattedTemperature,
 		/**
 		* Check if the current location exists in the store favorites
 		*/
@@ -140,6 +188,7 @@ export default {
 			longitude  = this.location.longitude;
 		}
 		else {
+			// If not, get it
 			axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude +'&key=AIzaSyDzoGNKEZHZsx7KaeGhZKGIll-3U7qT8U4&result_type=locality&language='+this.$i18n.locale)
 				.then(response => {
 					this.location = parseReverseGeocodeResult(response);
@@ -189,6 +238,11 @@ export default {
 .temperature {
 	font-size: 50px;
 	font-weight: bold;
+	margin: 0;
+}
+
+.description {
+	margin: 0;
 }
 
 .today > div {
@@ -197,6 +251,13 @@ export default {
 
 .description:first-letter {
     text-transform: uppercase;
+}
+
+/* Table details */
+
+.today-details i {
+	text-align: center;
+	min-width: 30px;
 }
 
 .today-details > div {
