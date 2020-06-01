@@ -1,6 +1,6 @@
 <template>
 	<div class="weather-icon">
-		<i class="wi" :class="getIconClass(weather.id)" />
+		<i class="wi" :class="[getIconClass(weather.id), size]" />
 	</div>
 </template>
 
@@ -11,7 +11,8 @@ import weatherIconTable from '@/helpers/weatherIconTable.json';
 export default {
 	name: 'WeatherIcon',
 	props: {
-		weather: Object
+		weather: Object,
+		size: String
 	},
 	methods: {
 		getIconClass(weatherId) {
@@ -28,6 +29,12 @@ i.wi {
 	margin-top: 10px;
 	font-size: 60px;
 	line-height: 60px;
+}
+
+i.wi.small {
+	margin-top: 0px;
+	font-size: inherit;
+	line-height: 1;
 }
 
 </style>

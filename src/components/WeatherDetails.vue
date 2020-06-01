@@ -1,134 +1,169 @@
 <template>
-	<div class="weather-details" v-if="!loading">
-
-		<!-- Title and favorite indicator + button -->
-		<div class="title siimple--display-flex">
-			
-			<h1>Weather for {{ location.locality }}, {{ location.country}}</h1>
-			
-			<div class="favorite-link siimple-small siimple--display-flex" v-if="!isFavorite()">
-				<p class="siimple--mr-2">Marked as favorite</p>
-				<a class="siimple-link" v-on:click="toggleFavorite()">Remove</a>
-			</div>
-
-			<div class="siimple-small" v-if="isFavorite()">
-				<a class="siimple-link" v-on:click="toggleFavorite()">Add to favorite</a>
-			</div>
-
+	<div>
+		<!-- While waiting -->
+		<div class="weather-details loading" v-if="loading">
+			<div class="siimple-spinner siimple-spinner--primary"></div>
 		</div>
-		<p class="subtitle siimple-small">As of {{ currentFormatedTime() }}</p>
+		<div class="weather-details" v-if="!loading">
 
-		<!-- Main today infos -->
-		<div class="today">
-			<div class="siimple--display-flex">
-				<div>
-					<h2 class="temperature">{{ getFormattedTemperature(weatherData.current.temp) }}</h2>
-					<h3 class="description">{{ weatherData.current.weather[0].description }}</h3>
-					<p>{{ $t('weather.feels_like') }} {{ getFormattedTemperature(weatherData.current.feels_like) }}</p>
-				</div>
-				<div>
-					<WeatherIcon v-bind:weather="weatherData.current.weather[0]" />
-					
-					<div class="siimple--display-flex">
-						<p><i class="wi wi-sunrise" /></p>
-						<p>{{ weatherData.current.sunrise }}</p>
-					</div>
-
-					<div class="siimple--display-flex">
-						<p><i class="wi wi-sunset" /></p>
-						<p>{{ weatherData.current.sunset }}</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Today details -->
-		<div class="today-details">
-
-			<h2>Details</h2>
-
-			<div class="siimple--display-flex">
+			<!-- Title and favorite indicator + button -->
+			<div class="title siimple--display-flex">
 				
-				<div class="siimple-table siimple--mr-2">
-					<div class="siimple-table-body">
-						
-						
-						<div class="siimple-table-row">
-							<div class="siimple-table-cell">
-								<i class="wi wi-strong-wind" />
-								Wind speed
-							</div>
-							<div class="siimple-table-cell">{{ weatherData.current.wind_speed }} {{$t('units.speed')}}</div>
-						</div>
-
-
-						<div class="siimple-table-row">
-							<div class="siimple-table-cell">
-								<i class="wi wi-wind" />
-								Wind orientation
-							</div>
-							<div class="siimple-table-cell">{{ weatherData.current.wind_deg }} deg</div>
-						</div>
-
-						<div class="siimple-table-row">
-							<div class="siimple-table-cell">
-								<i class="wi wi-cloud" />
-								Cloudiness
-							</div>
-							<div class="siimple-table-cell">{{ weatherData.current.clouds }} %</div>
-						</div>
-
-					</div>
+				<h1>Weather for {{ location.locality }}, {{ location.country}}</h1>
+				
+				<div class="favorite-link siimple-small siimple--display-flex" v-if="isFavorite()">
+					<p class="siimple--mr-2">Marked as favorite</p>
+					<a class="siimple-link" v-on:click="toggleFavorite()">Remove</a>
+				</div>
+				<div class="siimple-small" v-if="!isFavorite()">
+					<a class="siimple-link" v-on:click="toggleFavorite()">Add to favorite</a>
 				</div>
 
-				<div class="siimple-table siimple--ml-2">
-					<div class="siimple-table-body">
+			</div>
+			<p class="subtitle siimple-small">As of {{ currentFormatedTime() }}</p>
 
-						<div class="siimple-table-row">
-							<div class="siimple-table-cell">
-								<i class="wi wi-humidity" />
-								Humidity
-							</div>
-							<div class="siimple-table-cell">{{ weatherData.current.humidity }} %</div>
+			<!-- Main today infos -->
+			<div class="today">
+				<div class="siimple--display-flex">
+					<div class="quickview">
+						<h2 class="temperature">{{ getFormattedTemperature(weatherData.current.temp) }}</h2>
+						<h3 class="description">{{ weatherData.current.weather[0].description }}</h3>
+						<p>{{ $t('weather.feels_like') }} {{ getFormattedTemperature(weatherData.current.feels_like) }}</p>
+					</div>
+					<div>
+						<WeatherIcon v-bind:weather="weatherData.current.weather[0]" />
+
+						<div class="suntimes">
+							<p>
+								<i class="wi wi-sunrise" />
+								{{ getFormatedTimeFromTimestamp(weatherData.current.sunrise) }}
+							</p>
+
+							<p>
+								<i class="wi wi-sunset" />
+								{{ getFormatedTimeFromTimestamp(weatherData.current.sunset) }}
+							</p>
 						</div>
-
-						<div class="siimple-table-row">
-							<div class="siimple-table-cell">
-								<i class="wi wi-day-sunny" />
-								UV Index
-							</div>
-							<div class="siimple-table-cell">{{ weatherData.current.uvi }} / 10</div>
-						</div>
-
-						<div class="siimple-table-row">
-							<div class="siimple-table-cell">
-								<i class="wi wi-barometer" />
-								Pressure
-							</div>
-							<div class="siimple-table-cell">{{ weatherData.current.pressure }} hPa</div>
-						</div>
-
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<!-- Next days table -->
-		<div class="next-days">
-			<h2>Next few days</h2>
+			<!-- Today details -->
+			<div class="today-details">
 
-			<div class="siimple-table">
+				<h2>Details</h2>
 
-				<div class="siimple-table-body">
-					<div class="siimple-table-row" v-for="item in weatherData.daily">
-						<div class="siimple-table-cell">{{ timestampToDate(item.dt) }}</div>
-						<div class="siimple-table-cell"><WeatherIcon v-bind:weather="item.weather[0]" /></div>
-						<div class="siimple-table-cell">Cell 3</div>
+				<div class="siimple--display-flex">
+					
+					<div class="siimple-table siimple--mr-2">
+						<div class="siimple-table-body">
+							
+							
+							<div class="siimple-table-row">
+								<div class="siimple-table-cell">
+									<i class="wi wi-strong-wind" />
+									Wind speed
+								</div>
+								<div class="siimple-table-cell">{{ weatherData.current.wind_speed }} {{$t('units.speed')}}</div>
+							</div>
+
+
+							<div class="siimple-table-row">
+								<div class="siimple-table-cell">
+									<i class="wi wi-wind" />
+									Wind orientation
+								</div>
+								<div class="siimple-table-cell">{{ weatherData.current.wind_deg }} deg</div>
+							</div>
+
+							<div class="siimple-table-row">
+								<div class="siimple-table-cell">
+									<i class="wi wi-cloud" />
+									Cloudiness
+								</div>
+								<div class="siimple-table-cell">{{ weatherData.current.clouds }} %</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="siimple-table siimple--ml-2">
+						<div class="siimple-table-body">
+
+							<div class="siimple-table-row">
+								<div class="siimple-table-cell">
+									<i class="wi wi-humidity" />
+									Humidity
+								</div>
+								<div class="siimple-table-cell">{{ weatherData.current.humidity }} %</div>
+							</div>
+
+							<div class="siimple-table-row">
+								<div class="siimple-table-cell">
+									<i class="wi wi-day-sunny" />
+									UV Index
+								</div>
+								<div class="siimple-table-cell">{{ weatherData.current.uvi }} / 10</div>
+							</div>
+
+							<div class="siimple-table-row">
+								<div class="siimple-table-cell">
+									<i class="wi wi-barometer" />
+									Pressure
+								</div>
+								<div class="siimple-table-cell">{{ weatherData.current.pressure }} hPa</div>
+							</div>
+
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
+			<!-- Next days table -->
+			<div class="next-days">
+				<h2>Next few days</h2>
+
+				<div class="siimple-table">
+
+					<div class="siimple-table-body">
+						<!-- Skipping the first item, which is today -->
+						<div class="siimple-table-row" v-for="(item, index) in weatherData.daily" v-if="index">
+							
+							<div class="siimple-table-cell date">{{ getDayFromTimestamp(item.dt) }}</div>
+
+							<div class="siimple-table-cell temperatures">
+								<div class="siimple--display-flex">
+									<p>
+										<i class="wi wi-thermometer-exterior" />
+										{{ getFormattedTemperature(item.temp.min) }}
+									</p>
+									<p>
+										<i class="wi wi-thermometer" />
+										{{ getFormattedTemperature(item.temp.max) }}
+									</p>
+								</div>
+							</div>
+
+							<div class="siimple-table-cell weather">
+								<div class="siimple--display-flex">
+									<WeatherIcon v-bind:weather="item.weather[0]" size="small" />
+									<p>{{ item.weather[0].description }}</p>
+								</div>
+							</div>
+
+							<div class="siimple-table-cell wind">
+								<p>
+									<i class="wi wi-strong-wind" />
+									{{ weatherData.current.wind_deg }} deg
+									{{ weatherData.current.wind_speed }} {{$t('units.speed')}}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
 	</div>
 </template>
 
@@ -139,8 +174,10 @@ import axios from 'axios';
 import moment from 'moment';
 import WeatherIcon from './WeatherIcon.vue';
 import _ from 'lodash';
-import { parseReverseGeocodeResult, stringToLocation, areEquals } from '@/helpers/location';
-import { currentFormatedTime, timestampToDate } from '@/helpers/time';
+import LocationService from '@/services/LocationService';
+import WeatherService from '@/services/WeatherService';
+import { parseReverseGeocodeResult, stringToLocation, areEquals} from '@/helpers/location';
+import { currentFormatedTime, timestampToDate, getDayFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
 import { getFormattedTemperature } from '@/helpers/number';
 
 export default {
@@ -163,11 +200,13 @@ export default {
 		currentFormatedTime,
 		timestampToDate,
 		getFormattedTemperature,
+		getDayFromTimestamp,
+		getFormatedTimeFromTimestamp,
 		/**
 		* Check if the current location exists in the store favorites
 		*/
 		isFavorite() {
-			return this.favoriteLocation.findIndex(item => areEquals(item, this.location) !== -1);
+			return this.favoriteLocation.findIndex(item => areEquals(item, this.location)) !== -1;
 		},
 		/**
 		* Map the address object to the component when found
@@ -189,27 +228,28 @@ export default {
 		}
 		else {
 			// If not, get it
-			axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude +'&key=AIzaSyDzoGNKEZHZsx7KaeGhZKGIll-3U7qT8U4&result_type=locality&language='+this.$i18n.locale)
-				.then(response => {
-					this.location = parseReverseGeocodeResult(response);
-				}
-			)
+			LocationService.reverseGeocode(latitude, longitude).then(response => {
+				console.log(response);
+				this.location = parseReverseGeocodeResult(response);
+			});
 		}
 		
 		// Getting the weather infos
-		axios.get('https://api.openweathermap.org/data/2.5/onecall?lat='+latitude+'&lon='+longitude +'&appid=81f4fb1b0102cc0a3480190588206d6e&units=metric&lang='+this.$i18n.locale)
-			.then(response => {
-				this.loading = false;
-				this.weatherData = response.data;
-			}
-		)
-		
+		WeatherService.getAllWeatherInfos(latitude, longitude).then(response => {
+			this.loading = false;
+			this.weatherData = response.data;
+		});
 	}
 }
 
 </script>
 
 <style scoped>
+
+/* Main styling */
+.loading {
+	margin-top: 10%;
+}
 
 .title {
 	justify-content: space-between;
@@ -229,10 +269,22 @@ export default {
 	margin-bottom: 20px;
 }
 
+/* Today */
+
 .today {
     border-radius: 5px;
-    padding: 15px 30px 16px 25px;
+    padding: 20px 30px;
 	background-color: rgba(200, 213, 228, .8);
+}
+
+.today .quickview p { 
+	margin: 0;
+}
+
+.today .quickview {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .temperature {
@@ -243,6 +295,19 @@ export default {
 
 .description {
 	margin: 0;
+}
+
+.today .suntimes {
+	margin-top: 15px;
+}
+
+.today .suntimes p {
+	margin: 0;
+	margin-top: 3px;
+}
+
+.today .suntimes p i {
+	margin-right: 5px;
 }
 
 .today > div {
@@ -263,5 +328,34 @@ export default {
 .today-details > div {
 	justify-content: space-between;
 }
+
+.siimple-table-row > .siimple-table-cell:last-of-type {
+	text-align: right;
+}
+
+
+/* Next days */
+
+.next-days p { margin : 0; }
+
+/*.date */
+
+.next-days .temperatures p {
+	margin-right: 25px;
+}
+
+.next-days .temperatures i {
+	min-width: 15px;
+}
+
+.next-days .weather .weather-icon {
+	margin-right: 10px;
+}
+
+.next-days .weather p:first-letter {
+	text-transform: capitalize;
+}
+/*.wind">*/
+
 
 </style>

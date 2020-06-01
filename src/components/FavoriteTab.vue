@@ -34,9 +34,9 @@
 
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
+import WeatherService from '@/services/WeatherService';
 import { i18n } from '@/plugins/i18n';
 import { locationToString } from '@/helpers/location';
-import { getCurrentWeather } from '@/helpers/weather';
 import { getFormattedTemperature } from '@/helpers/number';
 
 export default {
@@ -60,7 +60,7 @@ export default {
 	},
 	mounted() {
 		// Get the current weather data and stop displaying loading when received
-		getCurrentWeather(this.location.latitude, this.location.longitude).then(response => {
+		WeatherService.getCurrentWeather(this.location.latitude, this.location.longitude).then(response => {
 			this.loading = false;
 			this.weatherData = response.data;
 		})
