@@ -1,5 +1,9 @@
 <template>
 	<div class="forecast">
+		<router-link class="siimple-link" :to="{ name: 'Search' }">
+			{{ $t('pages.forecast.back') }}
+		</router-link>
+
 		<WeatherDetails/>
 	</div>
 </template>

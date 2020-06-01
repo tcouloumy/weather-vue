@@ -31,3 +31,10 @@ export function getDayFromTimestamp(timestamp) {
 export function getFormatedTimeFromTimestamp(timestamp) {
 	return moment.unix(timestamp).format('HH:mm');
 }
+
+/**
+* Return a formated string (hours and minutes) of current time
+*/
+export function getCurrentFormatedTime() {
+	return moment().format('HH:mm');
+}

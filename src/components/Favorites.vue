@@ -1,13 +1,17 @@
 <template>
 	<div class="favorites">
 		<h2 class="siimple--my-0">{{$t('favorites.title')}}</h2>
-		<p class="siimple-small siimple--mt-0">{{$t('favorites.updated_at')}} xxx</p>
+		<p v-if="!isFavoritesEmpty" class="siimple-small siimple--mt-0">{{$t('favorites.updated_at')}} {{ getCurrentFormatedTime() }}</p>
 
-		<ul>
+		<ul v-if="!isFavoritesEmpty">
 			<li v-for="location in favoriteLocation">
 				<FavoriteTab v-bind:location="location" />
 			</li>
 		</ul>
+
+		<p v-if="isFavoritesEmpty" class="siimple-small">
+			{{ $t('favorites.empty') }}
+		</p>
 	</div>
 </template>
 
@@ -15,15 +19,22 @@
 
 import { mapState } from 'vuex';
 import FavoriteTab from './FavoriteTab.vue';
-import { locationToString } from './../helpers/location';
+import { locationToString } from '@/helpers/location';
+import { getCurrentFormatedTime } from '@/helpers/time'
 
 export default {
 	name: 'Favorites',
 	components: {
 		FavoriteTab
 	},
+	methods: {
+		getCurrentFormatedTime
+	},
 	computed: {
-		...mapState(['favoriteLocation'])
+		...mapState(['favoriteLocation']),
+		isFavoritesEmpty: function() {
+			return Object.keys(this.favoriteLocation).length === 0;
+		}
 	}
 }
 

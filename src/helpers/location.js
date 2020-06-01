@@ -33,7 +33,9 @@ export function parseReverseGeocodeResult(geoloc) {
 	let result = {};
 
 	geoloc.data.results[0].address_components.map(item => {
-		result[item.types[0]] = item.short_name;
+		// We need the country's full name
+		if (item.types[0] === "country") result[item.types[0]] = item.long_name;
+		else result[item.types[0]] = item.short_name;
 	});
 
 	return {

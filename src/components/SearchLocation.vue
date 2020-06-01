@@ -12,7 +12,7 @@
 			<input class="siimple-btn siimple-btn--success" type="submit" v-bind:value="$t('search_location_submit')">
 		</form>
 
-		<p v-if="formErrors.length">
+		<p class="siimple-small siimple--color-error siimple--my-1" v-if="formErrors.length">
 			<ul>
 				<li v-for="error in formErrors">{{ error }}</li>
 			</ul>
@@ -59,7 +59,7 @@ export default {
 			}
 			else {
 				this.formErrors = [];
-				this.formErrors.push('Select a city');
+				this.formErrors.push(this.$t('errors.city_empty'));
 			}
 
 			e.preventDefault();

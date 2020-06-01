@@ -1,22 +1,30 @@
 <template>
 	<ul>
-		<li v-for="lang in languages" @click="changeLanguage(lang)">
-			{{ lang }}
+		<li v-for="lang in languages">
+			<a href="#" @click="changeLanguage(lang)" v-bind:class="{ 'active': isActive(lang) }">
+				<img :src="require('@/assets/images/'+lang+'.png')" />
+			</a>
 		</li>
 	</ul>
 </template>
 
 <script>
 
+import { SUPPORTED_LANGUAGES } from '@/constants/language'
+
 export default {
 	
 	name: 'LanguageSwitcher',
 	data() {
 		return {
-			languages: ['en', 'fr']
+			languages: SUPPORTED_LANGUAGES
 		}
 	},
 	methods: {
+		/**
+		* Change current locale and reload the page
+		* @param {String} lang Locale to set
+		*/
 		changeLanguage(lang) {
 			this.$i18n.locale = lang;
 			// Change the lang parameter in URL
@@ -24,6 +32,14 @@ export default {
 			// Not ideal, but reloading the page so the externals data are re-fetched in the 
 			// newly set language
 			this.$router.go();
+		},
+
+		/**
+		* Return true if lang is the current locale, false otherwise
+		* @param {String} lang Locale to check
+		*/
+		isActive(lang) {
+			return this.$i18n.locale === lang;
 		}
 	}
 
@@ -40,6 +56,15 @@ ul {
 
 li {
 	display: inline-block;
+	margin-right: 10px;
+}
+
+li a:not(.active) {
+	opacity: .3;
+}
+
+li a img {
+	height: 12px;
 }
 
 </style>

@@ -48,4 +48,8 @@ body .siimple--bg-light {
 	background-color: transparent !important;
 }
 
+.siimple-navbar > ul {
+	float: right;
+}
+
 </style>

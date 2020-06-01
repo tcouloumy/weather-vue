@@ -9,13 +9,36 @@
 	},
 	"favorites": {
 		"title": "Mes favoris",
-		"updated_at": "Mis à jour le"
+		"updated_at": "Mis à jour le",
+		"empty": "Pas encore de favoris, ajoutez-en !"
 	},
 	"pages": {
 		"search": {
 			"title": "meteoVue",
 			"subtitle": "Cherchez une ville pour obtenir ses prévisions météo",
 			"detail": "et enregistrez vos favoris pour un accès rapide !"
+		},
+		"forecast": {
+			"back": "Retour",
+			"weather_for": "Météo pour",
+			"hour_prefix": "A",
+			"favorite": {
+				"add": "Ajouter aux favoris",
+				"marked": "Dans les favoris",
+				"remove": "Retirer"
+			},
+			"details": {
+				"wind_speed": "Vitesse du vent",
+				"wind_orientation": "Orientation du vent",
+				"cloudiness": "Couverture nuageuse",
+				"humidity": "Taux d'humidité",
+				"uvi": "Index UV",
+				"pressure": "Pression atmosphérique"
+			},
+			"next_days": "Dans les prochains jours"
 		}
+	},
+	"errors": {
+		"city_empty": "Renseignez une ville"
 	}
 }

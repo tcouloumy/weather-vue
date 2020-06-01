@@ -30,3 +30,11 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+
+.siimple-jumbotron {
+	padding-top: 10px;
+}
+
+</style>

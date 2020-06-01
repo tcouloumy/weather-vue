@@ -9,13 +9,36 @@
 	},
 	"favorites": {
 		"title": "My favorites",
-		"updated_at": "Updated at"
+		"updated_at": "Updated at",
+		"empty": "No favorites yet, add some !"
 	},
 	"pages": {
 		"search": {
 			"title": "meteoVue",
 			"subtitle": "Search a location and get a detailled weather forecast",
 			"detail": "and manage favorites for a quick view !"
+		},
+		"forecast": {
+			"back": "Back",
+			"weather_for": "Weather for",
+			"hour_prefix": "As of",
+			"favorite": {
+				"add": "Add to favorite",
+				"marked": "Marked as favorite",
+				"remove": "Remove"
+			},
+			"details": {
+				"wind_speed": "Wind speed",
+				"wind_orientation": "Wind orientation",
+				"cloudiness": "Cloudiness",
+				"humidity": "Humidity",
+				"uvi": "UV Index",
+				"pressure": "Pressure"
+			},
+			"next_days": "Next few days"
 		}
+	},
+	"errors": {
+		"city_empty": "Select a city"
 	}
 }

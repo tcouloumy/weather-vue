@@ -3,7 +3,7 @@
 		<div class="favorite-tab">
 			<!-- Data display -->
 			<div v-if="!loading">
-				<div class="siimple-close"></div>
+				<div class="siimple-close" v-on:click.prevent="toggleFavorite"></div>
 
 				<h4 class="siimple--mb-2">
 					{{ location.locality }}, {{ location.country}}
@@ -56,7 +56,13 @@ export default {
 	},
 	methods: {
 		locationToString,
-		getFormattedTemperature
+		getFormattedTemperature,
+		/**
+		* Toggle the favorite in the store
+		*/
+		toggleFavorite() {
+			this.$store.dispatch('toggleFavorite', this.location);
+		}
 	},
 	mounted() {
 		// Get the current weather data and stop displaying loading when received

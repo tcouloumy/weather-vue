@@ -9,18 +9,18 @@
 			<!-- Title and favorite indicator + button -->
 			<div class="title siimple--display-flex">
 				
-				<h1>Weather for {{ location.locality }}, {{ location.country}}</h1>
+				<h1>{{ $t('pages.forecast.weather_for') }} {{ location.locality }}, {{ location.country}}</h1>
 				
 				<div class="favorite-link siimple-small siimple--display-flex" v-if="isFavorite()">
-					<p class="siimple--mr-2">Marked as favorite</p>
-					<a class="siimple-link" v-on:click="toggleFavorite()">Remove</a>
+					<p class="siimple--mr-2">{{ $t('pages.forecast.favorite.marked') }}</p>
+					<a class="siimple-link" v-on:click="toggleFavorite()">{{ $t('pages.forecast.favorite.remove') }}</a>
 				</div>
 				<div class="siimple-small" v-if="!isFavorite()">
-					<a class="siimple-link" v-on:click="toggleFavorite()">Add to favorite</a>
+					<a class="siimple-link" v-on:click="toggleFavorite()">{{ $t('pages.forecast.favorite.add') }}</a>
 				</div>
 
 			</div>
-			<p class="subtitle siimple-small">As of {{ currentFormatedTime() }}</p>
+			<p class="subtitle siimple-small">{{ $t('pages.forecast.hour_prefix') }} {{ currentFormatedTime() }}</p>
 
 			<!-- Main today infos -->
 			<div class="today">
@@ -62,7 +62,7 @@
 							<div class="siimple-table-row">
 								<div class="siimple-table-cell">
 									<i class="wi wi-strong-wind" />
-									Wind speed
+									{{ $t('pages.forecast.details.wind_speed') }}
 								</div>
 								<div class="siimple-table-cell">{{ weatherData.current.wind_speed }} {{$t('units.speed')}}</div>
 							</div>
@@ -71,15 +71,15 @@
 							<div class="siimple-table-row">
 								<div class="siimple-table-cell">
 									<i class="wi wi-wind" />
-									Wind orientation
+									{{ $t('pages.forecast.details.wind_orientation') }}
 								</div>
-								<div class="siimple-table-cell">{{ weatherData.current.wind_deg }} deg</div>
+								<div class="siimple-table-cell">{{ degToCompass(weatherData.current.wind_deg) }}</div>
 							</div>
 
 							<div class="siimple-table-row">
 								<div class="siimple-table-cell">
 									<i class="wi wi-cloud" />
-									Cloudiness
+									{{ $t('pages.forecast.details.cloudiness') }}
 								</div>
 								<div class="siimple-table-cell">{{ weatherData.current.clouds }} %</div>
 							</div>
@@ -93,7 +93,7 @@
 							<div class="siimple-table-row">
 								<div class="siimple-table-cell">
 									<i class="wi wi-humidity" />
-									Humidity
+									{{ $t('pages.forecast.details.humidity') }}
 								</div>
 								<div class="siimple-table-cell">{{ weatherData.current.humidity }} %</div>
 							</div>
@@ -101,7 +101,7 @@
 							<div class="siimple-table-row">
 								<div class="siimple-table-cell">
 									<i class="wi wi-day-sunny" />
-									UV Index
+									{{ $t('pages.forecast.details.uvi') }}
 								</div>
 								<div class="siimple-table-cell">{{ weatherData.current.uvi }} / 10</div>
 							</div>
@@ -109,7 +109,7 @@
 							<div class="siimple-table-row">
 								<div class="siimple-table-cell">
 									<i class="wi wi-barometer" />
-									Pressure
+									{{ $t('pages.forecast.details.pressure') }}
 								</div>
 								<div class="siimple-table-cell">{{ weatherData.current.pressure }} hPa</div>
 							</div>
@@ -121,7 +121,7 @@
 
 			<!-- Next days table -->
 			<div class="next-days">
-				<h2>Next few days</h2>
+				<h2>{{ $t('pages.forecast.next_days') }}</h2>
 
 				<div class="siimple-table">
 
@@ -154,8 +154,8 @@
 							<div class="siimple-table-cell wind">
 								<p>
 									<i class="wi wi-strong-wind" />
-									{{ weatherData.current.wind_deg }} deg
-									{{ weatherData.current.wind_speed }} {{$t('units.speed')}}
+									{{ item.wind_speed }} {{$t('units.speed')}}
+									{{ degToCompass(item.wind_deg) }}
 								</p>
 							</div>
 						</div>
@@ -178,7 +178,7 @@ import LocationService from '@/services/LocationService';
 import WeatherService from '@/services/WeatherService';
 import { parseReverseGeocodeResult, stringToLocation, areEquals} from '@/helpers/location';
 import { currentFormatedTime, timestampToDate, getDayFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
-import { getFormattedTemperature } from '@/helpers/number';
+import { getFormattedTemperature, degToCompass } from '@/helpers/number';
 
 export default {
 	
@@ -202,6 +202,7 @@ export default {
 		getFormattedTemperature,
 		getDayFromTimestamp,
 		getFormatedTimeFromTimestamp,
+		degToCompass,
 		/**
 		* Check if the current location exists in the store favorites
 		*/
@@ -209,7 +210,7 @@ export default {
 			return this.favoriteLocation.findIndex(item => areEquals(item, this.location)) !== -1;
 		},
 		/**
-		* Map the address object to the component when found
+		* Toggle the favorite in the store
 		*/
 		toggleFavorite() {
 			this.$store.dispatch('toggleFavorite', this.location);
@@ -229,7 +230,6 @@ export default {
 		else {
 			// If not, get it
 			LocationService.reverseGeocode(latitude, longitude).then(response => {
-				console.log(response);
 				this.location = parseReverseGeocodeResult(response);
 			});
 		}
@@ -267,6 +267,10 @@ export default {
 .subtitle {
 	margin-top: 0;
 	margin-bottom: 20px;
+}
+
+.siimple-table-cell {
+	border-top: none;
 }
 
 /* Today */
@@ -338,7 +342,9 @@ export default {
 
 .next-days p { margin : 0; }
 
-/*.date */
+.next-days .date:first-letter {
+	text-transform: capitalize;
+}
 
 .next-days .temperatures p {
 	margin-right: 25px;
