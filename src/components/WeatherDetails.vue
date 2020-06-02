@@ -118,7 +118,7 @@
 										{{ getFormattedTemperature(item.temp.min) }}
 										
 										<i v-if="weatherData.current.temp > item.temp.min" class="wi wi-direction-down siimple--color-error" />
-										<i v-if="weatherData.current.temp < item.temp.min" class="wi wi-direction-down siimple--color-error" />
+										<i v-if="weatherData.current.temp < item.temp.min" class="wi wi-direction-up siimple--color-success" />
 
 									</p>
 									<p>
@@ -126,7 +126,7 @@
 										{{ getFormattedTemperature(item.temp.max) }}
 										
 										<i v-if="weatherData.current.temp > item.temp.max" class="wi wi-direction-down siimple--color-error" />
-										<i v-if="weatherData.current.temp < item.temp.max" class="wi wi-direction-down siimple--color-error" />
+										<i v-if="weatherData.current.temp < item.temp.max" class="wi wi-direction-up siimple--color-success" />
 
 									</p>
 								</div>
