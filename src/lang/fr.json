@@ -9,7 +9,7 @@
 	},
 	"favorites": {
 		"title": "Mes favoris",
-		"updated_at": "Mis à jour le",
+		"updated_at": "Dernière mise à jour à",
 		"empty": "Pas encore de favoris, ajoutez-en !"
 	},
 	"pages": {
