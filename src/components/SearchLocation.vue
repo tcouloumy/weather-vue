@@ -37,7 +37,7 @@ export default {
 		VueGoogleAutocomplete
 	},
 	props: {
-		width: Number
+		width: String
 	},
 	data: function() {
 		return {

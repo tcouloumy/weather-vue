@@ -3,10 +3,12 @@
 
 <template>
 	<div>
+
 		<!-- While waiting -->
 		<div class="weather-details loading" v-if="loading">
 			<div class="siimple-spinner siimple-spinner--primary"></div>
 		</div>
+
 		<div class="weather-details" v-if="!loading">
 
 			<!-- Title and favorite indicator + button -->
@@ -14,13 +16,7 @@
 				
 				<h1>{{ $t('pages.forecast.weather_for') }} {{ location.locality }}, {{ location.country}}</h1>
 				
-				<div class="favorite-link siimple-small siimple--display-flex" v-if="isFavorite()">
-					<p class="siimple--mr-2">{{ $t('pages.forecast.favorite.marked') }}</p>
-					<a class="siimple-link" v-on:click="toggleFavorite()">{{ $t('pages.forecast.favorite.remove') }}</a>
-				</div>
-				<div class="siimple-small" v-if="!isFavorite()">
-					<a class="siimple-link" v-on:click="toggleFavorite()">{{ $t('pages.forecast.favorite.add') }}</a>
-				</div>
+				<FavoriteToggle v-bind:location="location" />
 
 			</div>
 			<p class="subtitle siimple-small">{{ $t('pages.forecast.hour_prefix') }} {{ currentFormatedTime() }}</p>
@@ -144,7 +140,7 @@
 							<div class="siimple-table-cell wind siimple-grid-col--md-hide">
 								<p>
 									<i class="wi wi-strong-wind" />
-									<span style="display: inline-block; min-width: 120px;">
+									<span>
 										{{ item.wind_speed }} {{$t('units.speed')}}
 										{{ degToCompass(item.wind_deg) }}
 									</span>
@@ -166,17 +162,19 @@ import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
 import LocationService from '@/services/LocationService';
 import WeatherService from '@/services/WeatherService';
-import { parseReverseGeocodeResult, stringToLocation, areEquals} from '@/helpers/location';
+import { parseReverseGeocodeResult, stringToLocation } from '@/helpers/location';
 import { currentFormatedTime, timestampToDate, getDayNameFromTimestamp, getDateFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
 import { getFormattedTemperature, degToCompass } from '@/helpers/number';
 import WeatherCard from './WeatherCard.vue';
+import FavoriteToggle from './FavoriteToggle.vue';
 
 export default {
 	
 	name: 'WeatherDetails',
 	components: {
 		WeatherIcon,
-		WeatherCard
+		WeatherCard,
+		FavoriteToggle
 	},
 	data: function() {
 		return {
@@ -196,18 +194,6 @@ export default {
 		getDateFromTimestamp,
 		getFormatedTimeFromTimestamp,
 		degToCompass,
-		/**
-		* Check if the current location exists in the store favorites
-		*/
-		isFavorite() {
-			return this.favoriteLocation.findIndex(item => areEquals(item, this.location)) !== -1;
-		},
-		/**
-		* Toggle the favorite in the store
-		*/
-		toggleFavorite() {
-			this.$store.dispatch('toggleFavorite', this.location);
-		}
 	},
 	mounted() {
 
@@ -357,6 +343,11 @@ export default {
 
 .next-days .weather p:first-letter {
 	text-transform: capitalize;
+}
+
+.next-days .wind span {
+	display: inline-block;
+	min-width: 135px;
 }
 
 /* Responsive */
