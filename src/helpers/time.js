@@ -1,4 +1,5 @@
-import moment from 'moment';
+// import moment from 'moment';
+import moment from 'moment-timezone';
 
 /**
 * Return a string of the current date formatted for display
@@ -49,4 +50,13 @@ export function getFormatedTimeFromTimestamp(timestamp, offset = 0) {
 */
 export function getCurrentFormatedTime() {
 	return moment().format('HH:mm');
+}
+
+/**
+* Return a formated string (hours and minutes) of current time
+* @param {String} timezone
+*/
+export function getTimezoneShortName(timestamp, timezone) {
+	// console.log(moment.tz.zone(timezone));
+	return moment.tz.zone(timezone).abbr(timestamp);
 }

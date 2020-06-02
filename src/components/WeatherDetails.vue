@@ -22,7 +22,7 @@
 			<p class="subtitle siimple-small">{{ $t('pages.forecast.hour_prefix') }} {{ currentFormatedTime() }}</p>
 
 			<!-- Displaying the main weather card for today -->
-			<WeatherCard v-bind:weather-data="weatherData.current" v-bind:time-offset="weatherData.timezone_offset"  />
+			<WeatherCard v-bind:weather-data="weatherData.current" v-bind:time-zone="weatherData.timezone" v-bind:time-offset="weatherData.timezone_offset"  />
 
 			<!-- Today details -->
 			<div class="today-details">

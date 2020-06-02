@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { areEquals } from '@/helpers/location';
-import _ from 'lodash';
 
 Vue.use(Vuex)
 
@@ -14,7 +13,7 @@ export default new Vuex.Store({
 			state.favoriteLocation.push(payload);
 		},
 		REMOVE_FAVORITE(state, payload) {
-			state.favoriteLocation = state.favoriteLocation.filter((item, index) => !_.isEqual(item, payload));
+			state.favoriteLocation = state.favoriteLocation.filter((item, index) => !areEquals(item, payload));
 		},
 		SORT_FAVORITE(state, sortKey) {
 			state.favoriteLocation.sort((a, b) => {

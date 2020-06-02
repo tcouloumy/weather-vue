@@ -16,11 +16,13 @@
 					<p>
 						<i class="wi wi-sunrise" />
 						{{ getFormatedTimeFromTimestamp(weatherData.sunrise, timeOffset) }}
+						{{ getTimezoneShortName(weatherData.sunrise, timeZone) }}
 					</p>
 
 					<p>
 						<i class="wi wi-sunset" />
 						{{ getFormatedTimeFromTimestamp(weatherData.sunset, timeOffset) }}
+						{{ getTimezoneShortName(weatherData.sunset, timeZone) }}
 					</p>
 				</div>
 			</div>
@@ -32,7 +34,7 @@
 
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
-import { getFormatedTimeFromTimestamp } from '@/helpers/time';
+import { getFormatedTimeFromTimestamp, getTimezoneShortName } from '@/helpers/time';
 import { getFormattedTemperature } from '@/helpers/number';
 
 export default {
@@ -43,11 +45,13 @@ export default {
 	},
 	props: {
 		weatherData: Object,
+		timeZone: String,
 		timeOffset: Number
 	},
 	methods: {
 		getFormattedTemperature,
-		getFormatedTimeFromTimestamp
+		getFormatedTimeFromTimestamp,
+		getTimezoneShortName 
 	}
 }
 
@@ -69,6 +73,10 @@ export default {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+}
+
+.weather-icon {
+	text-align: right;
 }
 
 .temperature {
