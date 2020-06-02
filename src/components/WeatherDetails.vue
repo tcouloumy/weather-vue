@@ -109,7 +109,9 @@
 						<!-- Skipping the first item, which is today -->
 						<div class="siimple-table-row" v-for="(item, index) in weatherData.daily" v-if="index">
 							
-							<div class="siimple-table-cell date">{{ getDayFromTimestamp(item.dt) }}</div>
+							<div class="siimple-table-cell date">
+								<span class="siimple-grid-col--md-hide">{{ getDayNameFromTimestamp(item.dt) }} </span><span>{{ getDateFromTimestamp(item.dt) }}</span>
+							</div>
 
 							<div class="siimple-table-cell temperatures">
 								<div class="siimple--display-flex">
@@ -135,7 +137,7 @@
 							<div class="siimple-table-cell weather">
 								<div class="siimple--display-flex">
 									<WeatherIcon v-bind:weather="item.weather[0]" size="small" />
-									<p>{{ item.weather[0].description }}</p>
+									<p class="siimple-grid-col--md-hide">{{ item.weather[0].description }}</p>
 								</div>
 							</div>
 
@@ -165,7 +167,7 @@ import WeatherIcon from './WeatherIcon.vue';
 import LocationService from '@/services/LocationService';
 import WeatherService from '@/services/WeatherService';
 import { parseReverseGeocodeResult, stringToLocation, areEquals} from '@/helpers/location';
-import { currentFormatedTime, timestampToDate, getDayFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
+import { currentFormatedTime, timestampToDate, getDayNameFromTimestamp, getDateFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
 import { getFormattedTemperature, degToCompass } from '@/helpers/number';
 import WeatherCard from './WeatherCard.vue';
 
@@ -190,7 +192,8 @@ export default {
 		currentFormatedTime,
 		timestampToDate,
 		getFormattedTemperature,
-		getDayFromTimestamp,
+		getDayNameFromTimestamp,
+		getDateFromTimestamp,
 		getFormatedTimeFromTimestamp,
 		degToCompass,
 		/**
@@ -355,7 +358,19 @@ export default {
 .next-days .weather p:first-letter {
 	text-transform: capitalize;
 }
-/*.wind">*/
+
+/* Responsive */
+/* Would be better to get this value from a constant */
+@media screen and (max-width: 768px) { 
+	.today-details > div {
+		flex-direction: column;
+	}
+
+	.today-details > div .siimple-table {
+		max-width: inherit;
+		margin: 0 !important;
+	}
+} 
 
 
 </style>

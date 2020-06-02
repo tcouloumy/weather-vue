@@ -4,10 +4,10 @@
 <template>
 
 	<div class="search-location">
-		<form @submit="checkForm">
+		<form @submit="checkForm" class="siimple--display-flex" v-bind:style="{ maxWidth: width + '%' }">
 			<vue-google-autocomplete
 				id="map"
-				classname="form-control siimple-input siimple--mr-2 siimple--width-25"
+				classname="form-control siimple-input siimple--mr-2"
 				v-bind:placeholder="$t('search_location_placeholder')"
 				types="(cities)"
 				v-on:placechanged="mapAddressData">
@@ -35,6 +35,9 @@ export default {
 	name: 'SearchLocation',
 	components: {
 		VueGoogleAutocomplete
+	},
+	props: {
+		width: Number
 	},
 	data: function() {
 		return {
@@ -101,5 +104,17 @@ ul {
 li {
 	display: inline-block;
 }
+
+form > input[type="text"] {
+	flex-grow: 1;
+}
+
+/* Would be better to get this value from a constant */
+@media screen and (max-width: 768px) { 
+	form { 
+		max-width: 100% !important;
+		width: 100% !important;
+	}
+} 
 
 </style>

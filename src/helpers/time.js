@@ -16,12 +16,21 @@ export function timestampToDate(timestamp) {
 }
 
 /**
-* Return a formated string (Day name + number/month) from a timestamp
+* Return a day name from a timestamp in the current locale language
 * @param {Int} timestamp
 */
-export function getDayFromTimestamp(timestamp) {
+export function getDayNameFromTimestamp(timestamp) {
 	moment.locale(this.$i18n.locale);
-	return moment.unix(timestamp).format('dddd DD/MM');
+	return moment.unix(timestamp).format('dddd');
+}
+
+/**
+* Return a formated string (number number/month number) from a timestamp
+* @param {Int} timestamp
+*/
+export function getDateFromTimestamp(timestamp) {
+	moment.locale(this.$i18n.locale);
+	return moment.unix(timestamp).format('DD/MM');
 }
 
 /**

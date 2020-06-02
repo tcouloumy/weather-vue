@@ -7,7 +7,7 @@
 				<div class="siimple-jumbotron-subtitle">{{$t('pages.search.subtitle')}}</div>
 				<div class="siimple-jumbotron-detail siimple--mb-3">{{$t('pages.search.detail')}}</div>
 				
-				<SearchLocation />
+				<SearchLocation width="40" />
 
 			</div>
 
