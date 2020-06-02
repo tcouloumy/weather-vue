@@ -55,7 +55,7 @@ export default {
 }
 
 .favorite-toggle i.fas {
-	color: rgb(216, 27, 27);
+	color: rgb(230, 93, 93);
 	animation: pulse 0.7s;
 }
 
