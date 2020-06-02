@@ -9,27 +9,30 @@ export function currentFormatedTime() {
 
 /**
 * Return a formated date string from a timestamp
-* @param {String} timestamp Timestamp to format
+* @param {Int} timestamp Timestamp to format
 */
 export function timestampToDate(timestamp) {
 	return moment.unix(timestamp).format("MM/DD/YYYY");
 }
 
 /**
-* Return a formated string (Day name + number) from a timestamp
-* @param {String} timestamp
+* Return a formated string (Day name + number/month) from a timestamp
+* @param {Int} timestamp
 */
 export function getDayFromTimestamp(timestamp) {
 	moment.locale(this.$i18n.locale);
-	return moment.unix(timestamp).format('dddd DD');
+	return moment.unix(timestamp).format('dddd DD/MM');
 }
 
 /**
 * Return a formated string (hours and minutes) from a timestamp
-* @param {String} timestamp
+* @param {Int} timestamp
+* @param {Int} offset Offset of timestamp (first parameter) compared to UTC time, in seconds
 */
-export function getFormatedTimeFromTimestamp(timestamp) {
-	return moment.unix(timestamp).format('HH:mm');
+export function getFormatedTimeFromTimestamp(timestamp, offset = 0) {
+	// moment needs the offset in minutes
+	offset /= 60;
+	return moment.unix(timestamp).utcOffset(offset).format('HH:mm');
 }
 
 /**

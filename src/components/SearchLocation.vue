@@ -1,3 +1,6 @@
+<!-- SearchLocation.vue -->
+<!-- A autocomplete form routing to the weather details upon completion -->
+
 <template>
 
 	<div class="search-location">

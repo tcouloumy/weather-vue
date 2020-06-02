@@ -1,3 +1,6 @@
+<!-- WeatherDetails.vue -->
+<!-- Display a complete weather forcecast retrieve on google api based one the route params -->
+
 <template>
 	<div>
 		<!-- While waiting -->
@@ -22,31 +25,8 @@
 			</div>
 			<p class="subtitle siimple-small">{{ $t('pages.forecast.hour_prefix') }} {{ currentFormatedTime() }}</p>
 
-			<!-- Main today infos -->
-			<div class="today">
-				<div class="siimple--display-flex">
-					<div class="quickview">
-						<h2 class="temperature">{{ getFormattedTemperature(weatherData.current.temp) }}</h2>
-						<h3 class="description">{{ weatherData.current.weather[0].description }}</h3>
-						<p>{{ $t('weather.feels_like') }} {{ getFormattedTemperature(weatherData.current.feels_like) }}</p>
-					</div>
-					<div>
-						<WeatherIcon v-bind:weather="weatherData.current.weather[0]" />
-
-						<div class="suntimes">
-							<p>
-								<i class="wi wi-sunrise" />
-								{{ getFormatedTimeFromTimestamp(weatherData.current.sunrise) }}
-							</p>
-
-							<p>
-								<i class="wi wi-sunset" />
-								{{ getFormatedTimeFromTimestamp(weatherData.current.sunset) }}
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
+			<!-- Displaying the main weather card for today -->
+			<WeatherCard v-bind:weather-data="weatherData.current" v-bind:time-offset="weatherData.timezone_offset"  />
 
 			<!-- Today details -->
 			<div class="today-details">
@@ -136,10 +116,18 @@
 									<p>
 										<i class="wi wi-thermometer-exterior" />
 										{{ getFormattedTemperature(item.temp.min) }}
+										
+										<i v-if="weatherData.current.temp > item.temp.min" class="wi wi-direction-down siimple--color-error" />
+										<i v-if="weatherData.current.temp < item.temp.min" class="wi wi-direction-down siimple--color-error" />
+
 									</p>
 									<p>
 										<i class="wi wi-thermometer" />
 										{{ getFormattedTemperature(item.temp.max) }}
+										
+										<i v-if="weatherData.current.temp > item.temp.max" class="wi wi-direction-down siimple--color-error" />
+										<i v-if="weatherData.current.temp < item.temp.max" class="wi wi-direction-down siimple--color-error" />
+
 									</p>
 								</div>
 							</div>
@@ -151,11 +139,13 @@
 								</div>
 							</div>
 
-							<div class="siimple-table-cell wind">
+							<div class="siimple-table-cell wind siimple-grid-col--md-hide">
 								<p>
 									<i class="wi wi-strong-wind" />
-									{{ item.wind_speed }} {{$t('units.speed')}}
-									{{ degToCompass(item.wind_deg) }}
+									<span style="display: inline-block; min-width: 120px;">
+										{{ item.wind_speed }} {{$t('units.speed')}}
+										{{ degToCompass(item.wind_deg) }}
+									</span>
 								</p>
 							</div>
 						</div>
@@ -171,20 +161,20 @@
 
 import { mapState } from 'vuex';
 import axios from 'axios';
-import moment from 'moment';
 import WeatherIcon from './WeatherIcon.vue';
-import _ from 'lodash';
 import LocationService from '@/services/LocationService';
 import WeatherService from '@/services/WeatherService';
 import { parseReverseGeocodeResult, stringToLocation, areEquals} from '@/helpers/location';
 import { currentFormatedTime, timestampToDate, getDayFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
 import { getFormattedTemperature, degToCompass } from '@/helpers/number';
+import WeatherCard from './WeatherCard.vue';
 
 export default {
 	
 	name: 'WeatherDetails',
 	components: {
-		WeatherIcon
+		WeatherIcon,
+		WeatherCard
 	},
 	data: function() {
 		return {
@@ -331,6 +321,10 @@ export default {
 
 .today-details > div {
 	justify-content: space-between;
+}
+
+.today-details .siimple-table {
+	max-width: 50%
 }
 
 .siimple-table-row > .siimple-table-cell:last-of-type {

@@ -1,3 +1,6 @@
+<!-- FavoriteTab.vue -->
+<!-- Display a quick view of weather infos for a given location, with a link to the details -->
+
 <template>
 	<router-link class="siimple-link" :to="{ name: 'Forecast', params: { locationString: locationToString(location), completeLocation: location } }">
 		<div class="favorite-tab">

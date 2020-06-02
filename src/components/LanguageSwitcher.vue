@@ -1,3 +1,6 @@
+<!-- LanguageSwitcher.vue -->
+<!-- Changes the locale depending on the clicked supported language -->
+
 <template>
 	<ul>
 		<li v-for="lang in languages">

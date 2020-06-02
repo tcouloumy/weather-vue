@@ -1,3 +1,6 @@
+<!-- Favorites.vue -->
+<!-- Show a list of the current favorites in the store -->
+
 <template>
 	<div class="favorites">
 		<h2 class="siimple--my-0">{{$t('favorites.title')}}</h2>
