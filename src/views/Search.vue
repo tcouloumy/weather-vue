@@ -34,7 +34,7 @@ export default {
 <style scoped>
 
 .siimple-jumbotron {
-	padding-top: 10px;
+	padding-top: 45px;
 }
 
 </style>

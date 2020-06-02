@@ -48,6 +48,10 @@ body .siimple--bg-light {
 	background-color: transparent !important;
 }
 
+.siimple-navbar {
+	height: inherit;
+}
+
 .siimple-navbar > ul {
 	float: right;
 }

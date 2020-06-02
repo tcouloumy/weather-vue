@@ -1,3 +1,9 @@
 module.exports = {
-	runtimeCompiler: true
+	runtimeCompiler: true,
+	chainWebpack: config => {
+		config.plugin('html').tap(args => {
+			args[0].title = 'meteoVue';
+			return args;
+		})
+	}
 }

@@ -331,6 +331,7 @@ export default {
 
 .next-days .temperatures p {
 	margin-right: 25px;
+	min-width: 80px;
 }
 
 .next-days .temperatures i {

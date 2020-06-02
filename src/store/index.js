@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { areEquals } from '@/helpers/location';
 import _ from 'lodash';
-import { areEquals } from '@/helpers/location';
 
 Vue.use(Vuex)
 
@@ -15,6 +15,17 @@ export default new Vuex.Store({
 		},
 		REMOVE_FAVORITE(state, payload) {
 			state.favoriteLocation = state.favoriteLocation.filter((item, index) => !_.isEqual(item, payload));
+		},
+		SORT_FAVORITE(state, sortKey) {
+			state.favoriteLocation.sort((a, b) => {
+				if (a.locality < b.locality) {
+					return -1;
+				}
+				if (a.locality > b.locality) {
+					return 1;
+				}
+				return 0;
+			})
 		}
 	},
 	actions: {
@@ -39,6 +50,8 @@ export default new Vuex.Store({
 			}
 			else {
 				context.commit('ADD_FAVORITE', location);
+				// Sorting the favorites when adding a new one
+				context.commit('SORT_FAVORITE', location);
 			}
 		}
 	}
