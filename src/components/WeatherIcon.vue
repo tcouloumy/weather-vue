@@ -26,18 +26,18 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 i.wi {
 	margin-top: 10px;
 	font-size: 60px;
 	line-height: 60px;
-}
 
-i.wi.small {
-	margin-top: 0px;
-	font-size: inherit;
-	line-height: 1;
+	&.small {
+		margin-top: 0px;
+		font-size: inherit;
+		line-height: 1;
+	}
 }
 
 </style>

@@ -43,20 +43,21 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .favorite-toggle {
+	
 	cursor: pointer;
-}
+	
+	i {
+		font-size: 25px;
+		text-shadow: 0 0 0 rgba(216, 27, 27, 0.5);	
 
-.favorite-toggle i {
-	font-size: 25px;
-	text-shadow: 0 0 0 rgba(216, 27, 27, 0.5);
-}
-
-.favorite-toggle i.fas {
-	color: rgb(230, 93, 93);
-	animation: pulse 0.7s;
+		 &.fas {
+			color: rgb(230, 93, 93);
+			animation: pulse 0.7s;
+		}
+	}
 }
 
 @keyframes pulse {

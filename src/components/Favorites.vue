@@ -43,16 +43,19 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 ul {
+	
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
+	
+	li {
+		display: inline-block;
+	}
 }
 
-li {
-	display: inline-block;
-}
+
 
 </style>

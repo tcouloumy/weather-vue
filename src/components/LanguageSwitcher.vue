@@ -49,25 +49,28 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 ul {
+
 	list-style: none;
 	margin: 0;
 	padding: 0;
-}
 
-li {
-	display: inline-block;
-	margin-right: 10px;
-}
+	li {
+		display: inline-block;
+		margin-right: 10px;
+		
+		a {
+			&:not(.active) {
+				opacity: .3;
+			}
 
-li a:not(.active) {
-	opacity: .3;
-}
-
-li a img {
-	height: 12px;
+			img {
+				height: 12px;
+			}
+		}
+	}
 }
 
 </style>

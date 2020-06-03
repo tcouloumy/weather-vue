@@ -57,57 +57,58 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .weather-card {
+   
     border-radius: 5px;
     padding: 20px 30px;
 	background-color: rgba(200, 213, 228, .8);
-}
+	
+	& > div {
+		justify-content: space-between;
+	}
 
-.weather-card .quickview p { 
-	margin: 0;
-}
+	.quickview {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		
+		.quickview p { 
+			margin: 0;
+		}
+	}
 
-.weather-card .quickview {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
+	.description {
+		margin: 0;
 
-.weather-icon {
-	text-align: right;
-}
+		&:first-letter {
+		    text-transform: uppercase;
+		}
+	}
 
-.temperature {
-	font-size: 50px;
-	font-weight: bold;
-	margin: 0;
-}
+	.temperature {
+		font-size: 50px;
+		font-weight: bold;
+		margin: 0;
+	}
 
-.description {
-	margin: 0;
-}
+	.suntimes {
+		margin-top: 15px;
 
-.weather-card .suntimes {
-	margin-top: 15px;
-}
+		p {
+			margin: 0;
+			margin-top: 3px;
 
-.weather-card .suntimes p {
-	margin: 0;
-	margin-top: 3px;
-}
+			i {
+				margin-right: 5px;
+			}
+		}
+	}
 
-.weather-card .suntimes p i {
-	margin-right: 5px;
-}
-
-.weather-card > div {
-	justify-content: space-between;
-}
-
-.description:first-letter {
-    text-transform: uppercase;
+	.weather-icon {
+		text-align: right;
+	}
 }
 
 </style>

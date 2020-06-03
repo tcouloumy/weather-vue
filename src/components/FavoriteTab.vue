@@ -78,7 +78,11 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
+.loading > div.siimple-spinner {
+	margin-top: 25%;
+}
 
 .siimple-link {
 	font-weight: inherit;
@@ -100,42 +104,39 @@ export default {
 }
 
 .favorite-tab {
+
 	width: 180px;
-    height: 100px;
+	height: 100px;
 	transition: background-color .3s;
-    border-radius: 5px;
-    padding: 15px 30px 16px 25px;
-}
+	border-radius: 5px;
+	padding: 15px 30px 16px 25px;
 
-.favorite-tab:hover {
-	background-color: rgba(200, 213, 228, .8);
-}
+	&:hover {
+		background-color: rgba(200, 213, 228, .8);
 
-.favorite-tab:hover .siimple-close {
-	opacity: .8;
-	pointer-events: auto;
-}
+		.siimple-close {
+			opacity: .8;
+			pointer-events: auto;
+		}
+	}
 
-.favorite-tab h4 {
-	margin: 0;
-}
+	h4 {
+		margin: 0;
+	}
 
-.favorite-tab p {
-	margin: 0;
-}
+	p {
+		margin: 0;
+	}
+	
+	.infos {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+	}
 
-.favorite-tab .infos {
-	display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-.favorite-tab .description:first-letter {
-    text-transform: uppercase;
-}
-
-.loading > div.siimple-spinner {
-	margin-top: 25%;
+	.description:first-letter {
+		text-transform: uppercase;
+	}
 }
 
 </style>

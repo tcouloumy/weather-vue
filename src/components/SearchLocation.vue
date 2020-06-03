@@ -89,7 +89,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 h3 {
 	margin: 40px 0 0;
@@ -99,10 +99,10 @@ ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
-}
 
-li {
-	display: inline-block;
+	li {
+		display: inline-block;
+	}
 }
 
 form > input[type="text"] {
