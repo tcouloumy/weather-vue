@@ -4,7 +4,7 @@
 <template>
 	<div class="favorites">
 		<h2 class="siimple--my-0">{{$t('favorites.title')}}</h2>
-		<p v-if="!isFavoritesEmpty" class="siimple-small siimple--mt-0">{{$t('favorites.updated_at')}} {{ getCurrentFormatedTime() }}</p>
+		<p v-if="!isFavoritesEmpty" class="siimple-small siimple--mt-0">{{$t('favorites.updated_at')}} {{ currentTime | formatTimestamp('HH:mm') }}</p>
 
 		<ul v-if="!isFavoritesEmpty">
 			<li v-for="location in favoriteLocation">
@@ -21,20 +21,19 @@
 <script>
 
 import { mapState } from 'vuex';
+import moment from 'moment';
 import FavoriteTab from './FavoriteTab.vue';
-import { locationToString } from '@/helpers/location';
-import { getCurrentFormatedTime } from '@/helpers/time'
 
 export default {
 	name: 'Favorites',
 	components: {
 		FavoriteTab
 	},
-	methods: {
-		getCurrentFormatedTime
-	},
 	computed: {
 		...mapState(['favoriteLocation']),
+		currentTime: function() {
+			return moment().unix();
+		},
 		isFavoritesEmpty: function() {
 			return Object.keys(this.favoriteLocation).length === 0;
 		}

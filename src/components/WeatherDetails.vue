@@ -19,7 +19,7 @@
 				<FavoriteToggle v-bind:location="location" />
 
 			</div>
-			<p class="subtitle siimple-small">{{ $t('pages.forecast.hour_prefix') }} {{ currentFormatedTime() }}</p>
+			<p class="subtitle siimple-small">{{ $t('pages.forecast.hour_prefix') }} {{ currentTimestamp | formatTimestamp('HH:mm') }}</p>
 
 			<!-- Displaying the main weather card for today -->
 			<WeatherCard v-bind:weather-data="weatherData.current" v-bind:time-zone="weatherData.timezone" v-bind:time-offset="weatherData.timezone_offset"  />
@@ -106,7 +106,7 @@
 						<div class="siimple-table-row" v-for="(item, index) in weatherData.daily" v-if="index">
 							
 							<div class="siimple-table-cell date">
-								<span class="siimple-grid-col--md-hide">{{ getDayNameFromTimestamp(item.dt) }} </span><span>{{ getDateFromTimestamp(item.dt) }}</span>
+								<span class="siimple-grid-col--md-hide">{{ item.dt | formatTimestamp('dddd') }} </span><span>{{ item.dt | formatTimestamp('DD/MM') }}</span>
 							</div>
 
 							<div class="siimple-table-cell temperatures">
@@ -158,11 +158,11 @@
 <script>
 
 import { mapState } from 'vuex';
+import moment from 'moment';
 import WeatherIcon from './WeatherIcon.vue';
 import LocationService from '@/services/LocationService';
 import WeatherService from '@/services/WeatherService';
 import { parseReverseGeocodeResult, stringToLocation } from '@/helpers/location';
-import { currentFormatedTime, timestampToDate, getDayNameFromTimestamp, getDateFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
 
@@ -183,14 +183,12 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['favoriteLocation'])
+		...mapState(['favoriteLocation']),
+		currentTimestamp() {
+			return moment().unix();
+		}
 	},
 	methods: {
-		currentFormatedTime,
-		timestampToDate,
-		getDayNameFromTimestamp,
-		getDateFromTimestamp,
-		getFormatedTimeFromTimestamp,
 		/**
 		* Retrieves the weather from the props location
 		*/
