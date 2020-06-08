@@ -8,8 +8,8 @@ export default {
 	* @param {Float} long Longitude
 	* @return {Object} Location object
 	*/
-	reverseGeocode(lat, long) {
+	async reverseGeocode(lat, long) {
 		let getUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+long+'&key='+process.env.VUE_APP_GOOGLE_API_KEY+'&result_type=locality&language='+i18n.locale;
-		return axios.get(getUrl);
+		return await axios.get(getUrl);
 	}
 }

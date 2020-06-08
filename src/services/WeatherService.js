@@ -8,7 +8,7 @@ export default {
 	* @param {Float} long Longitude
 	* @return {Promise} Result of the call
 	*/
-	getCurrentWeather(lat, lng) {
+	async getCurrentWeather(lat, lng) {
 
 		let getUrl = 'https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lng+'&lang='+i18n.locale+'&appid='+process.env.VUE_APP_OPENWEATHER_API_KEY;
 
@@ -21,7 +21,7 @@ export default {
 			getUrl += '&units=imperial';
 		}
 
-		return axios.get(getUrl);
+		return await axios.get(getUrl);
 	},
 
 	/**
@@ -30,7 +30,7 @@ export default {
 	* @param {Float} long Longitude
 	* @return {Promise} Result of the call
 	*/
-	getAllWeatherInfos(lat, lng) {
+	async getAllWeatherInfos(lat, lng) {
 
 		let getUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lng+'&appid='+process.env.VUE_APP_OPENWEATHER_API_KEY+'&lang='+i18n.locale;
 
@@ -41,6 +41,6 @@ export default {
 			getUrl += '&units=imperial';
 		}
 		
-		return axios.get(getUrl);
+		return await axios.get(getUrl);
 	}
 }

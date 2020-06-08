@@ -5,7 +5,7 @@
 
 	<div class="favorite-toggle" v-on:click="toggleFavorite()">
 		<a >
-			<i class="fa-heart" :class="{ 'far': !isFavorite(), 'fas': isFavorite() }"></i>
+			<i class="fa-heart" :class="{ 'far': !isFavorite, 'fas': isFavorite }"></i>
 		</a>
 	</div>
 
@@ -23,15 +23,15 @@ export default {
 		location: Object
 	},
 	computed: {
-		...mapState(['favoriteLocation'])
-	},
-	methods: {
+		...mapState(['favoriteLocation']),
 		/**
 		* Check if the current location exists in the store favorites
 		*/
 		isFavorite() {
 			return this.favoriteLocation.findIndex(item => areEquals(item, this.location)) !== -1;
-		},
+		}
+	},
+	methods: {
 		/**
 		* Toggle the favorite in the store
 		*/

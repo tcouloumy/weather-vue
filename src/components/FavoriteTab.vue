@@ -2,10 +2,10 @@
 <!-- Display a quick view of weather infos for a given location, with a link to the details -->
 
 <template>
-	<router-link class="siimple-link" :to="{ name: 'Forecast', params: { locationString: locationToString(location), completeLocation: location } }">
+	<router-link class="siimple-link" :to="linkParams">
 		<div class="favorite-tab">
 			<!-- Data display -->
-			<div v-if="!loading">
+			<div v-if="!loading && !error">
 				<div class="siimple-close" v-on:click.prevent="toggleFavorite"></div>
 
 				<h4 class="siimple--mb-2">
@@ -18,16 +18,20 @@
 					</div>
 
 					<div class="infos">
-						<p class="temperature"><strong>{{ getFormattedTemperature(weatherData.main.temp) }}</strong></p>
+						<p class="temperature"><strong>{{ weatherData.main.temp | formatTemperature }}</strong></p>
 						<p class="description siimple-small">{{ weatherData.weather[0].description }}</p>
 						<p class="wind siimple-small"><i class="wi wi-strong-wind siimple--mr-1" />{{ weatherData.wind.speed }} {{ $t('units.speed') }}</p>
-						<p class="siimple-small">{{ $t('weather.feels_like') }} {{ getFormattedTemperature(weatherData.main.feels_like) }}</p>
+						<p class="siimple-small">{{ $t('weather.feels_like') }} {{ weatherData.main.feels_like  | formatTemperature }}</p>
 					</div>
 				</div>
 			</div>
 			<!-- Loader -->
-			<div class="loading" v-if="loading">
+			<div class="loading" v-if="loading && !error">
 				<div class="siimple-spinner siimple-spinner--primary"></div>
+			</div>
+			<!-- Error -->
+			<div v-if="error">
+				Something went wrong
 			</div>
 		</div>
 	</router-link>
@@ -40,7 +44,6 @@ import WeatherIcon from './WeatherIcon.vue';
 import WeatherService from '@/services/WeatherService';
 import { i18n } from '@/plugins/i18n';
 import { locationToString } from '@/helpers/location';
-import { getFormattedTemperature } from '@/helpers/number';
 
 export default {
 	name: 'FavoriteTab',
@@ -54,25 +57,60 @@ export default {
 	data: function() {
 		return {
 			loading: true,
-			weatherData: {}
+			error: false,
+			weatherData: {},
+			locale: this.$i18n.locale
+		}
+	},
+	computed: {
+		linkParams() {
+			let location = this.location;
+			return {
+				name: 'Forecast',
+				params: { 
+					locationString: locationToString(location),
+					completeLocation: location 
+				}
+			}
 		}
 	},
 	methods: {
 		locationToString,
-		getFormattedTemperature,
 		/**
 		* Toggle the favorite in the store
 		*/
 		toggleFavorite() {
 			this.$store.dispatch('toggleFavorite', this.location);
+		},
+		/**
+		* Asynchonously retrieves weather data
+		*/
+		async getWeather() {
+			try {
+				let response = await WeatherService.getCurrentWeather(this.location.latitude, this.location.longitude);
+				this.weatherData = response.data;
+			}
+			catch (e) {
+				this.loading = false;
+				this.error = true;
+			}
 		}
 	},
-	mounted() {
-		// Get the current weather data and stop displaying loading when received
-		WeatherService.getCurrentWeather(this.location.latitude, this.location.longitude).then(response => {
+	watch: {
+		locale: async function() {
+			// Retrieve the data again, with differents units, when the locale is changed
+			this.loading = true;
+			await this.getWeather();
 			this.loading = false;
-			this.weatherData = response.data;
-		})
+		}
+	},
+	async mounted() {
+		// Get the data on first display
+		await this.getWeather();
+		this.loading = false;
+	},
+	updated() {
+		this.locale = this.$i18n.locale;
 	}
 }
 

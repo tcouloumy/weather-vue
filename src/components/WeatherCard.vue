@@ -5,9 +5,9 @@
 	<div class="weather-card">
 		<div class="siimple--display-flex">
 			<div class="quickview">
-				<h2 class="temperature">{{ getFormattedTemperature(weatherData.temp) }}</h2>
+				<h2 class="temperature">{{ weatherData.temp | formatTemperature }}</h2>
 				<h3 class="description">{{ weatherData.weather[0].description }}</h3>
-				<p>{{ $t('weather.feels_like') }} {{ getFormattedTemperature(weatherData.feels_like) }}</p>
+				<p>{{ $t('weather.feels_like') }} {{ weatherData.feels_like | formatTemperature }}</p>
 			</div>
 			<div>
 				<WeatherIcon v-bind:weather="weatherData.weather[0]" />
@@ -35,7 +35,7 @@
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
 import { getFormatedTimeFromTimestamp, getTimezoneShortName } from '@/helpers/time';
-import { getFormattedTemperature } from '@/helpers/number';
+import { formatTemperature } from '@/helpers/number';
 
 export default {
 	
@@ -48,8 +48,10 @@ export default {
 		timeZone: String,
 		timeOffset: Number
 	},
+	filters: {
+		formatTemperature
+	},
 	methods: {
-		getFormattedTemperature,
 		getFormatedTimeFromTimestamp,
 		getTimezoneShortName 
 	}

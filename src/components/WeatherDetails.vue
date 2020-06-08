@@ -49,7 +49,7 @@
 									<i class="wi wi-wind" />
 									{{ $t('pages.forecast.details.wind_orientation') }}
 								</div>
-								<div class="siimple-table-cell">{{ degToCompass(weatherData.current.wind_deg) }}</div>
+								<div class="siimple-table-cell">{{ weatherData.current.wind_deg | degToCompass }}</div>
 							</div>
 
 							<div class="siimple-table-row">
@@ -113,7 +113,7 @@
 								<div class="siimple--display-flex">
 									<p>
 										<i class="wi wi-thermometer-exterior" />
-										{{ getFormattedTemperature(item.temp.min) }}
+										{{ item.temp.min | formatTemperature }}
 										
 										<i v-if="weatherData.current.temp > item.temp.min" class="wi wi-direction-down siimple--color-error" />
 										<i v-if="weatherData.current.temp < item.temp.min" class="wi wi-direction-up siimple--color-success" />
@@ -121,7 +121,7 @@
 									</p>
 									<p>
 										<i class="wi wi-thermometer" />
-										{{ getFormattedTemperature(item.temp.max) }}
+										{{ item.temp.max | formatTemperature }}
 										
 										<i v-if="weatherData.current.temp > item.temp.max" class="wi wi-direction-down siimple--color-error" />
 										<i v-if="weatherData.current.temp < item.temp.max" class="wi wi-direction-up siimple--color-success" />
@@ -142,7 +142,7 @@
 									<i class="wi wi-strong-wind" />
 									<span>
 										{{ item.wind_speed }} {{$t('units.speed')}}
-										{{ degToCompass(item.wind_deg) }}
+										{{ item.wind_deg | degToCompass }}
 									</span>
 								</p>
 							</div>
@@ -158,13 +158,11 @@
 <script>
 
 import { mapState } from 'vuex';
-import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
 import LocationService from '@/services/LocationService';
 import WeatherService from '@/services/WeatherService';
 import { parseReverseGeocodeResult, stringToLocation } from '@/helpers/location';
 import { currentFormatedTime, timestampToDate, getDayNameFromTimestamp, getDateFromTimestamp, getFormatedTimeFromTimestamp } from '@/helpers/time';
-import { getFormattedTemperature, degToCompass } from '@/helpers/number';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
 
@@ -180,7 +178,8 @@ export default {
 		return {
 			loading: true,
 			location: {},
-			weatherData: {}
+			weatherData: {},
+			locale: this.$i18n.locale
 		}
 	},
 	computed: {
@@ -189,35 +188,48 @@ export default {
 	methods: {
 		currentFormatedTime,
 		timestampToDate,
-		getFormattedTemperature,
 		getDayNameFromTimestamp,
 		getDateFromTimestamp,
 		getFormatedTimeFromTimestamp,
-		degToCompass,
+		/**
+		* Retrieves the weather from the props location
+		*/
+		async getWeather() {
+			
+			let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
+
+			// If we happen to have been sent a complete location object where the route have been called,
+			// no need to geocode it via google api
+			if (this.$route.params.completeLocation) {
+				this.location = this.$route.params.completeLocation;
+				latitude = this.location.latitude;
+				longitude  = this.location.longitude;
+			}
+			else {
+				// If not, get it
+				let geocodeLocation = await LocationService.reverseGeocode(latitude, longitude);
+				this.location = parseReverseGeocodeResult(geocodeLocation);
+			}
+			
+			// Getting the weather infos
+			let weatherData = await WeatherService.getAllWeatherInfos(latitude, longitude);
+			this.weatherData = weatherData.data;
+		}
 	},
-	mounted() {
-
-		let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
-
-		// If we happen to have been sent a complete location object where the route have been called,
-		// no need to geocode it via google api
-		if (this.$route.params.completeLocation) {
-			this.location = this.$route.params.completeLocation;
-			latitude = this.location.latitude;
-			longitude  = this.location.longitude;
-		}
-		else {
-			// If not, get it
-			LocationService.reverseGeocode(latitude, longitude).then(response => {
-				this.location = parseReverseGeocodeResult(response);
-			});
-		}
-		
-		// Getting the weather infos
-		WeatherService.getAllWeatherInfos(latitude, longitude).then(response => {
+	async mounted() {
+		await this.getWeather();
+		this.loading = false;
+	},
+	watch: {
+		locale: async function() {
+			// Retrieve the data again, with differents units, when the locale is changed
+			this.loading = true;
+			await this.getWeather();
 			this.loading = false;
-			this.weatherData = response.data;
-		});
+		}
+	},
+	updated() {
+		this.locale = this.$i18n.locale;
 	}
 }
 

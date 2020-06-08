@@ -49,7 +49,6 @@ export default new Vuex.Store({
 			}
 			else {
 				context.commit('ADD_FAVORITE', location);
-				// Sorting the favorites when adding a new one
 				context.commit('SORT_FAVORITE', location);
 			}
 		}

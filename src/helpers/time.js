@@ -1,5 +1,6 @@
 // import moment from 'moment';
 import moment from 'moment-timezone';
+import { i18n } from '@/plugins/i18n'
 
 /**
 * Return a string of the current date formatted for display
@@ -21,7 +22,7 @@ export function timestampToDate(timestamp) {
 * @param {Int} timestamp
 */
 export function getDayNameFromTimestamp(timestamp) {
-	moment.locale(this.$i18n.locale);
+	moment.locale(i18n.locale);
 	return moment.unix(timestamp).format('dddd');
 }
 
@@ -30,7 +31,7 @@ export function getDayNameFromTimestamp(timestamp) {
 * @param {Int} timestamp
 */
 export function getDateFromTimestamp(timestamp) {
-	moment.locale(this.$i18n.locale);
+	moment.locale(i18n.locale);
 	return moment.unix(timestamp).format('DD/MM');
 }
 

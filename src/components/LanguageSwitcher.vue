@@ -32,11 +32,7 @@ export default {
 			this.$i18n.locale = lang;
 			// Change the lang parameter in URL
 			this.$router.push({path: this.$router.currentPath, params: { lang }});
-			// Not ideal, but reloading the page so the externals data are re-fetched in the 
-			// newly set language
-			this.$router.go();
 		},
-
 		/**
 		* Return true if lang is the current locale, false otherwise
 		* @param {String} lang Locale to check
