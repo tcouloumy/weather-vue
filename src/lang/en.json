@@ -39,6 +39,7 @@
 		}
 	},
 	"errors": {
-		"city_empty": "Select a city"
+		"city_empty": "Select a city",
+		"api": "Oops, something went wrong ..."
 	}
 }

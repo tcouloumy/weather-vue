@@ -2,39 +2,43 @@
 <!-- Display a quick view of weather infos for a given location, with a link to the details -->
 
 <template>
-	<router-link class="siimple-link" :to="linkParams">
-		<div class="favorite-tab">
-			<!-- Data display -->
-			<div v-if="!loading && !error">
-				<div class="siimple-close" v-on:click.prevent="toggleFavorite"></div>
+	<div>
+		<router-link class="siimple-link" :to="linkParams" v-if="!error">
+			<div class="favorite-tab">
+				<!-- Data display -->
+				<div v-if="!loading">
+					<div class="siimple-close" v-on:click.prevent="toggleFavorite"></div>
 
-				<h4 class="siimple--mb-2">
-					{{ location.locality }}, {{ location.country}}
-				</h4>
+					<h4 class="siimple--mb-2">
+						{{ location.locality }}, {{ location.country}}
+					</h4>
 
-				<div class="siimple--display-flex">
-					<div class="siimple--mr-3">
-						<WeatherIcon v-if="weatherData" v-bind:weather="weatherData.weather[0]" />
-					</div>
+					<div class="siimple--display-flex">
+						<div class="siimple--mr-3">
+							<WeatherIcon v-if="weatherData" v-bind:weather="weatherData.weather[0]" />
+						</div>
 
-					<div class="infos">
-						<p class="temperature"><strong>{{ weatherData.main.temp | formatTemperature }}</strong></p>
-						<p class="description siimple-small">{{ weatherData.weather[0].description }}</p>
-						<p class="wind siimple-small"><i class="wi wi-strong-wind siimple--mr-1" />{{ weatherData.wind.speed }} {{ $t('units.speed') }}</p>
-						<p class="siimple-small">{{ $t('weather.feels_like') }} {{ weatherData.main.feels_like  | formatTemperature }}</p>
+						<div class="infos">
+							<p class="temperature"><strong>{{ weatherData.main.temp | formatTemperature }}</strong></p>
+							<p class="description siimple-small">{{ weatherData.weather[0].description }}</p>
+							<p class="wind siimple-small"><i class="wi wi-strong-wind siimple--mr-1" />{{ weatherData.wind.speed }} {{ $t('units.speed') }}</p>
+							<p class="siimple-small">{{ $t('weather.feels_like') }} {{ weatherData.main.feels_like  | formatTemperature }}</p>
+						</div>
 					</div>
 				</div>
+				<!-- Loader -->
+				<div class="loading" v-if="loading">
+					<div class="siimple-spinner siimple-spinner--primary"></div>
+				</div>
+				
 			</div>
-			<!-- Loader -->
-			<div class="loading" v-if="loading && !error">
-				<div class="siimple-spinner siimple-spinner--primary"></div>
-			</div>
-			<!-- Error -->
-			<div v-if="error">
-				Something went wrong
-			</div>
+		</router-link>
+		<!-- Error -->
+		<div v-if="error" class="error siimple--color-error">
+			<i class="fas fa-exclamation-triangle"></i>
+			<p>{{ $t('errors.api') }}</p>
 		</div>
-	</router-link>
+	</div>
 </template>
 
 <script>
@@ -86,28 +90,29 @@ export default {
 		* Asynchonously retrieves weather data
 		*/
 		async getWeather() {
+
+			this.loading = true;
+			
 			try {
 				let response = await WeatherService.getCurrentWeather(this.location.latitude, this.location.longitude);
 				this.weatherData = response.data;
 			}
 			catch (e) {
-				this.loading = false;
 				this.error = true;
 			}
+			
+			this.loading = false;
 		}
 	},
 	watch: {
 		locale: async function() {
 			// Retrieve the data again, with differents units, when the locale is changed
-			this.loading = true;
 			await this.getWeather();
-			this.loading = false;
 		}
 	},
 	async mounted() {
 		// Get the data on first display
 		await this.getWeather();
-		this.loading = false;
 	},
 	updated() {
 		this.locale = this.$i18n.locale;
@@ -164,6 +169,7 @@ export default {
 
 	p {
 		margin: 0;
+		white-space: nowrap;
 	}
 	
 	.infos {
@@ -174,6 +180,18 @@ export default {
 
 	.description:first-letter {
 		text-transform: uppercase;
+	}
+}
+
+.error {
+	width: 180px;
+	height: 100px;
+	padding: 15px 30px 16px 25px;
+	text-align: center;
+
+	i {
+		margin-top: 10px;
+		font-size: 30px;
 	}
 }
 

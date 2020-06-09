@@ -5,11 +5,17 @@
 	<div>
 
 		<!-- While waiting -->
-		<div class="weather-details loading" v-if="loading">
+		<div class="weather-details loading" v-if="loading && !errors">
 			<div class="siimple-spinner siimple-spinner--primary"></div>
 		</div>
 
-		<div class="weather-details" v-if="!loading">
+		<!-- Errors -->
+		<div class="weather-details error siimple--color-error" v-if="errors">
+			<i class="fas fa-exclamation-triangle"></i>
+			<p>{{ $t('errors.api') }}</p>
+		</div>
+
+		<div class="weather-details" v-if="!loading && !errors">
 
 			<!-- Title and favorite indicator + button -->
 			<div class="title siimple--display-flex">
@@ -150,7 +156,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </template>
@@ -165,6 +170,7 @@ import WeatherService from '@/services/WeatherService';
 import { parseReverseGeocodeResult, stringToLocation } from '@/helpers/location';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
+import degToCompass from '@/filters/degToCompass'
 
 export default {
 	
@@ -177,6 +183,7 @@ export default {
 	data: function() {
 		return {
 			loading: true,
+			errors: false,
 			location: {},
 			weatherData: {},
 			locale: this.$i18n.locale
@@ -188,30 +195,42 @@ export default {
 			return moment().unix();
 		}
 	},
+	filters: {
+		degToCompass
+	},
 	methods: {
 		/**
 		* Retrieves the weather from the props location
 		*/
 		async getWeather() {
 			
-			let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
+			this.loading = true;
 
-			// If we happen to have been sent a complete location object where the route have been called,
-			// no need to geocode it via google api
-			if (this.$route.params.completeLocation) {
-				this.location = this.$route.params.completeLocation;
-				latitude = this.location.latitude;
-				longitude  = this.location.longitude;
+			try {
+				let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
+
+				// If we happen to have been sent a complete location object where the route have been called,
+				// no need to geocode it via google api
+				if (this.$route.params.completeLocation) {
+					this.location = this.$route.params.completeLocation;
+					latitude = this.location.latitude;
+					longitude  = this.location.longitude;
+				}
+				else {
+					// If not, get it
+					let geocodeLocation = await LocationService.reverseGeocode(latitude, longitude);
+					this.location = parseReverseGeocodeResult(geocodeLocation);
+				}
+				
+				// Getting the weather infos
+				let weatherData = await WeatherService.getAllWeatherInfos(latitude, longitude);
+				this.weatherData = weatherData.data;
 			}
-			else {
-				// If not, get it
-				let geocodeLocation = await LocationService.reverseGeocode(latitude, longitude);
-				this.location = parseReverseGeocodeResult(geocodeLocation);
+			catch (e) {
+				this.errors = true;
 			}
-			
-			// Getting the weather infos
-			let weatherData = await WeatherService.getAllWeatherInfos(latitude, longitude);
-			this.weatherData = weatherData.data;
+
+			this.loading = false;
 		}
 	},
 	async mounted() {
@@ -233,7 +252,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 /* Main styling */
 .loading {
@@ -241,12 +260,13 @@ export default {
 }
 
 .title {
+	
 	justify-content: space-between;
 	align-items: baseline;
-}
-
-.title h1 {
-	margin-bottom: 0;
+	
+	h1 {
+		margin-bottom: 0;
+	}
 }
 
 .favorite-link > * {
@@ -265,19 +285,21 @@ export default {
 /* Today */
 
 .today {
+
     border-radius: 5px;
     padding: 20px 30px;
 	background-color: rgba(200, 213, 228, .8);
-}
 
-.today .quickview p { 
-	margin: 0;
-}
+	.quickview {
+		
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 
-.today .quickview {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+		p { 
+			margin: 0;
+		}
+	}
 }
 
 .temperature {
@@ -288,42 +310,48 @@ export default {
 
 .description {
 	margin: 0;
+
+	&:first-letter {
+	    text-transform: uppercase;
+	}
 }
 
 .today .suntimes {
+	
 	margin-top: 15px;
-}
-
-.today .suntimes p {
-	margin: 0;
-	margin-top: 3px;
-}
-
-.today .suntimes p i {
-	margin-right: 5px;
+	
+	p {
+		margin: 0;
+		margin-top: 3px;
+		
+		i {
+			margin-right: 5px;
+		}
+	}
 }
 
 .today > div {
 	justify-content: space-between;
 }
 
-.description:first-letter {
-    text-transform: uppercase;
-}
-
 /* Table details */
 
-.today-details i {
-	text-align: center;
-	min-width: 30px;
-}
+.today-details 
 
-.today-details > div {
-	justify-content: space-between;
-}
+.today-details {
+	
+	& > div {
+		justify-content: space-between;
+	}
 
-.today-details .siimple-table {
-	max-width: 50%
+	i {
+		text-align: center;
+		min-width: 30px;
+	}
+
+	.siimple-table {
+		max-width: 50%
+	}
 }
 
 .siimple-table-row > .siimple-table-cell:last-of-type {
@@ -333,44 +361,60 @@ export default {
 
 /* Next days */
 
-.next-days p { margin : 0; }
+.next-days {
+	
+	p { margin : 0; }
 
-.next-days .date:first-letter {
-	text-transform: capitalize;
+	.date:first-letter {
+		text-transform: capitalize;
+	}
+
+	.temperatures {
+
+		i { min-width: 15px; }
+
+		p {
+			margin-right: 25px;
+			min-width: 80px;
+		}
+	}
+
+	.weather {
+		.weather-icon {
+			margin-right: 10px;
+		}
+		
+		p:first-letter {
+			text-transform: capitalize;
+		}
+	}
+
+	.wind span {
+		display: inline-block;
+		min-width: 135px;
+	}
 }
 
-.next-days .temperatures p {
-	margin-right: 25px;
-	min-width: 80px;
-}
+.error {
+	margin-top: 10%;
+	text-align: center;
 
-.next-days .temperatures i {
-	min-width: 15px;
-}
-
-.next-days .weather .weather-icon {
-	margin-right: 10px;
-}
-
-.next-days .weather p:first-letter {
-	text-transform: capitalize;
-}
-
-.next-days .wind span {
-	display: inline-block;
-	min-width: 135px;
+	i {
+		font-size: 50px;
+	}
 }
 
 /* Responsive */
 /* Would be better to get this value from a constant */
 @media screen and (max-width: 768px) { 
 	.today-details > div {
+		
 		flex-direction: column;
-	}
 
-	.today-details > div .siimple-table {
-		max-width: inherit;
-		margin: 0 !important;
+		.siimple-table {
+			max-width: inherit;
+			margin: 0 !important;
+		}
 	}
 } 
 

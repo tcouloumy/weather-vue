@@ -39,6 +39,7 @@
 		}
 	},
 	"errors": {
-		"city_empty": "Renseignez une ville"
+		"city_empty": "Renseignez une ville",
+		"api": "Oups, une erreur s'est produite ..."
 	}
 }

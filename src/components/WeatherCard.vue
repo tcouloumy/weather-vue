@@ -34,6 +34,7 @@
 
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
+import timezoneShort from '@/filters/timezoneShort'
 
 export default {
 	
@@ -45,6 +46,9 @@ export default {
 		weatherData: Object,
 		timeZone: String,
 		timeOffset: Number
+	},
+	filters: {
+		timezoneShort
 	}
 }
 
