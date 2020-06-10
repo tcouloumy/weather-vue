@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import moment from 'moment-timezone';
 import { i18n } from '@/plugins/i18n'
 
