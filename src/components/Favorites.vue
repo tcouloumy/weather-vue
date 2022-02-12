@@ -35,31 +35,31 @@ import moment from 'moment';
 import FavoriteTab from './FavoriteTab.vue';
 
 export default {
-	name: 'Favorites',
-	components: {
-		FavoriteTab
-	},
-	computed: {
-		...mapState(['favoriteLocation']),
-		currentTime: function() {
-			return moment().unix();
-		},
-		isFavoritesEmpty: function() {
-			return Object.keys(this.favoriteLocation).length === 0;
-		}
-	}
-}
+  name: 'Favorites',
+  components: {
+    FavoriteTab,
+  },
+  computed: {
+    ...mapState(['favoriteLocation']),
+    currentTime() {
+      return moment().unix();
+    },
+    isFavoritesEmpty() {
+      return Object.keys(this.favoriteLocation).length === 0;
+    },
+  },
+};
 
 </script>
 
 <style lang="scss" scoped>
 
 ul {
-	
+
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
-	
+
 	li {
 		display: inline-block;
 	}

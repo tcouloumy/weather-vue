@@ -73,76 +73,74 @@ import { i18n } from '@/plugins/i18n';
 import { locationToString } from '@/helpers/location';
 
 export default {
-	name: 'FavoriteTab',
-	components: {
-		WeatherIcon
-	},
-	props: {
-		location: {
-			type: Object,
-			default: () => ({})
-		}
-	},
-	data: function() {
-		return {
-			loading: true,
-			error: false,
-			weatherData: {},
-			locale: this.$i18n.locale
-		}
-	},
-	computed: {
-		linkParams() {
-			let location = this.location;
-			return {
-				name: 'Forecast',
-				params: { 
-					locationString: locationToString(location),
-					completeLocation: location 
-				}
-			}
-		}
-	},
-	watch: {
-		locale: async function() {
-			// Retrieve the data again, with differents units, when the locale is changed
-			await this.getWeather();
-		}
-	},
-	async mounted() {
-		// Get the data on first display
-		await this.getWeather();
-	},
-	updated() {
-		this.locale = this.$i18n.locale;
-	},
-	methods: {
-		locationToString,
-		/**
+  name: 'FavoriteTab',
+  components: {
+    WeatherIcon,
+  },
+  props: {
+    location: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  data() {
+    return {
+      loading: true,
+      error: false,
+      weatherData: {},
+      locale: this.$i18n.locale,
+    };
+  },
+  computed: {
+    linkParams() {
+      const { location } = this;
+      return {
+        name: 'Forecast',
+        params: {
+          locationString: locationToString(location),
+          completeLocation: location,
+        },
+      };
+    },
+  },
+  watch: {
+    async locale() {
+      // Retrieve the data again, with differents units, when the locale is changed
+      await this.getWeather();
+    },
+  },
+  async mounted() {
+    // Get the data on first display
+    await this.getWeather();
+  },
+  updated() {
+    this.locale = this.$i18n.locale;
+  },
+  methods: {
+    locationToString,
+    /**
 		* Toggle the favorite in the store
 		*/
-		toggleFavorite() {
-			this.$store.dispatch('toggleFavorite', this.location);
-		},
-		/**
+    toggleFavorite() {
+      this.$store.dispatch('toggleFavorite', this.location);
+    },
+    /**
 		* Asynchonously retrieves weather data
 		*/
-		async getWeather() {
+    async getWeather() {
+      this.loading = true;
 
-			this.loading = true;
-			
-			try {
-				let response = await WeatherService.getCurrentWeather(this.location.latitude, this.location.longitude);
-				this.weatherData = response.data;
-			}
-			catch (e) {
-				this.error = true;
-			}
-			
-			this.loading = false;
-		}
-	}
-}
+      try {
+        const response = await WeatherService.getCurrentWeather(this.location.latitude, this.location.longitude);
+        this.weatherData = response.data;
+      } catch (e) {
+        this.error = true;
+      }
+
+      this.loading = false;
+    },
+  },
+};
 
 </script>
 
@@ -196,7 +194,7 @@ export default {
 		margin: 0;
 		white-space: nowrap;
 	}
-	
+
 	.infos {
 		display: flex;
 		flex-direction: column;

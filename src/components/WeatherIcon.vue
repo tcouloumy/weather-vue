@@ -15,23 +15,23 @@
 import weatherIconTable from '@/helpers/weatherIconTable.json';
 
 export default {
-	name: 'WeatherIcon',
-	props: {
-		weather: {
-			type: Object,
-			default: () => {}
-		},
-		size: {
-			type: String,
-			default: ''
-		}
-	},
-	methods: {
-		getIconClass(weatherId) {
-			return weatherIconTable[weatherId.toString()];
-		}
-	}
-}
+  name: 'WeatherIcon',
+  props: {
+    weather: {
+      type: Object,
+      default: () => {},
+    },
+    size: {
+      type: String,
+      default: '',
+    },
+  },
+  methods: {
+    getIconClass(weatherId) {
+      return weatherIconTable[weatherId.toString()];
+    },
+  },
+};
 
 </script>
 

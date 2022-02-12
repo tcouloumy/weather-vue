@@ -14,19 +14,19 @@
 import LanguageSwitcher from './components/LanguageSwitcher.vue';
 
 export default {
-	name: 'App',
-	components: {
-		LanguageSwitcher
-	},
-	beforeCreate() {
-		// Initialising the store
-		this.$store.dispatch('initialiseStore');
-		// Suscribing to store changes to update local storage
-		this.$store.subscribe((mutation, state) => {
-			localStorage.setItem('favoriteLocation', JSON.stringify(state.favoriteLocation));
-		});
-	}
-}
+  name: 'App',
+  components: {
+    LanguageSwitcher,
+  },
+  beforeCreate() {
+    // Initialising the store
+    this.$store.dispatch('initialiseStore');
+    // Suscribing to store changes to update local storage
+    this.$store.subscribe((mutation, state) => {
+      localStorage.setItem('favoriteLocation', JSON.stringify(state.favoriteLocation));
+    });
+  },
+};
 
 </script>
 

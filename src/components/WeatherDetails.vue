@@ -27,7 +27,7 @@
       <!-- Title and favorite indicator + button -->
       <div class="title siimple--display-flex">
         <h1>{{ $t('pages.forecast.weather_for') }} {{ location.locality }}, {{ location.country }}</h1>
-				
+
         <FavoriteToggle :location="location" />
       </div>
       <p class="subtitle siimple-small">
@@ -57,7 +57,6 @@
                   {{ weatherData.current.wind_speed }} {{ $t('units.speed') }}
                 </div>
               </div>
-
 
               <div class="siimple-table-row">
                 <div class="siimple-table-cell">
@@ -138,7 +137,7 @@
                   <p>
                     <i class="wi wi-thermometer-exterior" />
                     {{ item.temp.min | formatTemperature }}
-										
+
                     <i
                       v-if="weatherData.current.temp > item.temp.min"
                       class="wi wi-direction-down siimple--color-error"
@@ -151,7 +150,7 @@
                   <p>
                     <i class="wi wi-thermometer" />
                     {{ item.temp.max | formatTemperature }}
-										
+
                     <i
                       v-if="weatherData.current.temp > item.temp.max"
                       class="wi wi-direction-down siimple--color-error"
@@ -203,85 +202,82 @@ import WeatherService from '@/services/WeatherService';
 import { parseReverseGeocodeResult, stringToLocation } from '@/helpers/location';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
-import degToCompass from '@/filters/degToCompass'
+import degToCompass from '@/filters/degToCompass';
 
 export default {
-	
-	name: 'WeatherDetails',
-	components: {
-		WeatherIcon,
-		WeatherCard,
-		FavoriteToggle
-	},
+
+  name: 'WeatherDetails',
+  components: {
+    WeatherIcon,
+    WeatherCard,
+    FavoriteToggle,
+  },
   filters: {
-		degToCompass
-	},
-	data: function() {
-		return {
-			loading: true,
-			errors: false,
-			location: {},
-			weatherData: {},
-			locale: this.$i18n.locale
-		}
-	},
-	computed: {
-		...mapState(['favoriteLocation']),
-		currentTimestamp() {
-			return moment().unix();
-		}
-	},
-	watch: {
-		locale: async function() {
-			// Retrieve the data again, with differents units, when the locale is changed
-			this.loading = true;
-			await this.getWeather();
-			this.loading = false;
-		}
-	},
-	async mounted() {
-		await this.getWeather();
-		this.loading = false;
-	},
-	updated() {
-		this.locale = this.$i18n.locale;
-	},
-	methods: {
-		/**
+    degToCompass,
+  },
+  data() {
+    return {
+      loading: true,
+      errors: false,
+      location: {},
+      weatherData: {},
+      locale: this.$i18n.locale,
+    };
+  },
+  computed: {
+    ...mapState(['favoriteLocation']),
+    currentTimestamp() {
+      return moment().unix();
+    },
+  },
+  watch: {
+    async locale() {
+      // Retrieve the data again, with differents units, when the locale is changed
+      this.loading = true;
+      await this.getWeather();
+      this.loading = false;
+    },
+  },
+  async mounted() {
+    await this.getWeather();
+    this.loading = false;
+  },
+  updated() {
+    this.locale = this.$i18n.locale;
+  },
+  methods: {
+    /**
 		* Retrieves the weather from the props location
 		*/
-		async getWeather() {
-			
-			this.loading = true;
+    async getWeather() {
+      this.loading = true;
 
-			try {
-				let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
+      try {
+        let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
 
-				// If we happen to have been sent a complete location object where the route have been called,
-				// no need to geocode it via google api
-				if (this.$route.params.completeLocation) {
-					this.location = this.$route.params.completeLocation;
-					latitude = this.location.latitude;
-					longitude  = this.location.longitude;
-				}
-				else {
-					// If not, get it
-					let geocodeLocation = await LocationService.reverseGeocode(latitude, longitude);
-					this.location = parseReverseGeocodeResult(geocodeLocation);
-				}
-				
-				// Getting the weather infos
-				let weatherData = await WeatherService.getAllWeatherInfos(latitude, longitude);
-				this.weatherData = weatherData.data;
-			}
-			catch (e) {
-				this.errors = true;
-			}
+        // If we happen to have been sent a complete location object where the route have been called,
+        // no need to geocode it via google api
+        if (this.$route.params.completeLocation) {
+          this.location = this.$route.params.completeLocation;
+          latitude = this.location.latitude;
+          longitude  = this.location.longitude;
+        } else {
+          // If not, get it
+          const geocodeLocation = await LocationService.reverseGeocode(latitude, longitude);
+          this.location = parseReverseGeocodeResult(geocodeLocation);
+        }
 
-			this.loading = false;
-		}
-	}
-}
+        // Getting the weather infos
+        const weatherData = await WeatherService.getAllWeatherInfos(latitude, longitude);
+        this.weatherData = weatherData.data;
+      } catch (e) {
+        this.errors = true;
+      }
+
+      this.loading = false;
+    },
+  },
+};
 
 </script>
 
@@ -293,10 +289,10 @@ export default {
 }
 
 .title {
-	
+
 	justify-content: space-between;
 	align-items: baseline;
-	
+
 	h1 {
 		margin-bottom: 0;
 	}
@@ -324,12 +320,12 @@ export default {
 	background-color: rgba(200, 213, 228, .8);
 
 	.quickview {
-		
+
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 
-		p { 
+		p {
 			margin: 0;
 		}
 	}
@@ -350,13 +346,13 @@ export default {
 }
 
 .today .suntimes {
-	
+
 	margin-top: 15px;
-	
+
 	p {
 		margin: 0;
 		margin-top: 3px;
-		
+
 		i {
 			margin-right: 5px;
 		}
@@ -369,10 +365,10 @@ export default {
 
 /* Table details */
 
-.today-details 
+.today-details
 
 .today-details {
-	
+
 	& > div {
 		justify-content: space-between;
 	}
@@ -391,11 +387,10 @@ export default {
 	text-align: right;
 }
 
-
 /* Next days */
 
 .next-days {
-	
+
 	p { margin : 0; }
 
 	.date:first-letter {
@@ -416,7 +411,7 @@ export default {
 		.weather-icon {
 			margin-right: 10px;
 		}
-		
+
 		p:first-letter {
 			text-transform: capitalize;
 		}
@@ -439,9 +434,9 @@ export default {
 
 /* Responsive */
 /* Would be better to get this value from a constant */
-@media screen and (max-width: 768px) { 
+@media screen and (max-width: 768px) {
 	.today-details > div {
-		
+
 		flex-direction: column;
 
 		.siimple-table {
@@ -449,7 +444,6 @@ export default {
 			margin: 0 !important;
 		}
 	}
-} 
-
+}
 
 </style>

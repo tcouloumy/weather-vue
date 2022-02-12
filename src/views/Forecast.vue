@@ -13,13 +13,13 @@
 
 <script>
 
-import WeatherDetails from '@/components/WeatherDetails.vue'
+import WeatherDetails from '@/components/WeatherDetails.vue';
 
 export default {
-	name: 'Forecast',
-	components: {
-		WeatherDetails
-	}
-}
+  name: 'Forecast',
+  components: {
+    WeatherDetails,
+  },
+};
 
 </script>

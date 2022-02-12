@@ -11,7 +11,7 @@
         <div class="siimple-jumbotron-detail siimple--mb-3">
           {{ $t('pages.search.detail') }}
         </div>
-				
+
         <SearchLocation width="40" />
       </div>
 
@@ -22,16 +22,16 @@
 
 <script>
 
-import SearchLocation from '@/components/SearchLocation.vue'
-import Favorites from '@/components/Favorites.vue'
+import SearchLocation from '@/components/SearchLocation.vue';
+import Favorites from '@/components/Favorites.vue';
 
 export default {
-	name: 'Search',
-	components: {
-		SearchLocation,
-		Favorites
-	}
-}
+  name: 'Search',
+  components: {
+    SearchLocation,
+    Favorites,
+  },
+};
 </script>
 
 <style scoped>

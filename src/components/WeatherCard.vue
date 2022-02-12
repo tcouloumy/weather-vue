@@ -38,43 +38,43 @@
 
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
-import timezoneShort from '@/filters/timezoneShort'
+import timezoneShort from '@/filters/timezoneShort';
 
 export default {
-	
-	name: 'WeatherCard',
-	components: {
-		WeatherIcon
-	},
-	filters: {
-		timezoneShort
-	},
-	props: {
-		weatherData: {
-			type: Object,
-			default: () => ({})
-		},
-		timeZone: {
-			type: String,
-			default: ''
-		},
-		timeOffset: {
-			type: Number,
-			default: 0
-		}
-	}
-}
+
+  name: 'WeatherCard',
+  components: {
+    WeatherIcon,
+  },
+  filters: {
+    timezoneShort,
+  },
+  props: {
+    weatherData: {
+      type: Object,
+      default: () => ({}),
+    },
+    timeZone: {
+      type: String,
+      default: '',
+    },
+    timeOffset: {
+      type: Number,
+      default: 0,
+    },
+  },
+};
 
 </script>
 
 <style lang="scss" scoped>
 
 .weather-card {
-   
+
     border-radius: 5px;
     padding: 20px 30px;
 	background-color: rgba(200, 213, 228, .8);
-	
+
 	& > div {
 		justify-content: space-between;
 	}
@@ -83,8 +83,8 @@ export default {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		
-		.quickview p { 
+
+		.quickview p {
 			margin: 0;
 		}
 	}

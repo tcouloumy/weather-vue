@@ -4,7 +4,7 @@
 * @param {int} long Longitude
 */
 export function locationToString(loc) {
-	return loc.latitude.toString() + "," + loc.longitude.toString();
+  return `${loc.latitude.toString()},${loc.longitude.toString()}`;
 }
 
 /**
@@ -13,15 +13,13 @@ export function locationToString(loc) {
 * @param {int} long Longitude
 */
 export function stringToLocation(string) {
+  const location = string.split(',');
 
-	let location = string.split(',');
-	
-	return {
-		latitude: parseFloat(location[0]),
-		longitude: parseFloat(location[1])
-	}
+  return {
+    latitude: parseFloat(location[0]),
+    longitude: parseFloat(location[1]),
+  };
 }
-
 
 /**
 * Takes a result json from Google geoloc API and return a json formatted like the Autocomplete place API
@@ -29,20 +27,19 @@ export function stringToLocation(string) {
 * @return {Object} Formatted JSON
 */
 export function parseReverseGeocodeResult(geoloc) {
-	
-	let result = {};
+  const result = {};
 
-	geoloc.data.results[0].address_components.map(item => {
-		// We need the country's full name
-		if (item.types[0] === "country") result[item.types[0]] = item.long_name;
-		else result[item.types[0]] = item.short_name;
-	});
+  geoloc.data.results[0].address_components.map((item) => {
+    // We need the country's full name
+    if (item.types[0] === 'country') result[item.types[0]] = item.long_name;
+    else result[item.types[0]] = item.short_name;
+  });
 
-	return {
-		...result,
-		latitude: geoloc.data.results[0].geometry.location.lat,
-		longitude: geoloc.data.results[0].geometry.location.lng
-	}
+  return {
+    ...result,
+    latitude: geoloc.data.results[0].geometry.location.lat,
+    longitude: geoloc.data.results[0].geometry.location.lng,
+  };
 }
 
 /**
@@ -54,13 +51,11 @@ export function parseReverseGeocodeResult(geoloc) {
 * @return {Boolen} Object are equals or not
 */
 export function areEquals(loc1, loc2) {
+  if (!loc1 || !loc2 || !loc1.locality || !loc2.locality) return false;
 
-	if (!loc1 || !loc2 || !loc1.locality || !loc2.locality) 
-		return false;
-
-	// We need to remove the accented character because they depends on the locale
-	// and limite the decimals of the coordinates to avoir the issues of float precision
-	return loc1.locality.normalize("NFD").replace(/[\u0300-\u036f]/g, "") === loc2.locality.normalize("NFD").replace(/[\u0300-\u036f]/g, "") && 
-		   loc1.latitude.toFixed(4) === loc2.latitude.toFixed(4) && 
-		   loc1.longitude.toFixed(4) === loc2.longitude.toFixed(4);
+  // We need to remove the accented character because they depends on the locale
+  // and limite the decimals of the coordinates to avoir the issues of float precision
+  return loc1.locality.normalize('NFD').replace(/[\u0300-\u036f]/g, '') === loc2.locality.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+		   && loc1.latitude.toFixed(4) === loc2.latitude.toFixed(4)
+		   && loc1.longitude.toFixed(4) === loc2.longitude.toFixed(4);
 }

@@ -21,44 +21,44 @@ import { mapState } from 'vuex';
 import { areEquals } from '@/helpers/location';
 
 export default {
-	
-	name: 'FavoriteToggle',
-	props: {
-		location: {
-			type: Object,
-			default: () => ({})
-		},
-	},
-	computed: {
-		...mapState(['favoriteLocation']),
-		/**
+
+  name: 'FavoriteToggle',
+  props: {
+    location: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  computed: {
+    ...mapState(['favoriteLocation']),
+    /**
 		* Check if the current location exists in the store favorites
 		*/
-		isFavorite() {
-			return this.favoriteLocation.findIndex(item => areEquals(item, this.location)) !== -1;
-		}
-	},
-	methods: {
-		/**
+    isFavorite() {
+      return this.favoriteLocation.findIndex((item) => areEquals(item, this.location)) !== -1;
+    },
+  },
+  methods: {
+    /**
 		* Toggle the favorite in the store
 		*/
-		toggleFavorite() {
-			this.$store.dispatch('toggleFavorite', this.location);
-		}
-	}
-}
+    toggleFavorite() {
+      this.$store.dispatch('toggleFavorite', this.location);
+    },
+  },
+};
 
 </script>
 
 <style lang="scss" scoped>
 
 .favorite-toggle {
-	
+
 	cursor: pointer;
-	
+
 	i {
 		font-size: 25px;
-		text-shadow: 0 0 0 rgba(216, 27, 27, 0.5);	
+		text-shadow: 0 0 0 rgba(216, 27, 27, 0.5);
 
 		 &.fas {
 			color: rgb(230, 93, 93);
