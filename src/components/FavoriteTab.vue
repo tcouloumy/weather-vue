@@ -75,11 +75,13 @@ import { locationToString } from '@/helpers/location';
 export default {
 	name: 'FavoriteTab',
 	components: {
-		WeatherIcon,
-		locationToString
+		WeatherIcon
 	},
 	props: {
-		location: Object
+		location: {
+			type: Object,
+			default: () => ({})
+		}
 	},
 	data: function() {
 		return {

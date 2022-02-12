@@ -24,7 +24,10 @@ export default {
 	
 	name: 'FavoriteToggle',
 	props: {
-		location: Object
+		location: {
+			type: Object,
+			default: () => ({})
+		},
 	},
 	computed: {
 		...mapState(['favoriteLocation']),

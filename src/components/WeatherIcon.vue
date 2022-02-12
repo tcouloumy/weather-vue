@@ -17,8 +17,14 @@ import weatherIconTable from '@/helpers/weatherIconTable.json';
 export default {
 	name: 'WeatherIcon',
 	props: {
-		weather: Object,
-		size: String
+		weather: {
+			type: Object,
+			default: () => {}
+		},
+		size: {
+			type: String,
+			default: ''
+		}
 	},
 	methods: {
 		getIconClass(weatherId) {

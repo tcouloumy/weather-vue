@@ -50,9 +50,18 @@ export default {
 		timezoneShort
 	},
 	props: {
-		weatherData: Object,
-		timeZone: String,
-		timeOffset: Number
+		weatherData: {
+			type: Object,
+			default: () => ({})
+		},
+		timeZone: {
+			type: String,
+			default: ''
+		},
+		timeOffset: {
+			type: Number,
+			default: 0
+		}
 	}
 }
 

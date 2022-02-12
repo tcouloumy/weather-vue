@@ -213,6 +213,9 @@ export default {
 		WeatherCard,
 		FavoriteToggle
 	},
+  filters: {
+		degToCompass
+	},
 	data: function() {
 		return {
 			loading: true,
@@ -227,9 +230,6 @@ export default {
 		currentTimestamp() {
 			return moment().unix();
 		}
-	},
-	filters: {
-		degToCompass
 	},
 	watch: {
 		locale: async function() {

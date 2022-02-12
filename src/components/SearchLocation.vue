@@ -48,7 +48,10 @@ export default {
 		VueGoogleAutocomplete
 	},
 	props: {
-		width: String
+		width: {
+			type: String,
+			default: ''
+		}
 	},
 	data: function() {
 		return {
