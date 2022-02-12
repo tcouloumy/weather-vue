@@ -2,26 +2,37 @@
 <!-- A autocomplete form routing to the weather details upon completion -->
 
 <template>
+  <div class="search-location">
+    <form
+      class="siimple--display-flex"
+      :style="{ maxWidth: width + '%' }"
+      @submit="checkForm"
+    >
+      <vue-google-autocomplete
+        id="map"
+        classname="form-control siimple-input siimple--mr-2"
+        :placeholder="$t('search_location_placeholder')"
+        types="(cities)"
+        @placechanged="mapAddressData"
+      />
+      <input
+        class="siimple-btn siimple-btn--success"
+        type="submit"
+        :value="$t('search_location_submit')"
+      >
+    </form>
 
-	<div class="search-location">
-		<form @submit="checkForm" class="siimple--display-flex" v-bind:style="{ maxWidth: width + '%' }">
-			<vue-google-autocomplete
-				id="map"
-				classname="form-control siimple-input siimple--mr-2"
-				v-bind:placeholder="$t('search_location_placeholder')"
-				types="(cities)"
-				v-on:placechanged="mapAddressData">
-			</vue-google-autocomplete>
-			<input class="siimple-btn siimple-btn--success" type="submit" v-bind:value="$t('search_location_submit')">
-		</form>
-
-		<p class="siimple-small siimple--color-error siimple--my-1" v-if="formErrors.length">
-			<ul>
-				<li v-for="error in formErrors">{{ error }}</li>
-			</ul>
-		</p>
-	</div>
-
+    <p
+      v-if="formErrors.length"
+      class="siimple-small siimple--color-error siimple--my-1"
+    >
+      <ul>
+        <li v-for="error in formErrors">
+          {{ error }}
+        </li>
+      </ul>
+    </p>
+  </div>
 </template>
 
 <script>

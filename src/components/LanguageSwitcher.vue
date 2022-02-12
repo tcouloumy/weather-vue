@@ -2,13 +2,17 @@
 <!-- Changes the locale depending on the clicked supported language -->
 
 <template>
-	<ul>
-		<li v-for="lang in languages">
-			<a href="#" @click="changeLanguage(lang)" v-bind:class="{ 'active': isActive(lang) }">
-				<img :src="require('@/assets/images/'+lang+'.png')" />
-			</a>
-		</li>
-	</ul>
+  <ul>
+    <li v-for="lang in languages">
+      <a
+        href="#"
+        :class="{ 'active': isActive(lang) }"
+        @click="changeLanguage(lang)"
+      >
+        <img :src="require('@/assets/images/'+lang+'.png')">
+      </a>
+    </li>
+  </ul>
 </template>
 
 <script>

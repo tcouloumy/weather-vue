@@ -2,9 +2,12 @@
 <!-- Show the proper icon the weather code given -->
 
 <template>
-	<div class="weather-icon">
-		<i class="wi" :class="[getIconClass(weather.id), size]" />
-	</div>
+  <div class="weather-icon">
+    <i
+      class="wi"
+      :class="[getIconClass(weather.id), size]"
+    />
+  </div>
 </template>
 
 <script>

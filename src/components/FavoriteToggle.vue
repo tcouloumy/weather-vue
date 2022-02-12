@@ -2,13 +2,17 @@
 <!-- A little heart that pulse on click and toggle in and out of favorites the given location -->
 
 <template>
-
-	<div class="favorite-toggle" v-on:click="toggleFavorite()">
-		<a >
-			<i class="fa-heart" :class="{ 'far': !isFavorite, 'fas': isFavorite }"></i>
-		</a>
-	</div>
-
+  <div
+    class="favorite-toggle"
+    @click="toggleFavorite()"
+  >
+    <a>
+      <i
+        class="fa-heart"
+        :class="{ 'far': !isFavorite, 'fas': isFavorite }"
+      />
+    </a>
+  </div>
 </template>
 
 <script>

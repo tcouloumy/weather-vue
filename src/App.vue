@@ -1,12 +1,12 @@
 <template>
-	<div id="app" >
-		<div class="siimple-navbar">
-			<LanguageSwitcher />
-		</div>
-		<div class="siimple-content siimple-content--large siimple--bg-light">
-			<router-view/>
-		</div>
-	</div>
+  <div id="app">
+    <div class="siimple-navbar">
+      <LanguageSwitcher />
+    </div>
+    <div class="siimple-content siimple-content--large siimple--bg-light">
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script>

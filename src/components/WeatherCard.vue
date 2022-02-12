@@ -2,32 +2,36 @@
 <!-- Display a card with the main weather infos from the object passed -->
 
 <template>
-	<div class="weather-card">
-		<div class="siimple--display-flex">
-			<div class="quickview">
-				<h2 class="temperature">{{ weatherData.temp | formatTemperature }}</h2>
-				<h3 class="description">{{ weatherData.weather[0].description }}</h3>
-				<p>{{ $t('weather.feels_like') }} {{ weatherData.feels_like | formatTemperature }}</p>
-			</div>
-			<div>
-				<WeatherIcon v-bind:weather="weatherData.weather[0]" />
+  <div class="weather-card">
+    <div class="siimple--display-flex">
+      <div class="quickview">
+        <h2 class="temperature">
+          {{ weatherData.temp | formatTemperature }}
+        </h2>
+        <h3 class="description">
+          {{ weatherData.weather[0].description }}
+        </h3>
+        <p>{{ $t('weather.feels_like') }} {{ weatherData.feels_like | formatTemperature }}</p>
+      </div>
+      <div>
+        <WeatherIcon :weather="weatherData.weather[0]" />
 
-				<div class="suntimes">
-					<p>
-						<i class="wi wi-sunrise" />
-						{{ weatherData.sunrise | formatTimestamp('HH:mm', timeOffset) }}
-						{{ weatherData.sunrise | timezoneShort(timeZone) }}
-					</p>
+        <div class="suntimes">
+          <p>
+            <i class="wi wi-sunrise" />
+            {{ weatherData.sunrise | formatTimestamp('HH:mm', timeOffset) }}
+            {{ weatherData.sunrise | timezoneShort(timeZone) }}
+          </p>
 
-					<p>
-						<i class="wi wi-sunset" />
-						{{ weatherData.sunset | formatTimestamp('HH:mm', timeOffset) }}
-						{{ weatherData.sunset | timezoneShort(timeZone) }}
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
+          <p>
+            <i class="wi wi-sunset" />
+            {{ weatherData.sunset | formatTimestamp('HH:mm', timeOffset) }}
+            {{ weatherData.sunset | timezoneShort(timeZone) }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -42,13 +46,13 @@ export default {
 	components: {
 		WeatherIcon
 	},
+	filters: {
+		timezoneShort
+	},
 	props: {
 		weatherData: Object,
 		timeZone: String,
 		timeOffset: Number
-	},
-	filters: {
-		timezoneShort
 	}
 }
 
