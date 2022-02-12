@@ -1,5 +1,5 @@
 import Search from '@/views/Search.vue';
-import Forecast from '@/views/Forecast.vue';
+import ForecastDetails from '../views/ForecastDetails.vue';
 import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES } from '@/constants/language';
 import { i18n } from '@/plugins/i18n';
 
@@ -32,7 +32,7 @@ export default [{
   {
     path: 'forecast/:locationString',
     name: 'Forecast',
-    component: Forecast,
+    component: ForecastDetails,
   }],
 },
 ];

@@ -1,12 +1,14 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
+  env: {
+    browser: true,
+    es6: true,
+    node: true
   },
   extends: [
-    "airbnb-base",
+    'airbnb-base',
     'plugin:vue/recommended'
   ],
-  rules: {}
-}
+  rules: {
+    'comma-dangle': ['error', 'never']
+  }
+};
