@@ -83,15 +83,16 @@ export default {
       this.formErrors.push(this.$t('errors.city_empty'));
 
       e.preventDefault();
+
+      return false;
     },
 
     /**
-    * Map the address object to the component when found
-    * @param {Object} addressData Data of the found location
-    * @param {Object} placeResultData PlaceResult object
-    * @param {String} id Input container ID
-    */
-    mapAddressData(addressData, placeResultData, id) {
+      * Map the address object to the component when found
+      *
+      * @param {Object} addressData Data of the found location
+      */
+    mapAddressData(addressData) {
       this.address = addressData;
     },
 

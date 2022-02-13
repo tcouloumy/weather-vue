@@ -16,16 +16,16 @@ import LanguageSwitcher from './components/LanguageSwitcher.vue';
 export default {
   name: 'App',
   components: {
-    LanguageSwitcher,
+    LanguageSwitcher
   },
   beforeCreate() {
-    // Initialising the store
+    // Initializing the store
     this.$store.dispatch('initialiseStore');
     // Suscribing to store changes to update local storage
     this.$store.subscribe((mutation, state) => {
       localStorage.setItem('favoriteLocation', JSON.stringify(state.favoriteLocation));
     });
-  },
+  }
 };
 
 </script>
@@ -33,27 +33,27 @@ export default {
 <style>
 
 * {
-	outline: none;
+  outline: none;
 }
 
 html {
-	min-height: 100%;
+  min-height: 100%;
 }
 
 body {
-	background: linear-gradient(#e9eff5, 10%, #dde5ee);;
+  background: linear-gradient(#e9eff5, 10%, #dde5ee);;
 }
 
 body .siimple--bg-light {
-	background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 .siimple-navbar {
-	height: inherit;
+  height: inherit;
 }
 
 .siimple-navbar > ul {
-	float: right;
+  float: right;
 }
 
 </style>
