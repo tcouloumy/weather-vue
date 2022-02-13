@@ -19,7 +19,7 @@ export default {
     LanguageSwitcher,
   },
   beforeCreate() {
-    // Initialising the store
+    // Initializing the store
     this.$store.dispatch('initialiseStore');
     // Suscribing to store changes to update local storage
     this.$store.subscribe((mutation, state) => {
