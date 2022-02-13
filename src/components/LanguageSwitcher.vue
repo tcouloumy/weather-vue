@@ -3,7 +3,10 @@
 
 <template>
   <ul>
-    <li v-for="lang in languages">
+    <li
+      v-for="lang in languages"
+      :key="lang"
+    >
       <a
         href="#"
         :class="{ 'active': isActive(lang) }"
@@ -20,18 +23,20 @@
 import { SUPPORTED_LANGUAGES } from '../constants/language';
 
 export default {
-
   name: 'LanguageSwitcher',
+
   data() {
     return {
       languages: SUPPORTED_LANGUAGES
     };
   },
+
   methods: {
     /**
-    * Change current locale and reload the page
-    * @param {String} lang Locale to set
-    */
+      * Change current locale and reload the page
+      *
+      * @param {String} lang Locale to set
+      */
     changeLanguage(lang) {
       this.$i18n.locale = lang;
       // Change the lang parameter in URL
@@ -39,14 +44,16 @@ export default {
     },
 
     /**
-    * Return true if lang is the current locale, false otherwise
-    * @param {String} lang Locale to check
-    */
+      * Return true if lang is the current locale, false otherwise
+      *
+      * @param {String} lang Locale to check
+      */
     isActive(lang) {
       return this.$i18n.locale === lang;
     }
   }
 };
+
 </script>
 
 <style lang="scss" scoped>
