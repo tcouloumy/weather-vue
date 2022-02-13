@@ -5,8 +5,8 @@ import './assets/css/weather-icons.css';
 import './assets/css/weather-icons-wind.css';
 import store from './store';
 import { i18n } from './plugins/i18n';
-import formatTimestamp from '@/filters/formatTimestamp';
-import formatTemperature from '@/filters/formatTemperature';
+import formatTimestamp from './filters/formatTimestamp';
+import formatTemperature from './filters/formatTemperature';
 
 Vue.config.productionTip = false;
 
@@ -17,5 +17,5 @@ new Vue({
   router,
   store,
   i18n,
-  render: (h) => h(App),
+  render: (h) => h(App)
 }).$mount('#app');
