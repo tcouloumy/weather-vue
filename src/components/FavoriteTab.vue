@@ -17,7 +17,7 @@
           />
 
           <h4 class="siimple--mb-2">
-            {{ location.locality }}, {{ location.country }}
+            {{ location.locality }}, {{ location.country }}
           </h4>
 
           <div class="siimple--display-flex">
@@ -36,7 +36,8 @@
                 {{ weatherData.weather[0].description }}
               </p>
               <p class="wind siimple-small">
-                <i class="wi wi-strong-wind siimple--mr-1" />{{ weatherData.wind.speed }} {{ $t('units.speed') }}
+                <i class="wi wi-strong-windsiimple--mr-1" />
+                {{ weatherData.wind.speed }} {{ $t('units.speed') }}
               </p>
               <p class="siimple-small">
                 {{ $t('weather.feels_like') }} {{ weatherData.main.feels_like | formatTemperature }}
@@ -59,55 +60,53 @@
       class="error siimple--color-error"
     >
       <i class="fas fa-exclamation-triangle" />
-      <p>{{ $t('errors.api') }}</p>
+      <p>{{ $t('errors.api') }}</p>
     </div>
   </div>
 </template>
 
 <script>
 
-import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
-import WeatherService from '@/services/WeatherService';
-import { i18n } from '@/plugins/i18n';
-import { locationToString } from '@/helpers/location';
+import WeatherService from '../services/WeatherService';
+import { locationToString } from '../helpers/location';
 
 export default {
   name: 'FavoriteTab',
   components: {
-    WeatherIcon,
+    WeatherIcon
   },
   props: {
     location: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   data() {
     return {
       loading: true,
       error: false,
       weatherData: {},
-      locale: this.$i18n.locale,
+      locale: this.$i18n.locale
     };
   },
-  computed: {
+  computed: {
     linkParams() {
       const { location } = this;
       return {
         name: 'Forecast',
         params: {
           locationString: locationToString(location),
-          completeLocation: location,
-        },
+          completeLocation: location
+        }
       };
-    },
+    }
   },
   watch: {
     async locale() {
       // Retrieve the data again, with differents units, when the locale is changed
       await this.getWeather();
-    },
+    }
   },
   async mounted() {
     // Get the data on first display
@@ -119,27 +118,32 @@ export default {
   methods: {
     locationToString,
     /**
-		* Toggle the favorite in the store
-		*/
+    * Toggle the favorite in the store
+    */
     toggleFavorite() {
       this.$store.dispatch('toggleFavorite', this.location);
     },
     /**
-		* Asynchonously retrieves weather data
-		*/
+    * Asynchonously retrieves weather data
+    */
     async getWeather() {
       this.loading = true;
 
       try {
-        const response = await WeatherService.getCurrentWeather(this.location.latitude, this.location.longitude);
+        const response = await WeatherService
+          .getCurrentWeather(
+            this.location.latitude,
+            this.location.longitude
+          );
+
         this.weatherData = response.data;
       } catch (e) {
         this.error = true;
       }
 
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 
 </script>
@@ -147,75 +151,75 @@ export default {
 <style lang="scss" scoped>
 
 .loading > div.siimple-spinner {
-	margin-top: 25%;
+  margin-top: 25%;
 }
 
 .siimple-link {
-	font-weight: inherit;
-	color: inherit;
-	position: relative;
+  font-weight: inherit;
+  color: inherit;
+  position: relative;
 }
 
 .siimple-close {
-	position: absolute;
-	top: 10px;
-	left: 205px;
-	opacity: 0;
-	transition: opacity .3s;
-	pointer-events: none;
+  position: absolute;
+  top: 10px;
+  left: 205px;
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
 }
 
 .siimple-close:before, .siimple-close:after {
-	background-color: #dde5ee;
+  background-color: #dde5ee;
 }
 
 .favorite-tab {
 
-	width: 180px;
-	height: 100px;
-	transition: background-color .3s;
-	border-radius: 5px;
-	padding: 15px 30px 16px 25px;
+  width: 180px;
+  height: 100px;
+  transition: background-color .3s;
+  border-radius: 5px;
+  padding: 15px 30px 16px 25px;
 
-	&:hover {
-		background-color: rgba(200, 213, 228, .8);
+  &:hover {
+    background-color: rgba(200, 213, 228, .8);
 
-		.siimple-close {
-			opacity: .8;
-			pointer-events: auto;
-		}
-	}
+    .siimple-close {
+      opacity: .8;
+      pointer-events: auto;
+    }
+  }
 
-	h4 {
-		margin: 0;
-	}
+  h4 {
+    margin: 0;
+  }
 
-	p {
-		margin: 0;
-		white-space: nowrap;
-	}
+  p {
+    margin: 0;
+    white-space: nowrap;
+  }
 
-	.infos {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-	}
+  .infos {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
 
-	.description:first-letter {
-		text-transform: uppercase;
-	}
+  .description:first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .error {
-	width: 180px;
-	height: 100px;
-	padding: 15px 30px 16px 25px;
-	text-align: center;
+  width: 180px;
+  height: 100px;
+  padding: 15px 30px 16px 25px;
+  text-align: center;
 
-	i {
-		margin-top: 10px;
-		font-size: 30px;
-	}
+  i {
+    margin-top: 10px;
+    font-size: 30px;
+  }
 }
 
 </style>

@@ -5,7 +5,7 @@
   <div class="search-location">
     <form
       class="siimple--display-flex"
-      :style="{ maxWidth: width + '%' }"
+      :style="{ maxWidth: width + '%' }"
       @submit="checkForm"
     >
       <vue-google-autocomplete
@@ -37,7 +37,6 @@
 
 <script>
 
-import { mapState } from 'vuex';
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import { locationToString } from '../helpers/location';
 
@@ -45,28 +44,28 @@ export default {
 
   name: 'SearchLocation',
   components: {
-    VueGoogleAutocomplete,
+    VueGoogleAutocomplete
   },
   props: {
     width: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   data() {
     return {
       formErrors: [],
       locality: '',
-      address: {},
+      address: {}
     };
   },
   methods: {
     locationToString,
     /**
-		* Validate the form before submitting
-		* If valid, send to the forecast page with location infos
-		* @param {Event} e Submitting form event
-		*/
+    * Validate the form before submitting
+    * If valid, send to the forecast page with location infos
+    * @param {Event} e Submitting form event
+    */
     checkForm(e) {
       if (this.address.locality) {
         const { address } = this;
@@ -74,8 +73,8 @@ export default {
           name: 'Forecast',
           params: {
             locationString: this.locationToString(address),
-            completeLocation: address,
-          },
+            completeLocation: address
+          }
         });
         return true;
       }
@@ -87,11 +86,11 @@ export default {
     },
 
     /**
-		* Map the address object to the component when found
-		* @param {Object} addressData Data of the found location
-		* @param {Object} placeResultData PlaceResult object
-		* @param {String} id Input container ID
-		*/
+    * Map the address object to the component when found
+    * @param {Object} addressData Data of the found location
+    * @param {Object} placeResultData PlaceResult object
+    * @param {String} id Input container ID
+    */
     mapAddressData(addressData, placeResultData, id) {
       this.address = addressData;
     },
@@ -99,37 +98,37 @@ export default {
     handleError(error) {
       this.formErrors = [];
       this.formErrors.push(error);
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 
 h3 {
-	margin: 40px 0 0;
+  margin: 40px 0 0;
 }
 
 ul {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 
-	li {
-		display: inline-block;
-	}
+  li {
+    display: inline-block;
+  }
 }
 
 form > input[type="text"] {
-	flex-grow: 1;
+  flex-grow: 1;
 }
 
 /* Would be better to get this value from a constant */
 @media screen and (max-width: 768px) {
-	form {
-		max-width: 100% !important;
-		width: 100% !important;
-	}
+  form {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 }
 
 </style>

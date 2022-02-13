@@ -12,25 +12,25 @@
 
 <script>
 
-import weatherIconTable from '@/helpers/weatherIconTable.json';
+import weatherIconTable from '../helpers/weatherIconTable.json';
 
 export default {
   name: 'WeatherIcon',
   props: {
     weather: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     size: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   methods: {
     getIconClass(weatherId) {
       return weatherIconTable[weatherId.toString()];
-    },
-  },
+    }
+  }
 };
 
 </script>
@@ -38,15 +38,15 @@ export default {
 <style lang="scss" scoped>
 
 i.wi {
-	margin-top: 10px;
-	font-size: 60px;
-	line-height: 60px;
+  margin-top: 10px;
+  font-size: 60px;
+  line-height: 60px;
 
-	&.small {
-		margin-top: 0px;
-		font-size: inherit;
-		line-height: 1;
-	}
+  &.small {
+    margin-top: 0px;
+    font-size: inherit;
+    line-height: 1;
+  }
 }
 
 </style>

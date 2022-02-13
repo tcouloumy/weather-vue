@@ -37,7 +37,7 @@ import FavoriteTab from './FavoriteTab.vue';
 export default {
   name: 'Favorites',
   components: {
-    FavoriteTab,
+    FavoriteTab
   },
   computed: {
     ...mapState(['favoriteLocation']),
@@ -46,8 +46,8 @@ export default {
     },
     isFavoritesEmpty() {
       return Object.keys(this.favoriteLocation).length === 0;
-    },
-  },
+    }
+  }
 };
 
 </script>
@@ -56,13 +56,13 @@ export default {
 
 ul {
 
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 
-	li {
-		display: inline-block;
-	}
+  li {
+    display: inline-block;
+  }
 }
 
 </style>

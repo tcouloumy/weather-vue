@@ -36,33 +36,32 @@
 
 <script>
 
-import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
-import timezoneShort from '@/filters/timezoneShort';
+import timezoneShort from '../filters/timezoneShort';
 
 export default {
 
   name: 'WeatherCard',
   components: {
-    WeatherIcon,
+    WeatherIcon
   },
   filters: {
-    timezoneShort,
+    timezoneShort
   },
   props: {
     weatherData: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     timeZone: {
       type: String,
-      default: '',
+      default: ''
     },
     timeOffset: {
       type: Number,
-      default: 0,
-    },
-  },
+      default: 0
+    }
+  }
 };
 
 </script>
@@ -71,54 +70,54 @@ export default {
 
 .weather-card {
 
-    border-radius: 5px;
-    padding: 20px 30px;
-	background-color: rgba(200, 213, 228, .8);
+  border-radius: 5px;
+  padding: 20px 30px;
+  background-color: rgba(200, 213, 228, .8);
 
-	& > div {
-		justify-content: space-between;
-	}
+  & > div {
+    justify-content: space-between;
+  }
 
-	.quickview {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+  .quickview {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-		.quickview p {
-			margin: 0;
-		}
-	}
+    .quickview p {
+      margin: 0;
+    }
+  }
 
-	.description {
-		margin: 0;
+  .description {
+    margin: 0;
 
-		&:first-letter {
-		    text-transform: uppercase;
-		}
-	}
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
 
-	.temperature {
-		font-size: 50px;
-		font-weight: bold;
-		margin: 0;
-	}
+  .temperature {
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0;
+  }
 
-	.suntimes {
-		margin-top: 15px;
+  .suntimes {
+    margin-top: 15px;
 
-		p {
-			margin: 0;
-			margin-top: 3px;
+    p {
+      margin: 0;
+      margin-top: 3px;
 
-			i {
-				margin-right: 5px;
-			}
-		}
-	}
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
 
-	.weather-icon {
-		text-align: right;
-	}
+  .weather-icon {
+    text-align: right;
+  }
 }
 
 </style>

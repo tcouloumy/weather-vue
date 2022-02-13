@@ -17,7 +17,7 @@
       class="weather-details error siimple--color-error"
     >
       <i class="fas fa-exclamation-triangle" />
-      <p>{{ $t('errors.api') }}</p>
+      <p>{{ $t('errors.api') }}</p>
     </div>
 
     <div
@@ -26,7 +26,9 @@
     >
       <!-- Title and favorite indicator + button -->
       <div class="title siimple--display-flex">
-        <h1>{{ $t('pages.forecast.weather_for') }} {{ location.locality }}, {{ location.country }}</h1>
+        <h1>
+          {{ $t('pages.forecast.weather_for') }} {{ location.locality }}, {{ location.country }}
+        </h1>
 
         <FavoriteToggle :location="location" />
       </div>
@@ -129,7 +131,12 @@
               class="siimple-table-row"
             >
               <div class="siimple-table-cell date">
-                <span class="siimple-grid-col--md-hide">{{ item.dt | formatTimestamp('dddd') }} </span><span>{{ item.dt | formatTimestamp('DD/MM') }}</span>
+                <span class="siimple-grid-col--md-hide">
+                  {{ item.dt | formatTimestamp('dddd') }}
+                </span>
+                <span>
+                  {{ item.dt | formatTimestamp('DD/MM') }}
+                </span>
               </div>
 
               <div class="siimple-table-cell temperatures">
@@ -197,12 +204,12 @@
 import { mapState } from 'vuex';
 import moment from 'moment';
 import WeatherIcon from './WeatherIcon.vue';
-import LocationService from '@/services/LocationService';
-import WeatherService from '@/services/WeatherService';
-import { parseReverseGeocodeResult, stringToLocation } from '@/helpers/location';
+import LocationService from '../services/LocationService';
+import WeatherService from '../services/WeatherService';
+import { parseReverseGeocodeResult, stringToLocation } from '../helpers/location';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
-import degToCompass from '@/filters/degToCompass';
+import degToCompass from '../filters/degToCompass';
 
 export default {
 
@@ -210,10 +217,10 @@ export default {
   components: {
     WeatherIcon,
     WeatherCard,
-    FavoriteToggle,
+    FavoriteToggle
   },
   filters: {
-    degToCompass,
+    degToCompass
   },
   data() {
     return {
@@ -221,14 +228,14 @@ export default {
       errors: false,
       location: {},
       weatherData: {},
-      locale: this.$i18n.locale,
+      locale: this.$i18n.locale
     };
   },
   computed: {
     ...mapState(['favoriteLocation']),
     currentTimestamp() {
       return moment().unix();
-    },
+    }
   },
   watch: {
     async locale() {
@@ -236,7 +243,7 @@ export default {
       this.loading = true;
       await this.getWeather();
       this.loading = false;
-    },
+    }
   },
   async mounted() {
     await this.getWeather();
@@ -247,20 +254,21 @@ export default {
   },
   methods: {
     /**
-		* Retrieves the weather from the props location
-		*/
+    * Retrieves the weather from the props location
+    */
     async getWeather() {
       this.loading = true;
 
       try {
-        let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
+        let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
 
-        // If we happen to have been sent a complete location object where the route have been called,
+        // If we happen to have been sent a complete location
+        // object where the route have been called,
         // no need to geocode it via google api
         if (this.$route.params.completeLocation) {
           this.location = this.$route.params.completeLocation;
           latitude = this.location.latitude;
-          longitude  = this.location.longitude;
+          longitude = this.location.longitude;
         } else {
           // If not, get it
           const geocodeLocation = await LocationService.reverseGeocode(latitude, longitude);
@@ -275,8 +283,8 @@ export default {
       }
 
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 
 </script>
@@ -285,82 +293,80 @@ export default {
 
 /* Main styling */
 .loading {
-	margin-top: 10%;
+  margin-top: 10%;
 }
 
 .title {
 
-	justify-content: space-between;
-	align-items: baseline;
+  justify-content: space-between;
+  align-items: baseline;
 
-	h1 {
-		margin-bottom: 0;
-	}
+  h1 {
+    margin-bottom: 0;
+  }
 }
 
 .favorite-link > * {
-	margin: 0;
+  margin: 0;
 }
 
 .subtitle {
-	margin-top: 0;
-	margin-bottom: 20px;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 .siimple-table-cell {
-	border-top: none;
+  border-top: none;
 }
 
 /* Today */
 
 .today {
 
-    border-radius: 5px;
-    padding: 20px 30px;
-	background-color: rgba(200, 213, 228, .8);
+  border-radius: 5px;
+  padding: 20px 30px;
+  background-color: rgba(200, 213, 228, .8);
 
-	.quickview {
+  .quickview {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-
-		p {
-			margin: 0;
-		}
-	}
+    p {
+      margin: 0;
+    }
+  }
 }
 
 .temperature {
-	font-size: 50px;
-	font-weight: bold;
-	margin: 0;
+  font-size: 50px;
+  font-weight: bold;
+  margin: 0;
 }
 
 .description {
-	margin: 0;
+  margin: 0;
 
-	&:first-letter {
-	    text-transform: uppercase;
-	}
+  &:first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .today .suntimes {
+  margin-top: 15px;
 
-	margin-top: 15px;
+  p {
+    margin: 0;
+    margin-top: 3px;
 
-	p {
-		margin: 0;
-		margin-top: 3px;
-
-		i {
-			margin-right: 5px;
-		}
-	}
+    i {
+      margin-right: 5px;
+    }
+  }
 }
 
 .today > div {
-	justify-content: space-between;
+  justify-content: space-between;
 }
 
 /* Table details */
@@ -369,81 +375,81 @@ export default {
 
 .today-details {
 
-	& > div {
-		justify-content: space-between;
-	}
+  & > div {
+    justify-content: space-between;
+  }
 
-	i {
-		text-align: center;
-		min-width: 30px;
-	}
+  i {
+    text-align: center;
+    min-width: 30px;
+  }
 
-	.siimple-table {
-		max-width: 50%
-	}
+  .siimple-table {
+    max-width: 50%
+  }
 }
 
 .siimple-table-row > .siimple-table-cell:last-of-type {
-	text-align: right;
+  text-align: right;
 }
 
 /* Next days */
 
 .next-days {
 
-	p { margin : 0; }
+  p { margin : 0; }
 
-	.date:first-letter {
-		text-transform: capitalize;
-	}
+  .date:first-letter {
+    text-transform: capitalize;
+  }
 
-	.temperatures {
+  .temperatures {
 
-		i { min-width: 15px; }
+    i { min-width: 15px; }
 
-		p {
-			margin-right: 25px;
-			min-width: 80px;
-		}
-	}
+    p {
+      margin-right: 25px;
+      min-width: 80px;
+    }
+  }
 
-	.weather {
-		.weather-icon {
-			margin-right: 10px;
-		}
+  .weather {
+    .weather-icon {
+      margin-right: 10px;
+    }
 
-		p:first-letter {
-			text-transform: capitalize;
-		}
-	}
+    p:first-letter {
+      text-transform: capitalize;
+    }
+  }
 
-	.wind span {
-		display: inline-block;
-		min-width: 135px;
-	}
+  .wind span {
+    display: inline-block;
+    min-width: 135px;
+  }
 }
 
 .error {
-	margin-top: 10%;
-	text-align: center;
+  margin-top: 10%;
+  text-align: center;
 
-	i {
-		font-size: 50px;
-	}
+  i {
+    font-size: 50px;
+  }
 }
 
 /* Responsive */
 /* Would be better to get this value from a constant */
 @media screen and (max-width: 768px) {
-	.today-details > div {
+  .today-details > div {
 
-		flex-direction: column;
+    flex-direction: column;
 
-		.siimple-table {
-			max-width: inherit;
-			margin: 0 !important;
-		}
-	}
+    .siimple-table {
+      max-width: inherit;
+      margin: 0 !important;
+    }
+  }
 }
 
 </style>
