@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { i18n } from '@/plugins/i18n'
+import { i18n } from '@/plugins/i18n';
 
 /**
 * Format dates
@@ -8,7 +8,7 @@ import { i18n } from '@/plugins/i18n'
 * @param {Int} offset How much to offset result date/time, in second
 */
 export default (timestamp, format, offset = 0) => {
-	moment.locale(i18n.locale);
-	offset /= 60;
-	return moment.unix(timestamp).utcOffset(offset).format(format);
-}
+  moment.locale(i18n.locale);
+  offset /= 60;
+  return moment.unix(timestamp).utcOffset(offset).format(format);
+};

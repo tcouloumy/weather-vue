@@ -2,110 +2,122 @@
 <!-- Display a card with the main weather infos from the object passed -->
 
 <template>
-	<div class="weather-card">
-		<div class="siimple--display-flex">
-			<div class="quickview">
-				<h2 class="temperature">{{ weatherData.temp | formatTemperature }}</h2>
-				<h3 class="description">{{ weatherData.weather[0].description }}</h3>
-				<p>{{ $t('weather.feels_like') }} {{ weatherData.feels_like | formatTemperature }}</p>
-			</div>
-			<div>
-				<WeatherIcon v-bind:weather="weatherData.weather[0]" />
+  <div class="weather-card">
+    <div class="siimple--display-flex">
+      <div class="quickview">
+        <h2 class="temperature">
+          {{ weatherData.temp | formatTemperature }}
+        </h2>
+        <h3 class="description">
+          {{ weatherData.weather[0].description }}
+        </h3>
+        <p>{{ $t('weather.feels_like') }} {{ weatherData.feels_like | formatTemperature }}</p>
+      </div>
+      <div>
+        <WeatherIcon :weather="weatherData.weather[0]" />
 
-				<div class="suntimes">
-					<p>
-						<i class="wi wi-sunrise" />
-						{{ weatherData.sunrise | formatTimestamp('HH:mm', timeOffset) }}
-						{{ weatherData.sunrise | timezoneShort(timeZone) }}
-					</p>
+        <div class="suntimes">
+          <p>
+            <i class="wi wi-sunrise" />
+            {{ weatherData.sunrise | formatTimestamp('HH:mm', timeOffset) }}
+            {{ weatherData.sunrise | timezoneShort(timeZone) }}
+          </p>
 
-					<p>
-						<i class="wi wi-sunset" />
-						{{ weatherData.sunset | formatTimestamp('HH:mm', timeOffset) }}
-						{{ weatherData.sunset | timezoneShort(timeZone) }}
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
+          <p>
+            <i class="wi wi-sunset" />
+            {{ weatherData.sunset | formatTimestamp('HH:mm', timeOffset) }}
+            {{ weatherData.sunset | timezoneShort(timeZone) }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 
-import axios from 'axios';
 import WeatherIcon from './WeatherIcon.vue';
-import timezoneShort from '@/filters/timezoneShort'
+import timezoneShort from '../filters/timezoneShort';
 
 export default {
-	
-	name: 'WeatherCard',
-	components: {
-		WeatherIcon
-	},
-	props: {
-		weatherData: Object,
-		timeZone: String,
-		timeOffset: Number
-	},
-	filters: {
-		timezoneShort
-	}
-}
+
+  name: 'WeatherCard',
+  components: {
+    WeatherIcon
+  },
+  filters: {
+    timezoneShort
+  },
+  props: {
+    weatherData: {
+      type: Object,
+      default: () => ({})
+    },
+    timeZone: {
+      type: String,
+      default: ''
+    },
+    timeOffset: {
+      type: Number,
+      default: 0
+    }
+  }
+};
 
 </script>
 
 <style lang="scss" scoped>
 
 .weather-card {
-   
-    border-radius: 5px;
-    padding: 20px 30px;
-	background-color: rgba(200, 213, 228, .8);
-	
-	& > div {
-		justify-content: space-between;
-	}
 
-	.quickview {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		
-		.quickview p { 
-			margin: 0;
-		}
-	}
+  border-radius: 5px;
+  padding: 20px 30px;
+  background-color: rgba(200, 213, 228, .8);
 
-	.description {
-		margin: 0;
+  & > div {
+    justify-content: space-between;
+  }
 
-		&:first-letter {
-		    text-transform: uppercase;
-		}
-	}
+  .quickview {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-	.temperature {
-		font-size: 50px;
-		font-weight: bold;
-		margin: 0;
-	}
+    .quickview p {
+      margin: 0;
+    }
+  }
 
-	.suntimes {
-		margin-top: 15px;
+  .description {
+    margin: 0;
 
-		p {
-			margin: 0;
-			margin-top: 3px;
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
 
-			i {
-				margin-right: 5px;
-			}
-		}
-	}
+  .temperature {
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0;
+  }
 
-	.weather-icon {
-		text-align: right;
-	}
+  .suntimes {
+    margin-top: 15px;
+
+    p {
+      margin: 0;
+      margin-top: 3px;
+
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .weather-icon {
+    text-align: right;
+  }
 }
 
 </style>
