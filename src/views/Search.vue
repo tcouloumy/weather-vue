@@ -22,22 +22,22 @@
 
 <script>
 
-import SearchLocation from '@/components/SearchLocation.vue';
-import Favorites from '@/components/Favorites.vue';
+import SearchLocation from '../components/SearchLocation.vue';
+import Favorites from '../components/Favorites.vue';
 
 export default {
   name: 'Search',
   components: {
     SearchLocation,
-    Favorites,
-  },
+    Favorites
+  }
 };
 </script>
 
 <style scoped>
 
 .siimple-jumbotron {
-	padding-top: 45px;
+  padding-top: 45px;
 }
 
 </style>
