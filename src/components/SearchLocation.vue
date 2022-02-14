@@ -4,7 +4,7 @@
 <template>
   <div class="search-location">
     <form
-      class="siimple--display-flex"
+      class="siimple--display-flex siimple--pb-2"
       :style="{ maxWidth: width + '%' }"
       @submit="checkForm"
     >
@@ -21,6 +21,14 @@
         :value="$t('search_location_submit')"
       >
     </form>
+
+    <a
+      href="#"
+      class="siimple-link"
+      @click.prevent="useCurrentLocation"
+    >
+      {{ $t('search_current_location') }}
+    </a>
 
     <p
       v-if="formErrors.length"
@@ -96,6 +104,23 @@ export default {
       this.address = addressData;
     },
 
+    /**
+      * Send to forecast page based on browsers location
+      */
+    useCurrentLocation() {
+      navigator.geolocation.getCurrentPosition((location) => {
+        this.$router.push({
+          name: 'Forecast',
+          params: {
+            locationString: this.locationToString({
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude
+            })
+          }
+        });
+      });
+    },
+
     handleError(error) {
       this.formErrors = [];
       this.formErrors.push(error);
@@ -122,6 +147,10 @@ ul {
 
 form > input[type="text"] {
   flex-grow: 1;
+}
+
+.search-location a {
+  font-size: 14px;
 }
 
 /* Would be better to get this value from a constant */
