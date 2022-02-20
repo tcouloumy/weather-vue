@@ -23,29 +23,6 @@ export function stringToLocation(string) {
 }
 
 /**
-  * Takes a result json from Google geoloc API and
-  * return a json formatted like the Autocomplete place API
-  *
-  * @param {Object} geoloc Result from Geoloc API
-  * @return {Object} Formatted JSON
-  */
-export function parseReverseGeocodeResult(geoloc) {
-  const result = {};
-
-  geoloc.data.results[0].address_components.forEach((item) => {
-    // We need the country's full name
-    if (item.types[0] === 'country') result[item.types[0]] = item.long_name;
-    else result[item.types[0]] = item.short_name;
-  });
-
-  return {
-    ...result,
-    latitude: geoloc.data.results[0].geometry.location.lat,
-    longitude: geoloc.data.results[0].geometry.location.lng
-  };
-}
-
-/**
   * First level key-value comparison two locations object
   * Because of a float precision issues and difference in API responses, we'll need to compare only
   * specific properties of the objects

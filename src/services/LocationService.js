@@ -5,6 +5,7 @@ import { i18n } from '../plugins/i18n';
 export default {
   /**
     * Return a location object from latitude and longitude by calling google geocode API
+    *
     * @param {Float} lat Latitude
     * @param {Float} long Longitude
     * @return {Object} Location object

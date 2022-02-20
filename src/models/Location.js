@@ -5,7 +5,8 @@ class Location extends Model {
     return {
       latitude: null,
       longitude: null,
-      raw: null
+      raw: null,
+      origin: ''
     };
   }
 
@@ -13,12 +14,33 @@ class Location extends Model {
     return {
       latitude: Number,
       longitude: Number,
-      raw: Object
+      raw: Object,
+      origin: String
     };
   }
 
+  get latitude() {
+    return (this.origin === 'autocomplete')
+      ? this.raw.latitude
+      : this.raw.geometry.location.lat;
+  }
+
+  get longitude() {
+    return (this.origin === 'autocomplete')
+      ? this.raw.longitude
+      : this.raw.geometry.location.lng;
+  }
+
+  get locality() {
+    return (this.origin === 'autocomplete')
+      ? this.raw.locality
+      : this.raw.address_components.find((comp) => comp.types.includes('country'))?.long_name || null;
+  }
+
   get country() {
-    return this.raw.address_components.find((comp) => comp.types.includes('country'))?.long_name || null;
+    return (this.origin === 'autocomplete')
+      ? this.raw.country
+      : this.raw.address_components.find((comp) => comp.types.includes('country'))?.long_name || null;
   }
 }
 

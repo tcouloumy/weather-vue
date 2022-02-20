@@ -206,7 +206,7 @@ import moment from 'moment';
 import WeatherIcon from './WeatherIcon.vue';
 import LocationService from '../services/LocationService';
 import WeatherService from '../services/WeatherService';
-import { parseReverseGeocodeResult, stringToLocation } from '../helpers/location';
+import { stringToLocation } from '../helpers/location';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
 import degToCompass from '../filters/degToCompass';
@@ -260,23 +260,16 @@ export default {
       this.loading = true;
 
       try {
-        let { latitude, longitude } = stringToLocation(this.$route.params.locationString);
-
-        // If we happen to have been sent a complete location
-        // object where the route have been called,
-        // no need to geocode it via google api
         if (this.$route.params.completeLocation) {
           this.location = this.$route.params.completeLocation;
-          latitude = this.location.latitude;
-          longitude = this.location.longitude;
         } else {
-          // If not, get it
-          const geocodeLocation = await LocationService.reverseGeocode(latitude, longitude);
-          this.location = parseReverseGeocodeResult(geocodeLocation);
+          const { latitude, longitude } = stringToLocation(this.$route.params.locationString);
+
+          this.location = await LocationService.reverseGeocode(latitude, longitude);
         }
 
         // Getting the weather infos
-        const weatherData = await WeatherService.getAllWeatherInfos(latitude, longitude);
+        const weatherData = await WeatherService.getAllWeatherInfos(this.location);
         this.weatherData = weatherData.data;
       } catch (e) {
         this.errors = true;
