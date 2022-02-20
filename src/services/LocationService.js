@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Location from '../models/Location';
 import { i18n } from '../plugins/i18n';
 
 export default {
@@ -10,8 +11,10 @@ export default {
     */
 
   async reverseGeocode(lat, long) {
-    return axios.get(
+    const response = await axios.get(
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${process.env.VUE_APP_GOOGLE_API_KEY}&result_type=locality&language=${i18n.locale}`
     );
+
+    return new Location({ raw: response.data.results[0] });
   }
 };
