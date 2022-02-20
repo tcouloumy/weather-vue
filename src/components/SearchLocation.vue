@@ -87,8 +87,7 @@ export default {
         return true;
       }
 
-      this.formErrors = [];
-      this.formErrors.push(this.$t('errors.city_empty'));
+      this.handleError(this.$t('errors.city_empty'));
 
       e.preventDefault();
 
@@ -108,21 +107,25 @@ export default {
       * Send to forecast page based on browsers location
       */
     useCurrentLocation() {
-      navigator.geolocation.getCurrentPosition((location) => {
-        this.$router.push({
-          name: 'Forecast',
-          params: {
-            locationString: this.locationToString({
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude
-            })
-          }
-        });
-      });
+      navigator.geolocation.getCurrentPosition(
+        (location) => {
+          this.$router.push({
+            name: 'Forecast',
+            params: {
+              locationString: this.locationToString({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude
+              })
+            }
+          });
+        },
+        (error) => {
+          this.handleError(error.message);
+        }
+      );
     },
 
     handleError(error) {
-      this.formErrors = [];
       this.formErrors.push(error);
     }
   }
