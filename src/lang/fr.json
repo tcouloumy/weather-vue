@@ -1,6 +1,7 @@
 {
 	"search_location_placeholder": "Je veux la météo de ...",
 	"search_location_submit": "Go !",
+	"search_current_location": "Utiliser ma position",
 	"units": {
 		"speed": "km/h"
 	},

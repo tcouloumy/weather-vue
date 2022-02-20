@@ -1,6 +1,7 @@
 {
 	"search_location_placeholder": "I want the weather for ...",
 	"search_location_submit": "Go !",
+	"search_current_location": "Use my current location",
 	"units": {
 		"speed": "mph"
 	},
