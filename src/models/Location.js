@@ -43,12 +43,17 @@ class Location extends Model {
       : this.raw.address_components.find((comp) => comp.types.includes('country'))?.long_name || null;
   }
 
+  get place_id() {
+    return this.raw.place_id;
+  }
+
   toJSON() {
     return {
       latitude: this.latitude,
       longitude: this.longitude,
       locality: this.locality,
-      country: this.country
+      country: this.country,
+      place_id: this.place_id
     }
   }
 }

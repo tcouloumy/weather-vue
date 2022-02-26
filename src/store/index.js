@@ -3,7 +3,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Location from '../models/Location';
-import { areEquals } from '../helpers/location';
 
 Vue.use(Vuex);
 
@@ -18,7 +17,7 @@ export default new Vuex.Store({
     REMOVE_FAVORITE(state, payload) {
       state.favoriteLocation = state
         .favoriteLocation
-        .filter((item) => (item._uid !== payload._uid));
+        .filter((item) => (item.place_id !== payload.place_id));
     },
     SORT_FAVORITE(state) {
       state.favoriteLocation.sort((a, b) => {
@@ -55,7 +54,7 @@ export default new Vuex.Store({
       * @param {Object} location Location object payload
       */
     toggleFavorite(context, location) {
-      if (context.state.favoriteLocation.findIndex((item) => areEquals(item, location)) !== -1) {
+      if (context.state.favoriteLocation.some((item) => item.place_id === location.place_id)) {
         context.commit('REMOVE_FAVORITE', location);
       } else {
         context.commit('ADD_FAVORITE', location);
