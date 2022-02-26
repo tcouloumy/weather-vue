@@ -127,7 +127,7 @@
             <!-- Skipping the first item, which is today -->
             <div
               v-for="(item, index) in weatherData.daily"
-              :key="index"
+              v-if="index"
               class="siimple-table-row"
             >
               <div class="siimple-table-cell date">
