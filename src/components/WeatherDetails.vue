@@ -290,7 +290,6 @@ export default {
 }
 
 .title {
-
   justify-content: space-between;
   align-items: baseline;
 
@@ -315,7 +314,6 @@ export default {
 /* Today */
 
 .today {
-
   border-radius: 5px;
   padding: 20px 30px;
   background-color: rgba(200, 213, 228, .8);
@@ -363,8 +361,6 @@ export default {
 }
 
 /* Table details */
-
-.today-details
 
 .today-details {
 
@@ -435,7 +431,6 @@ export default {
 /* Would be better to get this value from a constant */
 @media screen and (max-width: 768px) {
   .today-details > div {
-
     flex-direction: column;
 
     .siimple-table {
