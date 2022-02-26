@@ -12,12 +12,12 @@ export default new Vuex.Store({
   },
   mutations: {
     ADD_FAVORITE(state, payload) {
-      state.favoriteLocation.push(payload);
+      state.favoriteLocation.push(payload.toJSON());
     },
     REMOVE_FAVORITE(state, payload) {
       state.favoriteLocation = state
         .favoriteLocation
-        .filter((item) => !areEquals(item, payload));
+        .filter((item) => !areEquals(item, payload.toJSON()));
     },
     SORT_FAVORITE(state) {
       state.favoriteLocation.sort((a, b) => {

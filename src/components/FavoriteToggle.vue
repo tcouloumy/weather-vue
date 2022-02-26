@@ -53,7 +53,6 @@ export default {
 <style lang="scss" scoped>
 
 .favorite-toggle {
-
   cursor: pointer;
 
   i {

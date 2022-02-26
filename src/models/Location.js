@@ -34,13 +34,22 @@ class Location extends Model {
   get locality() {
     return (this.origin === 'autocomplete')
       ? this.raw.locality
-      : this.raw.address_components.find((comp) => comp.types.includes('country'))?.long_name || null;
+      : this.raw.address_components.find((comp) => comp.types.includes('locality'))?.long_name || null;
   }
 
   get country() {
     return (this.origin === 'autocomplete')
       ? this.raw.country
       : this.raw.address_components.find((comp) => comp.types.includes('country'))?.long_name || null;
+  }
+
+  toJSON() {
+    return {
+      latitude: this.latitude,
+      longitude: this.longitude,
+      locality: this.locality,
+      country: this.country
+    }
   }
 }
 

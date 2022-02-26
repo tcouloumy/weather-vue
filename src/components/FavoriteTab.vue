@@ -109,11 +109,19 @@ export default {
     }
   },
   async mounted() {
-    // Get the data on first display
-    await this.getWeather();
-  },
-  updated() {
-    this.locale = this.$i18n.locale;
+    try {
+      const response = await WeatherService
+        .getCurrentWeather(
+          this.location.latitude,
+          this.location.longitude
+        );
+
+      this.weatherData = response.data;
+    } catch (e) {
+      this.error = true;
+    }
+
+    this.loading = false;
   },
   methods: {
     locationToString,
@@ -123,26 +131,6 @@ export default {
     toggleFavorite() {
       this.$store.dispatch('toggleFavorite', this.location);
     },
-    /**
-    * Asynchonously retrieves weather data
-    */
-    async getWeather() {
-      this.loading = true;
-
-      try {
-        const response = await WeatherService
-          .getCurrentWeather(
-            this.location.latitude,
-            this.location.longitude
-          );
-
-        this.weatherData = response.data;
-      } catch (e) {
-        this.error = true;
-      }
-
-      this.loading = false;
-    }
   }
 };
 
