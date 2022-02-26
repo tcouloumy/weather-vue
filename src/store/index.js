@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Location from '../models/Location';
 import { areEquals } from '../helpers/location';
 
 Vue.use(Vuex);
@@ -12,12 +13,12 @@ export default new Vuex.Store({
   },
   mutations: {
     ADD_FAVORITE(state, payload) {
-      state.favoriteLocation.push(payload.toJSON());
+      state.favoriteLocation.push(payload);
     },
     REMOVE_FAVORITE(state, payload) {
       state.favoriteLocation = state
         .favoriteLocation
-        .filter((item) => !areEquals(item, payload.toJSON()));
+        .filter((item) => (item._uid !== payload._uid));
     },
     SORT_FAVORITE(state) {
       state.favoriteLocation.sort((a, b) => {
@@ -39,7 +40,11 @@ export default new Vuex.Store({
       */
     initialiseStore(context) {
       if (localStorage.getItem('favoriteLocation')) {
-        Object.assign(context.state.favoriteLocation, JSON.parse(localStorage.getItem('favoriteLocation')));
+        const serializedFavorites = JSON.parse(localStorage.getItem('favoriteLocation')).map((favorite) => {
+          return new Location(favorite);
+        });
+
+        Object.assign(context.state.favoriteLocation, serializedFavorites);
       }
     },
 
