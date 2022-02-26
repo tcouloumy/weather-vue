@@ -2,7 +2,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { areEquals } from '../helpers/location';
+import Location from '../models/Location';
 
 Vue.use(Vuex);
 
@@ -17,7 +17,7 @@ export default new Vuex.Store({
     REMOVE_FAVORITE(state, payload) {
       state.favoriteLocation = state
         .favoriteLocation
-        .filter((item) => !areEquals(item, payload));
+        .filter((item) => (item.place_id !== payload.place_id));
     },
     SORT_FAVORITE(state) {
       state.favoriteLocation.sort((a, b) => {
@@ -39,7 +39,11 @@ export default new Vuex.Store({
       */
     initialiseStore(context) {
       if (localStorage.getItem('favoriteLocation')) {
-        Object.assign(context.state.favoriteLocation, JSON.parse(localStorage.getItem('favoriteLocation')));
+        const serializedFavorites = JSON.parse(localStorage.getItem('favoriteLocation')).map((favorite) => {
+          return new Location(favorite);
+        });
+
+        Object.assign(context.state.favoriteLocation, serializedFavorites);
       }
     },
 
@@ -50,7 +54,7 @@ export default new Vuex.Store({
       * @param {Object} location Location object payload
       */
     toggleFavorite(context, location) {
-      if (context.state.favoriteLocation.findIndex((item) => areEquals(item, location)) !== -1) {
+      if (context.state.favoriteLocation.some((item) => item.place_id === location.place_id)) {
         context.commit('REMOVE_FAVORITE', location);
       } else {
         context.commit('ADD_FAVORITE', location);

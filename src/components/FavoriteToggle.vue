@@ -18,7 +18,6 @@
 <script>
 
 import { mapState } from 'vuex';
-import { areEquals } from '../helpers/location';
 
 export default {
 
@@ -35,7 +34,7 @@ export default {
     * Check if the current location exists in the store favorites
     */
     isFavorite() {
-      return this.favoriteLocation.findIndex((item) => areEquals(item, this.location)) !== -1;
+      return this.favoriteLocation.some((item) => (item.place_id === this.location.place_id));
     }
   },
   methods: {
@@ -53,7 +52,6 @@ export default {
 <style lang="scss" scoped>
 
 .favorite-toggle {
-
   cursor: pointer;
 
   i {

@@ -24,15 +24,14 @@ export default {
     * Return a promise resulting from an API call for the
     * complete weather forecast at given location
     *
-    * @param {Float} lat Latitude
-    * @param {Float} long Longitude
+    * @param {Object} location Location object from which to return weather
     * @return {Promise} Result of the call
     */
-  async getAllWeatherInfos(lat, lng) {
+  async getAllWeatherInfos(location) {
     const unit = (i18n.locale === 'fr') ? '&units=metric' : '&units=imperial';
 
     return axios.get(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${process.env.VUE_APP_OPENWEATHER_API_KEY}&lang=${i18n.locale}${unit}`
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${location.latitude}&lon=${location.longitude}&appid=${process.env.VUE_APP_OPENWEATHER_API_KEY}&lang=${i18n.locale}${unit}`
     );
   }
 };

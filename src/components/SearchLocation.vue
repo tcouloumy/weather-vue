@@ -46,6 +46,7 @@
 <script>
 
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
+import Location from '../models/Location';
 import { locationToString } from '../helpers/location';
 
 export default {
@@ -77,13 +78,15 @@ export default {
     checkForm(e) {
       if (this.address.locality) {
         const { address } = this;
+
         this.$router.push({
           name: 'Forecast',
           params: {
             locationString: this.locationToString(address),
-            completeLocation: address
+            completeLocation: new Location({ raw: address, origin: 'autocomplete' })
           }
         });
+
         return true;
       }
 
