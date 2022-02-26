@@ -14,7 +14,10 @@
     </p>
 
     <ul v-if="!isFavoritesEmpty">
-      <li v-for="location in favoriteLocation" v-bind:key="location._uid">
+      <li
+        v-for="location in favoriteLocation" 
+        :key="location._uid"
+      >
         <FavoriteTab :location="location" />
       </li>
     </ul>
