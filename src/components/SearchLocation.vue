@@ -35,7 +35,10 @@
       class="siimple-small siimple--color-error siimple--my-1"
     >
       <ul>
-        <li v-for="error in formErrors">
+        <li
+          v-for="(error, index) in formErrors"
+          :key="index"
+        >
           {{ error }}
         </li>
       </ul>

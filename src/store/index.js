@@ -39,9 +39,9 @@ export default new Vuex.Store({
       */
     initialiseStore(context) {
       if (localStorage.getItem('favoriteLocation')) {
-        const serializedFavorites = JSON.parse(localStorage.getItem('favoriteLocation')).map((favorite) => {
-          return new Location(favorite);
-        });
+        const serializedFavorites = JSON.parse(localStorage.getItem('favoriteLocation')).map((favorite) => (
+          new Location(favorite)
+        ));
 
         Object.assign(context.state.favoriteLocation, serializedFavorites);
       }

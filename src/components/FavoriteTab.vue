@@ -130,7 +130,7 @@ export default {
     */
     toggleFavorite() {
       this.$store.dispatch('toggleFavorite', this.location);
-    },
+    }
   }
 };
 
