@@ -4,23 +4,32 @@
 <template>
   <div class="rain-graph">
     <svg
-      width="100%"
-      height="200px"
+      :height="height"
+      :width="width"
     >
       <g>
         <rect
           v-for="(bar, index) in rainBars"
           :key="index"
-          :class="bar.class"
+          class="hour"
           :x="bar.x"
           :y="bar.y"
           :width="bar.width"
           :height="bar.height"
         />
+
+        <rect
+          v-for="(bar, index) in rainBars"
+          :key="(index+1*1000)"
+          class="hour-border"
+          :x="bar.x"
+          :y="bar.y"
+          :width="bar.width"
+          :height="2"
+        />
       </g>
     </svg>
   </div>
-  <!--<div class="rain-graph" />-->
 </template>
 
 <script>
@@ -28,71 +37,69 @@ import * as d3 from 'd3';
 import { format } from 'date-fns';
 
 export default {
-  name: 'WeatherDetails',
+  name: 'RainChart',
   props: {
     data: {
       type: Array,
       required: true,
       default: () => ([])
+    },
+    height: {
+      type: Number,
+      default: 200
+    },
+    width: {
+      type: Number,
+      default: 960
     }
   },
-  computed: {
-    viewBox() {
-      return '0 0 100% 200px';
-    },
-
-    rainBars() {
-      const margin = {
-        top: 10,
+  data() {
+    return {
+      margin: {
+        top: 30,
         right: 0,
         bottom: 30,
         left: 0
-      };
+      }
+    };
+  },
+  computed: {
+    viewBox() {
+      return `0 0 ${this.width} ${this.height}`;
+    },
 
-      const width = 960 - margin.left - margin.right;
-      const height = 200 - margin.top - margin.bottom;
-
-      const x = d3.scaleLinear()
+    xAxis() {
+      return d3.scaleLinear()
         .domain([0, this.data.length])
-        .range([0, width]);
+        .range([0, this.width - this.margin.left - this.margin.right]);
+    },
 
-      const y = d3.scaleLinear()
+    yAxis() {
+      return d3.scaleLinear()
         .domain([0, 1])
-        .range([0, height]);
+        .range([0, this.height - this.margin.top - this.margin.bottom]);
+    },
+
+    rainBars() {
+      const x = this.xAxis;
+      const y = this.yAxis;
 
       return this.data.map((element, index) => ({
-        class: 'hour',
         x: x(index),
         width: x(index + 1) - x(index),
-        y: y(1 - element.pop),
-        height: height - y(1 - element.pop)
+        y: y(1 - element.pop) + this.margin.top,
+        height: y(1) - y(1 - element.pop)
       }));
     }
   },
   mounted() {
-    console.log(this.data);
-    console.log(this.rainBars);
-
-    const margin = {
-      top: 10,
-      right: 0,
-      bottom: 30,
-      left: 0
-    };
-
-    const width = this.$el.offsetWidth - margin.left - margin.right;
-    const height = 200 - margin.top - margin.bottom;
-
-    // append the svg object to the body of the page
     const svg = d3.select('.rain-graph svg');
-
-    const x = d3.scaleLinear()
-      .domain([0, this.data.length])
-      .range([0, width]);
+    const x = this.xAxis;
+    const y = this.yAxis;
 
     svg.append('g')
       .attr('class', 'x-axis')
-      .attr('transform', `translate(0, ${height})`)
+      .attr('transform', `translate(0, ${y(1) + this.margin.top})`)
       .call(
         d3.axisBottom(x)
           .tickFormat((d, i) => {
@@ -104,16 +111,15 @@ export default {
           })
       );
 
-    /*
-    svg.selectAll('.bar')
-      .data(this.data)
-      .enter()
-      .append('rect')
-      .attr('class', 'hour-border')
-      .attr('x', (d, i) => x(i))
-      .attr('width', (d, i) => x(i + 1) - x(i))
-      .attr('y', (d) => y(1 - d.pop))
-      .attr('height', '2');*/
+    svg.append('g')
+      .attr('class', 'x-axis')
+      .call(
+        d3.axisBottom(x)
+          .tickFormat((i) => (this.data[i]
+            ? `${this.data[i].pop * 100}%`
+            : ''
+          ))
+      );
   }
 };
 
