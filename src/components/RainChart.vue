@@ -2,7 +2,25 @@
 <!-- Display a complete weather forcecast retrieve on google api based one the route params -->
 
 <template>
-  <div class="rain-graph" />
+  <div class="rain-graph">
+    <svg
+      width="100%"
+      height="200px"
+    >
+      <g>
+        <rect
+          v-for="(bar, index) in rainBars"
+          :key="index"
+          :class="bar.class"
+          :x="bar.x"
+          :y="bar.y"
+          :width="bar.width"
+          :height="bar.height"
+        />
+      </g>
+    </svg>
+  </div>
+  <!--<div class="rain-graph" />-->
 </template>
 
 <script>
@@ -14,13 +32,46 @@ export default {
   props: {
     data: {
       type: Array,
+      required: true,
       default: () => ([])
     }
   },
   computed: {
+    viewBox() {
+      return '0 0 100% 200px';
+    },
+
+    rainBars() {
+      const margin = {
+        top: 10,
+        right: 0,
+        bottom: 30,
+        left: 0
+      };
+
+      const width = 960 - margin.left - margin.right;
+      const height = 200 - margin.top - margin.bottom;
+
+      const x = d3.scaleLinear()
+        .domain([0, this.data.length])
+        .range([0, width]);
+
+      const y = d3.scaleLinear()
+        .domain([0, 1])
+        .range([0, height]);
+
+      return this.data.map((element, index) => ({
+        class: 'hour',
+        x: x(index),
+        width: x(index + 1) - x(index),
+        y: y(1 - element.pop),
+        height: height - y(1 - element.pop)
+      }));
+    }
   },
   mounted() {
     console.log(this.data);
+    console.log(this.rainBars);
 
     const margin = {
       top: 10,
@@ -33,10 +84,7 @@ export default {
     const height = 200 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    const svg = d3.select('.rain-graph')
-      .append('svg')
-      .attr('width', '100%')
-      .attr('height', height + margin.top + margin.bottom);
+    const svg = d3.select('.rain-graph svg');
 
     const x = d3.scaleLinear()
       .domain([0, this.data.length])
@@ -56,20 +104,7 @@ export default {
           })
       );
 
-    const y = d3.scaleLinear()
-      .domain([0, 1])
-      .range([0, height]);
-
-    svg.selectAll('.bar')
-      .data(this.data)
-      .enter()
-      .append('rect')
-      .attr('class', 'hour')
-      .attr('x', (d, i) => x(i))
-      .attr('width', (d, i) => x(i + 1) - x(i))
-      .attr('y', (d) => y(1 - d.pop))
-      .attr('height', (d) => height - y(1 - d.pop));
-
+    /*
     svg.selectAll('.bar')
       .data(this.data)
       .enter()
@@ -78,7 +113,7 @@ export default {
       .attr('x', (d, i) => x(i))
       .attr('width', (d, i) => x(i + 1) - x(i))
       .attr('y', (d) => y(1 - d.pop))
-      .attr('height', '2');
+      .attr('height', '2');*/
   }
 };
 

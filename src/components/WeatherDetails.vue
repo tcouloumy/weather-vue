@@ -245,8 +245,7 @@ export default {
     hourlyRainData() {
       if (!this.weatherData) return [];
 
-      //return this.weatherData.hourly.slice(0, 24).map((hourly) => ({ pop: hourly.pop }));
-      return this.weatherData.hourly.slice(0, 24);
+      return this.weatherData.hourly.slice(0, 24).map((hourly) => ({ pop: hourly.pop }));
     }
   },
   watch: {
