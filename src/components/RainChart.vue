@@ -21,17 +21,22 @@ export default {
   },
   mounted() {
     console.log(this.data);
-    //const width = this.$el.offsetWidth;
 
-    var margin = {top: 10, right: 0, bottom: 30, left: 0},
-    width = this.$el.offsetWidth - margin.left - margin.right,
-    height = 200 - margin.top - margin.bottom;
+    const margin = {
+      top: 10,
+      right: 0,
+      bottom: 30,
+      left: 0
+    };
 
-// append the svg object to the body of the page
-var svg = d3.select(".rain-graph")
-  .append("svg")
-    .attr("width", '100%')
-    .attr("height", height + margin.top + margin.bottom)
+    const width = this.$el.offsetWidth - margin.left - margin.right;
+    const height = 200 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    const svg = d3.select('.rain-graph')
+      .append('svg')
+      .attr('width', '100%')
+      .attr('height', height + margin.top + margin.bottom);
 
     const x = d3.scaleLinear()
       .domain([0, this.data.length])
@@ -49,7 +54,6 @@ var svg = d3.select(".rain-graph")
 
             return format(date, 'HH:mm');
           })
-          .tickSizeOuter(0)
       );
 
     const y = d3.scaleLinear()
@@ -65,6 +69,16 @@ var svg = d3.select(".rain-graph")
       .attr('width', (d, i) => x(i + 1) - x(i))
       .attr('y', (d) => y(1 - d.pop))
       .attr('height', (d) => height - y(1 - d.pop));
+
+    svg.selectAll('.bar')
+      .data(this.data)
+      .enter()
+      .append('rect')
+      .attr('class', 'hour-border')
+      .attr('x', (d, i) => x(i))
+      .attr('width', (d, i) => x(i + 1) - x(i))
+      .attr('y', (d) => y(1 - d.pop))
+      .attr('height', '2');
   }
 };
 
@@ -83,8 +97,13 @@ var svg = d3.select(".rain-graph")
         }
       }
 
-      rect.hour {
-        fill: rgba(200, 213, 228, 0.8);
+      rect {
+        &.hour {
+          fill: rgba(200, 213, 228, 0.8);
+        }
+        &.hour-border {
+          fill: #546778;
+        }
       }
     }
 }
