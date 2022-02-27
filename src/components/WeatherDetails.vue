@@ -43,6 +43,8 @@
         :time-offset="weatherData.timezone_offset"
       />
 
+      <RainChart :data="weatherData.hourly" />
+
       <!-- Today details -->
       <div class="today-details">
         <h2>Details</h2>
@@ -209,6 +211,7 @@ import WeatherService from '../services/WeatherService';
 import { stringToLocation } from '../helpers/location';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
+import RainChart from './RainChart.vue';
 import degToCompass from '../filters/degToCompass';
 
 export default {
@@ -217,7 +220,8 @@ export default {
   components: {
     WeatherIcon,
     WeatherCard,
-    FavoriteToggle
+    FavoriteToggle,
+    RainChart
   },
   filters: {
     degToCompass
