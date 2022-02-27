@@ -38,7 +38,7 @@ import moment from 'moment';
 import FavoriteTab from './FavoriteTab.vue';
 
 export default {
-  name: 'Favorites',
+  name: 'FavoritesList',
   components: {
     FavoriteTab
   },
