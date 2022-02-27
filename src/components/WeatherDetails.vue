@@ -43,7 +43,7 @@
         :time-offset="weatherData.timezone_offset"
       />
 
-      <RainChart :data="weatherData.hourly" />
+      <RainChart :data="hourlyRainData" />
 
       <!-- Today details -->
       <div class="today-details">
@@ -237,8 +237,16 @@ export default {
   },
   computed: {
     ...mapState(['favoriteLocation']),
+
     currentTimestamp() {
       return moment().unix();
+    },
+
+    hourlyRainData() {
+      if (!this.weatherData) return [];
+
+      //return this.weatherData.hourly.slice(0, 24).map((hourly) => ({ pop: hourly.pop }));
+      return this.weatherData.hourly.slice(0, 24);
     }
   },
   watch: {

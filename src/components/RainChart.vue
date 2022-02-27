@@ -7,6 +7,7 @@
 
 <script>
 import * as d3 from 'd3';
+import { format } from 'date-fns';
 
 export default {
   name: 'WeatherDetails',
@@ -32,38 +33,60 @@ var svg = d3.select(".rain-graph")
     .attr("width", '100%')
     .attr("height", height + margin.top + margin.bottom)
 
-    var x = d3.scaleLinear()
-      .domain([0, this.data.length])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+    const x = d3.scaleLinear()
+      .domain([0, this.data.length])
       .range([0, width]);
+
+    svg.append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(
+        d3.axisBottom(x)
+          .tickFormat((d, i) => {
+            const date = new Date();
+            date.setHours(date.getHours() + ((date.getMinutes() > 30) ? i + 1 : i));
+            date.setMinutes(0);
+
+            return format(date, 'HH:mm');
+          })
+          .tickSizeOuter(0)
+      );
 
     const y = d3.scaleLinear()
       .domain([0, 1])
       .range([0, height]);
 
-    svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-    
-    svg.append("g")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y));
-
-    console.log(this.data);
-
-    svg.selectAll(".bar")
+    svg.selectAll('.bar')
       .data(this.data)
       .enter()
-      .append("rect")
-      .attr("class", "bar")
-      .attr("x", (d, index) => x(index))
+      .append('rect')
+      .attr('class', 'hour')
+      .attr('x', (d, i) => x(i))
       .attr('width', (d, i) => x(i + 1) - x(i))
-      .attr("y", d => y(1 - d.pop))
-      .attr("height", (d) => height - y(1 - d.pop));
+      .attr('y', (d) => y(1 - d.pop))
+      .attr('height', (d) => height - y(1 - d.pop));
   }
 };
 
 </script>
 
 <style lang="scss" scoped>
+
+.rain-graph {
+    ::v-deep {
+      .x-axis {
+        .domain,
+        .tick:first-of-type,
+        .tick:last-of-type,
+        .tick line {
+          display: none;
+        }
+      }
+
+      rect.hour {
+        fill: rgba(200, 213, 228, 0.8);
+      }
+    }
+}
 
 </style>
