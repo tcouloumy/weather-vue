@@ -15,7 +15,7 @@
         <SearchLocation width="40" />
       </div>
 
-      <Favorites />
+      <FavoritesList />
     </div>
   </div>
 </template>
@@ -23,13 +23,13 @@
 <script>
 
 import SearchLocation from '../components/SearchLocation.vue';
-import Favorites from '../components/Favorites.vue';
+import FavoritesList from '../components/FavoritesList.vue';
 
 export default {
-  name: 'Search',
+  name: 'MainPage',
   components: {
     SearchLocation,
-    Favorites
+    FavoritesList
   }
 };
 </script>

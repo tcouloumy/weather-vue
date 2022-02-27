@@ -54,7 +54,7 @@ class Location extends Model {
       locality: this.locality,
       country: this.country,
       place_id: this.place_id
-    }
+    };
   }
 }
 

@@ -1,4 +1,4 @@
-import Search from '../views/Search.vue';
+import MainPage from '../views/MainPage.vue';
 import ForecastDetails from '../views/ForecastDetails.vue';
 import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES } from '../constants/language';
 import { i18n } from '../plugins/i18n';
@@ -30,8 +30,8 @@ export default [{
   },
   children: [{
     path: '',
-    name: 'Search',
-    component: Search
+    name: 'MainPage',
+    component: MainPage
   },
   {
     path: 'forecast/:locationString',

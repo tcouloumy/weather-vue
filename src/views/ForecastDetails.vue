@@ -2,7 +2,7 @@
   <div class="forecast">
     <router-link
       class="siimple-link"
-      :to="{ name: 'Search' }"
+      :to="{ name: 'MainPage' }"
     >
       {{ $t('pages.forecast.back') }}
     </router-link>
