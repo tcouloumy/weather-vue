@@ -20,10 +20,10 @@
 
         <rect
           v-for="(bar, index) in rainBars"
-          :key="(index+1*1000)"
+          :key="(index+1*100)"
           class="hour-border"
           :x="bar.x"
-          :y="bar.y"
+          :y="bar.y - 2"
           :width="bar.width"
           :height="2"
         />
@@ -46,7 +46,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 200
+      default: 180
     },
     width: {
       type: Number,
@@ -140,10 +140,10 @@ export default {
 
       rect {
         &.hour {
-          fill: rgba(200, 213, 228, 0.8);
+          fill: rgba(78, 145, 228, .2)
         }
         &.hour-border {
-          fill: #546778;
+          fill: #4e91e4;
         }
       }
     }

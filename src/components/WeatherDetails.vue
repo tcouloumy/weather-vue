@@ -43,6 +43,8 @@
         :time-offset="weatherData.timezone_offset"
       />
 
+      <h2>Prochaines 24 heures</h2>
+      <h4>Pluie</h4>
       <RainChart :data="hourlyRainData" />
 
       <!-- Today details -->
