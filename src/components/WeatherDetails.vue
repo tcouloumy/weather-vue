@@ -127,7 +127,7 @@
             <!-- Skipping the first item, which is today -->
             <div
               v-for="(item, index) in weatherData.daily"
-              v-if="index"
+              :key="index"
               class="siimple-table-row"
             >
               <div class="siimple-table-cell date">
@@ -271,6 +271,9 @@ export default {
         // Getting the weather infos
         const weatherData = await WeatherService.getAllWeatherInfos(this.location);
         this.weatherData = weatherData.data;
+
+        // Remove this first one as it the main display
+        this.weatherData.daily.shift();
       } catch (e) {
         this.errors = true;
       }
