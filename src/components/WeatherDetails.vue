@@ -43,6 +43,10 @@
         :time-offset="weatherData.timezone_offset"
       />
 
+      <h2>Prochaines 24 heures</h2>
+      <h4>Pluie</h4>
+      <RainChart :data="hourlyRainData" />
+
       <!-- Today details -->
       <div class="today-details">
         <h2>Details</h2>
@@ -209,6 +213,7 @@ import WeatherService from '../services/WeatherService';
 import { stringToLocation } from '../helpers/location';
 import WeatherCard from './WeatherCard.vue';
 import FavoriteToggle from './FavoriteToggle.vue';
+import RainChart from './RainChart.vue';
 import degToCompass from '../filters/degToCompass';
 
 export default {
@@ -217,7 +222,8 @@ export default {
   components: {
     WeatherIcon,
     WeatherCard,
-    FavoriteToggle
+    FavoriteToggle,
+    RainChart
   },
   filters: {
     degToCompass
@@ -233,8 +239,15 @@ export default {
   },
   computed: {
     ...mapState(['favoriteLocation']),
+
     currentTimestamp() {
       return moment().unix();
+    },
+
+    hourlyRainData() {
+      if (!this.weatherData) return [];
+
+      return this.weatherData.hourly.slice(0, 24).map((hourly) => ({ pop: hourly.pop }));
     }
   },
   watch: {
